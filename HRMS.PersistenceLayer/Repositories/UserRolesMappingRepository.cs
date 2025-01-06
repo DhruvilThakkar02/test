@@ -58,17 +58,38 @@ namespace HRMS.PersistenceLayer.Repositories
 
         }
 
-        //public async Task<UserRolesMappingUpdateResponseEntity> UpdateUserRolesMapping(UserRolesMappingUpdateRequestEntity rolesMapping)
-        //{
-        //    var paramters = new DynamicParameters();
-        //    paramters.Add("@UserRoleMappingId",rolesMapping.UserRoleMappingId );
-        //    paramters.Add("@UserId",rolesMapping.UserId );
-        //    paramters.Add("@RoleId",rolesMapping.RoleId);
-        //    paramters.Add("@UpdatedBy",rolesMapping.UpdatedBy );
-           
+        public async Task<UserRolesMappingUpdateResponseEntity?> UpdateUserRolesMapping(UserRolesMappingUpdateRequestEntity rolesMapping)
+        {
+            var paramters = new DynamicParameters();
+            paramters.Add("@UserRoleMappingId",rolesMapping.UserRoleMappingId );
+            paramters.Add("@UserId",rolesMapping.UserId );
+            paramters.Add("@RoleId",rolesMapping.RoleId);
+            paramters.Add("@UpdatedBy",rolesMapping.UpdatedBy );
 
-        //    var result = await _dbConnection.ExecuteAsync(UserRolesMappingStoredProcedure.,)
-        //}
+
+            var result = await _dbConnection.ExecuteAsync(UserRolesMappingStoredProcedure.UpdateUserRolesMapping, paramters, commandType: CommandType.StoredProcedure);
+
+            if (result == -1)
+            {
+                return null;
+            }
+            var updateUsermappingRoles = new UserRolesMappingUpdateResponseEntity
+            {
+               UserRoleMappingId = rolesMapping.UserRoleMappingId,
+                UserId = rolesMapping.UserId,
+                RoleId = rolesMapping.UserId,
+                CreatedBy = rolesMapping.CreatedBy,
+                UpdatedBy = rolesMapping.UpdatedBy,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                IsActive = rolesMapping.IsActive,
+                IsDelete = rolesMapping.IsDelete
+              
+
+            };
+            return updateUsermappingRoles;
+
+        }
 
         
     }

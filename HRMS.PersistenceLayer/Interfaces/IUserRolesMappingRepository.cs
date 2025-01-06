@@ -11,7 +11,7 @@ namespace HRMS.PersistenceLayer.Interfaces
         Task<UserRolesMappingReadResponseEntity?> GetByIdUserRolesMapping(int? id);
         Task<UserRolesMappingCreateResponseEntity> CreateUserRolesMapping(UserRolesMappingCreateRequestEntity rolesMapping);
 
-        //Task<UserRolesMappingUpdateResponseEntity> UpdateUserRolesMapping(UserRolesMappingUpdateRequestEntity roleMapping);
+        Task<UserRolesMappingUpdateResponseEntity?> UpdateUserRolesMapping(UserRolesMappingUpdateRequestEntity roleMapping);
 
 
     }

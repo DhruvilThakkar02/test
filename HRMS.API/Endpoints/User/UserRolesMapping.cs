@@ -8,6 +8,7 @@ using HRMS.Utility.Helpers.Enums;
 using HRMS.Utility.Helpers.Handlers;
 using HRMS.Utility.Validators.User.UserRoles;
 using HRMS.Utility.Validators.User.UserRolesMapping;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HRMS.API.Endpoints.User
 {
@@ -83,7 +84,7 @@ namespace HRMS.API.Endpoints.User
 
                 try
                 {
-                    var newrolemapping = await _rolesmappingService.CreateUserRoleMapping(dto);
+                    var newrolemapping = await _rolesmappingService.CreateUserRolesMapping(dto);
                     return Results.Ok(
                         ResponseHelper<UserRolesMappingCreateResponseDto>.Success(
                             message: "User Role Mapping Created Successfully",
@@ -104,7 +105,40 @@ namespace HRMS.API.Endpoints.User
                 }
             }).WithTags("UserRolesMapping");
 
-            
+            app.MapPut("/HRMS/UpdateUserRolesMapping", async (IUserRolesMappingService _rolesmappingService, UserRolesMappingUpdateRequestDto dto) =>
+            {
+                try
+                {
+                    var updatedUserMappingRoles = await _rolesmappingService.UpdateUserRolesMapping(dto);
+                    if (updatedUserMappingRoles == null)
+                    {
+                        return Results.NotFound(
+                            ResponseHelper<string>.Error(
+                                message: "User Mapping Roles Not Found",
+                                statusCode: StatusCodeEnum.NOT_FOUND
+                            ).ToDictionary()
+                         );
+                    }
+                    return Results.Ok(
+                        ResponseHelper<UserRolesMappingUpdateResponseDto>.Success(
+                            message: "User Roles Updated Succesfully ",
+                            data: updatedUserMappingRoles
+                            ).ToDictionary()
+                        );
+                }
+                catch (Exception ex)
+                {
+                    return Results.Json(
+                        ResponseHelper<string>.Error(
+                            message: "An Unexpected Error occurred while Updating the User Mapping Roles.",
+                            exception: ex,
+                            isWarning: false,
+                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                        ).ToDictionary()
+                    );
+
+                }
+            }).WithTags("UserRolesMapping");
 
             //app.MapPut(/UpdateRolesMapping")Future Enhansement
             //app.MapDelete(/DeleteRolesMapping")Future Enhansement
