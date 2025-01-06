@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE [dbo].[spUserRoleMappingGetById]
+CREATE PROCEDURE [dbo].[spUserRolesMappingGetById]
     @UserRoleMappingId INT
 AS
 BEGIN
