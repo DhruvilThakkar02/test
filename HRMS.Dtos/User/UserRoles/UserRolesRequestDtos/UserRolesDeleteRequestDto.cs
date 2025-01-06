@@ -2,6 +2,6 @@
 {
     public class UserRolesDeleteRequestDto
     {
-        public int RoleId { get; set; }
+        public int UserRoleId { get; set; }
     }
 }

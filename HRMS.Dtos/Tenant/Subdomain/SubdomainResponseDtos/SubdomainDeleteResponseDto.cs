@@ -3,6 +3,5 @@
     public class SubdomainDeleteResponseDto
     {
         public int SubdomainId { get; set; }
-
     }
 }

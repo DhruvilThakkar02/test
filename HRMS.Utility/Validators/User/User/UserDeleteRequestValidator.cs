@@ -8,8 +8,8 @@ namespace HRMS.Utility.Validators.User.User
         public UserDeleteRequestValidator()
         {
             RuleFor(x => x.UserId)
-                .NotNull().WithMessage("User ID is Required.")
-                .GreaterThan(0).WithMessage("User ID must be greater than Zero.");
+                .NotNull().WithMessage("User Id is Required.")
+                .GreaterThan(0).WithMessage("User Id must be greater than Zero.");
         }
     }
 }

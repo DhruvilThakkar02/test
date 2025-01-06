@@ -4,6 +4,7 @@ using HRMS.Dtos.Tenant.TenantRegistration.TenantRegistrationResponseDtos;
 using HRMS.Utility.Helpers.Enums;
 using HRMS.Utility.Helpers.Handlers;
 using HRMS.Utility.Validators.Tenant.TenantRegistration;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace HRMS.API.Endpoints.Tenant
 {
@@ -11,6 +12,13 @@ namespace HRMS.API.Endpoints.Tenant
     {
         public static void MapTenantRegistrationEndpoints(this IEndpointRouteBuilder app)
         {
+            /// <summary> 
+            /// Creates a new Tenant Registration. 
+            /// </summary> 
+            /// <remarks> 
+            /// This endpoint allows you to create a new Tenant Registration with the provided details. 
+            /// </remarks> 
+            ///<returns> A success or error response based on the operation result.</returns >
             app.MapPost("/CreateTenantRegistration", async (TenantRegistrationCreateRequestDto dto, ITenantRegistrationService _tenantRegistrationService) =>
             {
                 var validator = new TenantRegistrationCreateRequestValidator();
@@ -48,7 +56,9 @@ namespace HRMS.API.Endpoints.Tenant
                         ).ToDictionary()
                     );
                 }
-            });
+            }).WithTags("Tenant Registration")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new Tenant Registration.", description: "This endpoint allows you to create a new Tenant Registration with the provided details."
+            ));
         }
     }
 }

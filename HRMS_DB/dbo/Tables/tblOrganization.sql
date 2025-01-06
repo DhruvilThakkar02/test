@@ -5,8 +5,8 @@ CREATE TABLE [dbo].[tblOrganization] (
     [UpdatedAt]        DATETIME2 (3)  NOT NULL,
     [CreatedBy]        INT            NOT NULL,
     [UpdatedBy]        INT            NULL,
-    [IsActive]         BIT            DEFAULT (NULL) NULL,
-    [IsDelete]         BIT            DEFAULT (NULL) NULL
+    [IsActive]         BIT            DEFAULT ((0)) NULL,
+    [IsDelete]         BIT            DEFAULT ((0)) NULL
 );
 GO
 

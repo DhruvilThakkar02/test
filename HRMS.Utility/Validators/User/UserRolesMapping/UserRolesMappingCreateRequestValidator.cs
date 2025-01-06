@@ -1,17 +1,11 @@
 ﻿using FluentValidation;
 using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingRequestDtos;
-using HRMS.Entities.User.UserRolesMapping.UserRolesMappingRequestEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRMS.Utility.Validators.User.UserRolesMapping
 {
     public class UserRolesMappingCreateRequestValidator : AbstractValidator<UserRolesMappingCreateRequestDto>
     {
-        public  UserRolesMappingCreateRequestValidator()
+        public UserRolesMappingCreateRequestValidator()
         {
             RuleFor(roles => roles.UserId)
               .NotNull().WithMessage("User Id is Required.")
@@ -25,6 +19,5 @@ namespace HRMS.Utility.Validators.User.UserRolesMapping
               .NotNull().WithMessage("Created By Id is Required.")
               .GreaterThan(0).WithMessage("Created By must be greater than Zero.");
         }
-
     }
 }

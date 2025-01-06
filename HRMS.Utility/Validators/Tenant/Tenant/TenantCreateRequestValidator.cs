@@ -1,10 +1,5 @@
 ﻿using FluentValidation;
 using HRMS.Dtos.Tenant.Tenant.TenantRequestDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRMS.Utility.Validators.Tenant.Tenant
 {
@@ -32,11 +27,8 @@ namespace HRMS.Utility.Validators.Tenant.Tenant
              .NotNull().WithMessage("CreatedBy is Required.")
              .GreaterThan(0).WithMessage("CreatedBy must be greater than Zero.");
 
-            RuleFor(user => user.IsActive)
+            RuleFor(tenant => tenant.IsActive)
                 .NotNull().WithMessage("IsActive must be true or false.");
-
-            RuleFor(user => user.IsDelete)
-              .NotNull().WithMessage("IsDelete must be true or false.");
         }
     }
 }

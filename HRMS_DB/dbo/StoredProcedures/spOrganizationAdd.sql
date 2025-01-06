@@ -5,32 +5,52 @@ CREATE PROCEDURE [dbo].[spOrganizationAdd]
 @CreatedBy INT = NULL,
 @UpdatedBy INT = NULL,
 @IsActive BIT = NULL,
-@IsDelete BIT = NULL,
 @CreatedAt DATETIME = NULL,
 @UpdatedAt DATETIME = NULL
 AS
 BEGIN
+    BEGIN TRY
+        -- Start transaction
+        BEGIN TRANSACTION;
 
+        -- Check if CreatedBy is provided
+	    IF @CreatedBy IS NULL
+        BEGIN
+            RAISERROR ('CreatedBy cannot be NULL.', 16, 1);
+            RETURN;
+        END;
 
-	IF @CreatedBy IS NULL
-    BEGIN
-        RAISERROR ('CreatedBy cannot be NULL.', 16, 1);
-        RETURN;
-    END;
+        -- Set UpdatedBy to CreatedBy if not provided
+	    SET @UpdatedBy = ISNULL(@UpdatedBy, @CreatedBy);
 
-	 SET @UpdatedBy = ISNULL(@UpdatedBy, @CreatedBy);
+        -- Insert a new organization record
+        INSERT INTO tblOrganization (OrganizationName, CreatedBy, UpdatedBy, CreatedAt, UpdatedAt, IsActive, IsDelete)
+        VALUES (@OrganizationName, @CreatedBy, @UpdatedBy, GETDATE(), GETDATE(), 1, 0);
 
-    -- Set default values for IsActive and IsDelete if NULL
-    SET @IsActive = ISNULL(@IsActive, 1); -- Default to 1 (Active) if NULL
-    SET @IsDelete = ISNULL(@IsDelete, 0); -- Default to 0 (Not Deleted) if NULL
-    SET @CreatedAt = ISNULL(@CreatedAt, SYSDATETIME()); -- Default to current time if NULL
-    SET @UpdatedAt = ISNULL(@UpdatedAt, SYSDATETIME());
+        -- Capture the OrganizationID of the inserted record
+        SET @OrganizationID = SCOPE_IDENTITY();
 
-    -- Insert a new organization record
-    INSERT INTO tblOrganization (OrganizationName, CreatedBy, UpdatedBy, CreatedAt, UpdatedAt, IsActive, IsDelete)
-    VALUES (@OrganizationName, @CreatedBy, NULL, GETDATE(), GETDATE(), 1, 0);
+        SELECT * FROM [dbo].[tblOrganization] WHERE OrganizationID = @OrganizationID;
 
-   SET @OrganizationID = SCOPE_IDENTITY();
-END
+        -- Commit the transaction
+        COMMIT TRANSACTION;
+    
+    END TRY
+    BEGIN CATCH
+        -- Handle errors and roll back the transaction if needed
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+
+        DECLARE @ErrorMessage NVARCHAR(4000), @ErrorSeverity INT, @ErrorState INT;
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(), 
+            @ErrorSeverity = ERROR_SEVERITY(), 
+            @ErrorState = ERROR_STATE();
+        
+        PRINT 'Error: ' + @ErrorMessage;
+
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
 GO
 

@@ -17,7 +17,7 @@ namespace HRMS.Utility.Validators.Tenant.Organization
              .Length(2, 100).WithMessage("Organization Name must be between 2 and 100 characters.");
 
             RuleFor(org => org.CreatedBy)
-                .GreaterThan(0).WithMessage("CreatedBy must be a valid User ID.");
+                .GreaterThan(0).WithMessage("CreatedBy must be a valid User Id.");
         }
 
     }

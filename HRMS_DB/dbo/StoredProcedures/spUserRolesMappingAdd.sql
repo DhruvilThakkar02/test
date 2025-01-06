@@ -1,8 +1,8 @@
 
- CREATE    PROCEDURE [dbo].[spUserRolesMappingAdd]
+ CREATE PROCEDURE [dbo].[spUserRolesMappingAdd]
     @UserRoleMappingId INT OUTPUT,
     @UserId INT,
-    @RoleId INT,
+    @UserRoleId INT,
     @CreatedBy INT,
     @UpdatedBy INT = NULL,
     @IsActive BIT = 1,
@@ -24,7 +24,7 @@ BEGIN
     -- Insert the record
     INSERT INTO [dbo].[tblUserRoleMapping] (
         UserId, 
-        RoleId, 
+        UserRoleId, 
         CreatedBy, 
         UpdatedBy, 
         CreatedAt, 
@@ -34,7 +34,7 @@ BEGIN
     )
     VALUES (
         @UserId, 
-        @RoleId, 
+        @UserRoleId, 
         @CreatedBy, 
         @UpdatedBy, 
         SYSDATETIME(), 

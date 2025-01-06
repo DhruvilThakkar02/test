@@ -2,6 +2,6 @@
 {
     public class UserRolesDeleteRequestEntity
     {
-        public int RoleId { get; set; }
+        public int UserRoleId { get; set; }
     }
 }

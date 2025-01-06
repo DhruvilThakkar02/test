@@ -1,8 +1,10 @@
 ﻿using Dapper;
 using HRMS.Entities.Tenant.TenancyRole.TenancyRoleRequestEntities;
 using HRMS.Entities.Tenant.TenancyRole.TenancyRoleResponseEntities;
+using HRMS.Entities.User.User.UserResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.Utility.Helpers.SqlHelpers.Tenant;
+using HRMS.Utility.Helpers.SqlHelpers.User;
 using System.Data;
 
 namespace HRMS.PersistenceLayer.Repositories
@@ -35,22 +37,24 @@ namespace HRMS.PersistenceLayer.Repositories
         {
             var parameters = new DynamicParameters();
             parameters.Add("@TenancyRoleId", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            parameters.Add("@RoleName", tenancyrole.RoleName);
+            parameters.Add("@TenancyRoleName", tenancyrole.TenancyRoleName);
             parameters.Add("@CreatedBy", tenancyrole.CreatedBy);
             parameters.Add("@IsActive", tenancyrole.IsActive);
 
-            await _dbConnection.ExecuteAsync(TenancyRoleStoredProcedure.CreateTenancyRole, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<dynamic>(TenancyRoleStoredProcedure.CreateTenancyRole, parameters, commandType: CommandType.StoredProcedure);
 
             var roleId = parameters.Get<int>("@TenancyRoleId");
 
             var createdTenancyRole = new TenancyRoleCreateResponseEntity
             {
                 TenancyRoleId = roleId,
-                RoleName = tenancyrole.RoleName,
+                TenancyRoleName = tenancyrole.TenancyRoleName,
                 CreatedBy = tenancyrole.CreatedBy,
                 CreatedAt = DateTime.Now,
+                UpdatedBy = result?.UpdatedBy,
                 UpdatedAt = DateTime.Now,
-                IsActive = tenancyrole.IsActive
+                IsActive = tenancyrole.IsActive,
+                IsDelete = result?.IsDelete
             };
 
             return createdTenancyRole;
@@ -59,15 +63,15 @@ namespace HRMS.PersistenceLayer.Repositories
         public async Task<TenancyRoleUpdateResponseEntity?> UpdateTenancyRole(TenancyRoleUpdateRequestEntity tenancyrole)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("@TenancyRoleId", tenancyrole.TenancyRoleId, dbType: DbType.Int32);
-            parameters.Add("@RoleName", tenancyrole.RoleName);
+            parameters.Add("@TenancyRoleId", tenancyrole.TenancyRoleId);
+            parameters.Add("@TenancyRoleName", tenancyrole.TenancyRoleName);
             parameters.Add("@UpdatedBy", tenancyrole.UpdatedBy);
             parameters.Add("@IsActive", tenancyrole.IsActive);
             parameters.Add("@IsDelete", tenancyrole.IsDelete);
 
-            var result = await _dbConnection.ExecuteAsync(TenancyRoleStoredProcedure.UpdateTenancyRole, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<TenancyRoleUpdateResponseEntity>(TenancyRoleStoredProcedure.UpdateTenancyRole, parameters, commandType: CommandType.StoredProcedure);
 
-            if (result == -1)
+            if (result == null || result.TenancyRoleId == -1)
             {
                 return null;
             }
@@ -75,11 +79,13 @@ namespace HRMS.PersistenceLayer.Repositories
             var updatedTenancyRole = new TenancyRoleUpdateResponseEntity
             {
                 TenancyRoleId = tenancyrole.TenancyRoleId,
-                RoleName = tenancyrole.RoleName,
+                TenancyRoleName = tenancyrole.TenancyRoleName,
+                CreatedBy = result.CreatedBy,
+                CreatedAt = result.CreatedAt,
                 UpdatedBy = tenancyrole.UpdatedBy,
-                IsActive = tenancyrole.IsActive,
-                IsDelete = tenancyrole.IsDelete,
                 UpdatedAt = DateTime.Now,
+                IsActive = tenancyrole.IsActive,
+                IsDelete = tenancyrole.IsDelete
             };
 
             return updatedTenancyRole;

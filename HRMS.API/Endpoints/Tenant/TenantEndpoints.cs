@@ -7,9 +7,6 @@ using HRMS.Utility.Helpers.Handlers;
 using Swashbuckle.AspNetCore.Annotations;
 using HRMS.Utility.Helpers.Enums;
 
-
-
-
 namespace HRMS.API.Endpoints.Tenant
 {
     public static class TenantEndpoints
@@ -17,12 +14,12 @@ namespace HRMS.API.Endpoints.Tenant
         public static void MapTenantEndpoints(this IEndpointRouteBuilder app)
         {
             /// <summary> 
-            /// Retrieves a list of tenants. 
+            /// Retrieves a List of Tenants. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint returns a list of tenants. If no tenants are found, a 404 status code is returned. 
+            /// This endpoint returns a List of Tenants. If no Tenants are found, a 404 status code is returned. 
             /// </remarks> 
-            /// <returns>A list of tenants or a 404 status code if no tenants are found.</returns>
+            /// <returns>A List of Tenants or a 404 status code if no Tenants are found.</returns>
             app.MapGet("/GetTenants", async (ITenantService service) =>
             {
                 var tenant = await service.GetTenants();
@@ -34,17 +31,17 @@ namespace HRMS.API.Endpoints.Tenant
                 var errorResponse = ResponseHelper<List<TenantReadResponseDtos>>.Error("No Tenants Found");
                 return Results.NotFound(errorResponse.ToDictionary());
             }).WithTags("Tenant")
-            .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a list of tenants", description: "This endpoint returns a list of tenants. If no tenants are found, a 404 status code is returned."
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Tenants", description: "This endpoint returns a List of Tenants. If no Tenants are found, a 404 status code is returned."
             ));
 
             /// <summary> 
-            /// Retrieve tenant by Id. 
+            /// Retrieve Tenant by Id. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint return tenant by Id. If no tenant are found, a 404 status code is returned. 
+            /// This endpoint return Tenant by Id. If no Tenant are found, a 404 status code is returned. 
             /// </remarks> 
-            /// <returns>A tenant or a 404 status code if no tenant are found.</returns>
-            app.MapGet("/GetTenant/{id}", async (ITenantService service, int id) =>
+            /// <returns>A Tenant or a 404 status code if no Tenant are found.</returns>
+            app.MapGet("/GetTenantById/{id}", async (ITenantService service, int id) =>
             {
                 var validator = new TenantReadRequestValidator();
                 var tenantRequestDto = new TenantReadRequestDtos { TenantId = id };
@@ -63,7 +60,7 @@ namespace HRMS.API.Endpoints.Tenant
                 }
                 try
                 {
-                    var tenant = await service.GetTenant(id);
+                    var tenant = await service.GetTenantById(id);
                     if (tenant == null)
                     {
                         return Results.NotFound(
@@ -76,7 +73,7 @@ namespace HRMS.API.Endpoints.Tenant
 
                     return Results.Ok(
                         ResponseHelper<TenantReadResponseDtos>.Success(
-                            message: "User Retrieved Successfully",
+                            message: "Tenant Retrieved Successfully",
                             data: tenant
                         ).ToDictionary()
                     );
@@ -93,14 +90,14 @@ namespace HRMS.API.Endpoints.Tenant
                     );
                 }
             }).WithTags("Tenant")
-            .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieve tenant by Id", description: "This endpoint return tenant by Id. If no tenant are found, a 404 status code is returned. "
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieve Tenant by Id", description: "This endpoint return Tenant by Id. If no Tenant are found, a 404 status code is returned."
             ));
 
             /// <summary> 
-            /// Creates a new tenant. 
+            /// Creates a new Tenant. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint allows you to create a new tenant with the provided details. 
+            /// This endpoint allows you to create a new Tenant with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
             app.MapPost("/CreateTenant", async (TenantCreateRequestDtos dto, ITenantService _service) =>
@@ -119,7 +116,6 @@ namespace HRMS.API.Endpoints.Tenant
                         ).ToDictionary()
                     );
                 }
-
                 try
                 {
                     var newUser = await _service.CreateTenant(dto);
@@ -130,7 +126,6 @@ namespace HRMS.API.Endpoints.Tenant
                         ).ToDictionary()
                     );
                 }
-
                 catch (Exception ex)
                 {
                     return Results.Json(
@@ -143,14 +138,14 @@ namespace HRMS.API.Endpoints.Tenant
                     );
                 }
             }).WithTags("Tenant")
-            .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new tenant.", description: "This endpoint allows you to create a new tenant with the provided details. "
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new Tenant.", description: "This endpoint allows you to create a new Tenant with the provided details."
             ));
 
             /// <summary> 
-            /// Updates existing tenant details. 
+            /// Updates existing Tenant details. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint allows you to update tenant details with the provided Id. 
+            /// This endpoint allows you to update Tenant details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
             app.MapPut("/UpdateTenant", async (ITenantService _service, [FromBody] TenantUpdateRequestDtos dto) =>
@@ -170,7 +165,6 @@ namespace HRMS.API.Endpoints.Tenant
                        ).ToDictionary()
                    );
                 }
-
                 try
                 {
                     var updatedTenant = await _service.UpdateTenant(dto);
@@ -178,7 +172,7 @@ namespace HRMS.API.Endpoints.Tenant
                     {
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
-                               message: "User Not Found",
+                               message: "Tenant Not Found",
                                statusCode: StatusCodeEnum.NOT_FOUND
                            ).ToDictionary()
                        );
@@ -191,12 +185,11 @@ namespace HRMS.API.Endpoints.Tenant
                         ).ToDictionary()
                     );
                 }
-
                 catch (Exception ex)
                 {
                     return Results.Json(
                         ResponseHelper<string>.Error(
-                            message: "An Unexpected Error occurred while Updating the User.",
+                            message: "An Unexpected Error occurred while Updating the Tenant.",
                             exception: ex,
                             isWarning: false,
                             statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
@@ -204,15 +197,14 @@ namespace HRMS.API.Endpoints.Tenant
                     );
                 }
             }).WithTags("Tenant")
-            .WithMetadata(new SwaggerOperationAttribute(summary: "Updates existing tenant details", description: "This endpoint allows you to update tenant details with the provided Id. "
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Updates existing Tenant details", description: "This endpoint allows you to update Tenant details with the provided Id."
             ));
 
             /// <summary> 
-            /// Deletes a user. 
+            /// Deletes a Tenant. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint allows you to delete a tenant based on the provided tenant ID. 
-            /// </remarks>
+            /// This endpoint allows you to delete a Tenant based on the provided Tenant Id.</remarks>
             app.MapDelete("/DeleteTenant", async (ITenantService service, [FromBody] TenantDeleteRequestDtos dto) =>
             {
                 var validator = new TenantDeleteRequestValidator();
@@ -230,7 +222,6 @@ namespace HRMS.API.Endpoints.Tenant
                       ).ToDictionary()
                   );
                 }
-
                 try
                 {
                     var result = await service.DeleteTenant(dto);
@@ -238,7 +229,7 @@ namespace HRMS.API.Endpoints.Tenant
                     {
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
-                               message: "User Not Found",
+                               message: "Tenant Not Found",
                                statusCode: StatusCodeEnum.NOT_FOUND
                            ).ToDictionary()
                        );
@@ -251,7 +242,6 @@ namespace HRMS.API.Endpoints.Tenant
                        ).ToDictionary()
                    );
                 }
-
                 catch (Exception ex)
                 {
                     return Results.Json(
@@ -264,7 +254,7 @@ namespace HRMS.API.Endpoints.Tenant
                     );
                 }
             }).WithTags("Tenant")
-            .WithMetadata(new SwaggerOperationAttribute(summary: "Deletes a user. ", description: "This endpoint allows you to delete a tenant based on the provided tenant ID."
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Deletes a Tenant. ", description: "This endpoint allows you to delete a Tenant based on the provided Tenant Id."
             ));
         }
     }

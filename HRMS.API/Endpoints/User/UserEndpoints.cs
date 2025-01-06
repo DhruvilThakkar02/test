@@ -5,6 +5,7 @@ using HRMS.Utility.Helpers.Enums;
 using HRMS.Utility.Helpers.Handlers;
 using HRMS.Utility.Validators.User.User;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace HRMS.API.Modules.User
 {
@@ -12,7 +13,14 @@ namespace HRMS.API.Modules.User
     {
         public static void MapUserEndpoints(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/HRMS/GetUsers", async (IUserService service) =>
+            /// <summary> 
+            /// Retrieves a List of Users. 
+            /// </summary> 
+            /// <remarks> 
+            /// This endpoint returns a List of Users. If no Users are found, a 404 status code is returned. 
+            /// </remarks> 
+            /// <returns>A List of Users or a 404 status code if no Users are found.</returns>
+            app.MapGet("/GetUsers", async (IUserService service) =>
             {
                 var users = await service.GetUsers();
                 if (users != null && users.Any())
@@ -23,9 +31,18 @@ namespace HRMS.API.Modules.User
 
                 var errorResponse = ResponseHelper<List<UserReadResponseDto>>.Error("No Users Found");
                 return Results.NotFound(errorResponse.ToDictionary());
-            });
+            }).WithTags("User")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Users", description: "This endpoint returns a List of Users. If no Users are found, a 404 status code is returned."
+            ));
 
-            app.MapGet("/HRMS/User/{id}", async (IUserService service, int id) =>
+            /// <summary> 
+            /// Retrieve User by Id. 
+            /// </summary> 
+            /// <remarks> 
+            /// This endpoint return User by Id. If no User are found, a 404 status code is returned. 
+            /// </remarks> 
+            /// <returns>A User or a 404 status code if no User are found.</returns>
+            app.MapGet("/GetUserById/{id}", async (IUserService service, int id) =>
             {
                 var validator = new UserReadRequestValidator();
                 var userRequestDto = new UserReadRequestDto { UserId = id };
@@ -73,8 +90,17 @@ namespace HRMS.API.Modules.User
                         ).ToDictionary()
                     );
                 }
-            });
+            }).WithTags("User")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieve User by Id", description: "This endpoint return User by Id. If no User are found, a 404 status code is returned."
+            ));
 
+            /// <summary> 
+            /// Creates a new User. 
+            /// </summary> 
+            /// <remarks> 
+            /// This endpoint allows you to create a new User with the provided details. 
+            /// </remarks> 
+            ///<returns> A success or error response based on the operation result.</returns >
             app.MapPost("/CreateUser", async (UserCreateRequestDto dto, IUserService _userService) =>
             {
                 var validator = new UserCreateRequestValidator();
@@ -112,9 +138,18 @@ namespace HRMS.API.Modules.User
                         ).ToDictionary()
                     );
                 }
-            });
+            }).WithTags("User")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new User.", description: "This endpoint allows you to create a new User with the provided details."
+            ));
 
-            app.MapPut("/HRMS/UpdateUser", async (IUserService service, [FromBody] UserUpdateRequestDto dto) =>
+            /// <summary> 
+            /// Updates existing User details. 
+            /// </summary> 
+            /// <remarks> 
+            /// This endpoint allows you to update User details with the provided Id. 
+            /// </remarks> 
+            ///<returns> A success or error response based on the operation result.</returns >
+            app.MapPut("/UpdateUser", async (IUserService service, [FromBody] UserUpdateRequestDto dto) =>
             {
                 var validator = new UserUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -162,9 +197,16 @@ namespace HRMS.API.Modules.User
                         ).ToDictionary()
                     );
                 }
-            });
+            }).WithTags("User")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Updates existing User details", description: "This endpoint allows you to update User details with the provided Id."
+            ));
 
-            app.MapDelete("/HRMS/DeleteUser", async (IUserService service, [FromBody] UserDeleteRequestDto dto) =>
+            /// <summary> 
+            /// Deletes a User. 
+            /// </summary> 
+            /// <remarks> 
+            /// This endpoint allows you to delete a User based on the provided User Id.</remarks>
+            app.MapDelete("/DeleteUser", async (IUserService service, [FromBody] UserDeleteRequestDto dto) =>
             {
                 var validator = new UserDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -212,7 +254,9 @@ namespace HRMS.API.Modules.User
                         ).ToDictionary()
                     );
                 }
-            });
+            }).WithTags("User")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Deletes a User. ", description: "This endpoint allows you to delete a User based on the provided User Id."
+            ));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HRMS.Entities.Tenant.Organization.OrganizationRequestEntities;
 using HRMS.Entities.Tenant.Organization.OrganizationResponseEntities;
+using HRMS.Entities.User.User.UserResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.Utility.Helpers.SqlHelpers.Tenant;
 using System.Data;
@@ -47,7 +48,7 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@OrganizationId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@IsActive", organization.IsActive);
 
-            await _dbConnection.ExecuteAsync(OrganizationStoreProcedures.CreateOrganization, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<dynamic>(OrganizationStoreProcedures.CreateOrganization, parameters, commandType: CommandType.StoredProcedure);
 
             var organizationId = parameters.Get<int>("@OrganizationId");
             var createdOrganization = new OrganizationCreateResponseEntity
@@ -56,31 +57,43 @@ namespace HRMS.PersistenceLayer.Repositories
                 OrganizationName = organization.OrganizationName,
                 CreatedBy = organization.CreatedBy,
                 CreatedAt = DateTime.Now,
+                UpdatedBy = result?.UpdatedBy,
                 UpdatedAt = DateTime.Now,
-                IsActive = organization.IsActive
+                IsActive = organization.IsActive,
+                IsDelete = result?.IsDelete
             };
 
             return createdOrganization;
         }
 
-        public async Task<OrganizationUpdateResponseEntity> UpdateOrganization(OrganizationUpdateRequestEntity organization)
+        public async Task<OrganizationUpdateResponseEntity?> UpdateOrganization(OrganizationUpdateRequestEntity organization)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@OrganizationId", organization.OrganizationId);
             parameters.Add("@OrganizationName", organization.OrganizationName);
             parameters.Add("@UpdatedBy", organization.UpdatedBy);
             parameters.Add("@IsActive", organization.IsActive);
+            parameters.Add("@IsDelete", organization.IsDelete);
 
-            await _dbConnection.ExecuteAsync(OrganizationStoreProcedures.UpdateOrganization, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<OrganizationUpdateResponseEntity>(OrganizationStoreProcedures.UpdateOrganization, parameters, commandType: CommandType.StoredProcedure);
+
+            if (result == null || result.OrganizationId == -1)
+            {
+                return null;
+            }
 
             var UpdateOrganization = new OrganizationUpdateResponseEntity
             {
                 OrganizationId = organization.OrganizationId,
                 OrganizationName = organization.OrganizationName,
+                CreatedBy = result.CreatedBy,
+                CreatedAt = result.CreatedAt,
                 UpdatedBy = organization.UpdatedBy,
+                UpdatedAt = DateTime.Now,
                 IsActive = organization.IsActive,
-                UpdatedaAt = DateTime.Now,
+                IsDelete = organization.IsDelete
             };
+
             return UpdateOrganization;
         }
 

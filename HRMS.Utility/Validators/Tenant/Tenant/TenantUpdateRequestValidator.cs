@@ -31,10 +31,10 @@ namespace HRMS.Utility.Validators.Tenant.Tenant
              .NotNull().WithMessage("UpdatedBy is Required.")
              .GreaterThan(0).WithMessage("UpdatedBy must be greater than Zero.");
 
-            RuleFor(user => user.IsActive)
+            RuleFor(tenant => tenant.IsActive)
                 .NotNull().WithMessage("IsActive must be true or false.");
 
-            RuleFor(user => user.IsDelete)
+            RuleFor(tenant => tenant.IsDelete)
               .NotNull().WithMessage("IsDelete must be true or false.");
         }
     }

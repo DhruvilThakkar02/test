@@ -8,6 +8,5 @@
         public string? TenantName { get; set; }
         public int CreatedBy { get; set; }
         public bool IsActive { get; set; }
-        public bool IsDelete { get; set; } = false;
     }
 }

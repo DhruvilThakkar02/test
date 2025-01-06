@@ -7,7 +7,7 @@ namespace HRMS.Utility.Validators.Tenant.TenancyRole
     {
         public TenancyRoleCreateRequestValidator()
         {
-            RuleFor(tenancyRole => tenancyRole.RoleName)
+            RuleFor(tenancyRole => tenancyRole.TenancyRoleName)
                 .NotEmpty().WithMessage("Tenancy Role Name is Required.")
                 .Length(2, 100).WithMessage("Tenancy Role Name must be between 2 and 100 characters.");
 

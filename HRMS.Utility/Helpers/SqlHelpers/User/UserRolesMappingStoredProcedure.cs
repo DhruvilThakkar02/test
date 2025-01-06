@@ -3,10 +3,10 @@ namespace HRMS.Utility.Helpers.SqlHelpers.User
 {
     public static class UserRolesMappingStoredProcedure
     {
-        public const string GetAllUserRolesMapping = "spUserRolesMappingGetAll";
-        public const string GetByIdUserRolesMapping = "spUserRolesMappingGetById";
-        public const string CreateUserRolesMapping = "spUserRolesMappingAdd";
-        public const string UpdateUserRolesMapping = "spUserRolesMappingUpdate";
-        public const string DeleteUserRolesMapping =  "";
+        public const string GetUserRolesMapping = "spUserRolesMappingGetAll";
+        public const string GetUserRoleMappingById = "spUserRolesMappingGetById";
+        public const string CreateUserRoleMapping = "spUserRolesMappingAdd";
+        public const string UpdateUserRoleMapping = "spUserRolesMappingUpdate";
+        public const string DeleteUserRoleMapping = "";
     }
 }

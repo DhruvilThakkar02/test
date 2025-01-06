@@ -11,11 +11,13 @@ namespace HRMS.BusinessLayer.Services
     {
         private readonly ITenantRegistrationRepository _tenantRegistrationRepository;
         private readonly IMapper _mapper;
+
         public TenantRegistrationService(ITenantRegistrationRepository tenantRegistrationRepository, IMapper mapper)
         {
             _tenantRegistrationRepository = tenantRegistrationRepository;
             _mapper = mapper;
         }
+
         public async Task<TenantRegistrationCreateResponseDto> CreateTenantRegistration(TenantRegistrationCreateRequestDto tenantRegistrationDto)
         {
             var tenantRegisterationEntity = _mapper.Map<TenantRegistrationCreateRequestEntity>(tenantRegistrationDto);

@@ -29,6 +29,7 @@ namespace HRMS.PersistenceLayer.Repositories
             var subdomain = await _dbConnection.QueryFirstOrDefaultAsync<SubdomainReadResponseEntity>(SubdomainStoredProcedures.GetSubdomainById, parameters, commandType: CommandType.StoredProcedure);
             return subdomain;
         }
+
         public async Task<SubdomainCreateResponseEntity> CreateSubdomain(SubdomainCreateRequestEntity subdomain)
         {
             var parameters = new DynamicParameters();
@@ -38,7 +39,7 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@CreatedBy", subdomain.CreatedBy);
             parameters.Add("@IsActive", subdomain.IsActive);
 
-            await _dbConnection.ExecuteAsync(SubdomainStoredProcedures.CreateSubdomain, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<dynamic>(SubdomainStoredProcedures.CreateSubdomain, parameters, commandType: CommandType.StoredProcedure);
 
             var subdomainId = parameters.Get<int>("@SubdomainId");
 
@@ -47,13 +48,16 @@ namespace HRMS.PersistenceLayer.Repositories
                 SubdomainId = subdomainId,
                 DomainId = subdomain.DomainId,
                 SubdomainName = subdomain.SubdomainName,
-                IsActive = subdomain.IsActive,
                 CreatedBy = subdomain.CreatedBy,
                 CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                UpdatedBy = result?.UpdatedBy,
+                UpdatedAt = DateTime.Now,
+                IsActive = subdomain.IsActive,
+                IsDelete = result?.IsDelete
             };
             return CreatedSubdomain;
         }
+
         public async Task<SubdomainUpdateResponseEntity?> UpdateSubdomain(SubdomainUpdateRequestEntity subdomain)
         {
             var parameters = new DynamicParameters();
@@ -64,18 +68,26 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@IsActive", subdomain.IsActive);
             parameters.Add("@IsDelete", subdomain.IsDelete);
 
-            await _dbConnection.ExecuteAsync(SubdomainStoredProcedures.UpdateSubdomain, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<SubdomainUpdateResponseEntity>(SubdomainStoredProcedures.UpdateSubdomain, parameters, commandType: CommandType.StoredProcedure);
+
+            if (result == null || result.SubdomainId == -1)
+            {
+                return null;
+            }
 
             var updatedSubdomain = new SubdomainUpdateResponseEntity
             {
                 SubdomainId = subdomain.SubdomainId,
                 DomainId = subdomain.DomainId,
                 SubdomainName = subdomain.SubdomainName,
-                IsActive = subdomain.IsActive,
-                IsDelete = subdomain.IsDelete,
+                CreatedBy = result.CreatedBy,
+                CreatedAt = result.CreatedAt,
                 UpdatedBy = subdomain.UpdatedBy,
-                UpdatedAt = DateTime.Now
+                UpdatedAt = DateTime.Now,
+                IsActive = subdomain.IsActive,
+                IsDelete = subdomain.IsDelete
             };
+
             return updatedSubdomain;
         }
 

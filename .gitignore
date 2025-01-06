@@ -1,6 +1,7 @@
 # .NET build results
 bin/
 obj/
+logs/
 
 # User-specific files
 *.user
@@ -29,10 +30,7 @@ ehthumbs.db
 
 # Ignore Visual Studio files
 .vs/
-<<<<<<< HEAD
-=======
 
 # Ignore appsettings.json
 appsettings.json
 /HRMS.API/appsettings.json
->>>>>>> 166f5de66e2dfd823b4711f904fc4ea872b06b7a

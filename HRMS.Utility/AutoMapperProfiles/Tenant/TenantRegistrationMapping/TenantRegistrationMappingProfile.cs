@@ -19,6 +19,5 @@ namespace HRMS.Utility.AutoMapperProfiles.Tenant.TenantRegistrationMapping
 
             CreateMap<TenantRegistrationCreateResponseEntity, TenantRegistrationCreateResponseDto>();
         }
-
     }
 }

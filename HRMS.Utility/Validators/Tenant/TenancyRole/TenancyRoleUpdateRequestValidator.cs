@@ -11,7 +11,7 @@ namespace HRMS.Utility.Validators.Tenant.TenancyRole
                .NotNull().WithMessage("Tenancy Role ID is Required.")
                .GreaterThan(0).WithMessage("Tenancy Role ID must be greater than Zero.");
 
-            RuleFor(tenancyRole => tenancyRole.RoleName)
+            RuleFor(tenancyRole => tenancyRole.TenancyRoleName)
                 .NotEmpty().WithMessage("Tenancy Role Name is Required.")
                 .Length(2, 100).WithMessage("Tenancy Role Name must be between 2 and 100 characters.");
 

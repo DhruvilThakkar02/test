@@ -9,6 +9,6 @@
         public string? TenantName { get; set; }
         public int UpdatedBy { get; set; }
         public bool IsActive { get; set; }
-        public bool IsDelete { get; set; } = false;
+        public bool IsDelete { get; set; }
     }
 }

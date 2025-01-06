@@ -22,23 +22,18 @@ namespace HRMS.BusinessLayer.Services
         public async Task<IEnumerable<TenantReadResponseDtos>> GetTenants()
         {
             var tenants = await _tenantRepository.GetTenants();
-            //foreach (var tenant in tenants)
-            //{
-            //    user.Password = PasswordHashingUtility.HashPassword(user.Password);
-            //}
+
             var response = _mapper.Map<IEnumerable<TenantReadResponseDtos>>(tenants);
             return response;
         }
 
-        public async Task<TenantReadResponseDtos?> GetTenant(int? tenantId)
+        public async Task<TenantReadResponseDtos?> GetTenantById(int? tenantId)
         {
-            var tenant = await _tenantRepository.GetTenant(tenantId);
+            var tenant = await _tenantRepository.GetTenantById(tenantId);
             if (tenant == null || tenant.TenantId == -1)
             {
                 return null;
             }
-
-            //user.Password = PasswordHashingUtility.HashPassword(user.Password);
 
             var response = _mapper.Map<TenantReadResponseDtos>(tenant);
             return response;

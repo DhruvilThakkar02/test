@@ -2,7 +2,7 @@
 CREATE PROCEDURE [dbo].[spUserRolesMappingUpdate]
     @UserRoleMappingId INT,
     @UserId INT = NULL,
-    @RoleId INT = NULL,
+    @UserRoleId INT = NULL,
     @UpdatedBy INT,
     @IsActive BIT = NULL,
     @IsDelete BIT = NULL
@@ -27,7 +27,7 @@ BEGIN
     UPDATE [dbo].[tblUserRoleMapping]
     SET 
         UserId = ISNULL(@UserId, UserId),
-        RoleId = ISNULL(@RoleId, RoleId),
+        UserRoleId = ISNULL(@UserRoleId, UserRoleId),
         UpdatedBy = @UpdatedBy,
         UpdatedAt = SYSDATETIME(),
         IsActive = ISNULL(@IsActive, IsActive),

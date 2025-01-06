@@ -1,4 +1,3 @@
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using HRMS.API.Endpoints.Tenant;
 using HRMS.API.Endpoints.User;
@@ -14,23 +13,28 @@ using HRMS.Utility.AutoMapperProfiles.Tenant.TenantMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenantRegistrationMapping;
 using HRMS.Utility.AutoMapperProfiles.User.UserMapping;
 using HRMS.Utility.AutoMapperProfiles.User.UserRolesMapping;
-using HRMS.Utility.Validators.Tenant.Organization;
-using HRMS.Utility.Validators.Tenant.Subdomain;
-using HRMS.Utility.Validators.Tenant.TenancyRole;
-using HRMS.Utility.Validators.Tenant.Tenant;
-using HRMS.Utility.Validators.Tenant.TenantRegistration;
-using HRMS.Utility.Validators.User.User;
-using HRMS.Utility.Validators.User.UserRoles;
+using HRMS.Utility.Helpers.LogHelpers.Interface;
+using HRMS.Utility.Helpers.LogHelpers.Services;
 using Microsoft.Data.SqlClient;
+using Serilog;
 using System.Data;
 
 namespace HRMS.API
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+                //.WriteTo.ApplicationInsights("Your-Instrumentation-Key", TelemetryConverter.Traces)  // Optional: Application Insights
+                .MinimumLevel.Information()
+                .CreateLogger();
+
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddScoped<IOrganizationLogger, OrganinizationLogger>();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
@@ -46,10 +50,9 @@ namespace HRMS.API
 
             builder.Services.AddScoped<IUserRolesRepository, UserRolesRepository>();
             builder.Services.AddScoped<IUserRolesService, UserRolesService>();
+
             builder.Services.AddScoped<IUserRolesMappingRepository, UserRolesMappingRepository>();
             builder.Services.AddScoped<IUserRolesMappingService, UserRolesMappingService>();
-
-
 
             builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();
@@ -65,13 +68,13 @@ namespace HRMS.API
                                            typeof(OrganizationMappingProfile),
                                            typeof(SubdomainMappingProfile),
                                            typeof(TenantRegistrationMappingProfile),
-
                                            typeof(SubdomainMappingProfile),
                                            typeof(OrganizationMappingProfile),
                                            typeof(TenantMappingProfile));
 
             builder.Services.AddAuthorization();
             builder.Services.AddCors();
+            builder.Host.UseSerilog();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
@@ -87,38 +90,6 @@ namespace HRMS.API
 
             builder.Services.AddFluentValidationAutoValidation();
 
-            builder.Services.AddValidatorsFromAssemblyContaining<UserCreateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<UserUpdateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<UserReadRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<UserDeleteRequestValidator>();
-
-            builder.Services.AddValidatorsFromAssemblyContaining<TenantCreateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<TenantUpdateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<TenantReadRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<TenantDeleteRequestValidator>();
-
-            builder.Services.AddValidatorsFromAssemblyContaining<TenancyRoleCreateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<TenancyRoleUpdateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<TenancyRoleReadRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<TenancyRoleDeleteRequestValidator>();
-
-            builder.Services.AddValidatorsFromAssemblyContaining<UserRolesCreateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<UserRolesUpdateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<UserRolesReadRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<UserRolesDeleteRequestValidator>();
-
-            builder.Services.AddValidatorsFromAssemblyContaining<OrganizationCreateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<OrganizationReadRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<OrganizationUpdateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<OrganizationDeleteRequestValidator>();
-
-            builder.Services.AddValidatorsFromAssemblyContaining<SubdomainCreateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<SubdomainReadRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<SubdomainUpdateRequestValidator>();
-            builder.Services.AddValidatorsFromAssemblyContaining<SubdomainDeleteRequestValidator>();
-
-            builder.Services.AddValidatorsFromAssemblyContaining<TenantRegistrationCreateRequestValidator>();
-
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -126,6 +97,7 @@ namespace HRMS.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
             app.UseHttpsRedirection();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthorization();

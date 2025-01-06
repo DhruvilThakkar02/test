@@ -8,8 +8,8 @@ namespace HRMS.Utility.Validators.User.User
         public UserUpdateRequestValidator()
         {
             RuleFor(x => x.UserId)
-               .NotNull().WithMessage("User ID is Required.")
-               .GreaterThan(0).WithMessage("User ID must be greater than Zero.");
+               .NotNull().WithMessage("User Id is Required.")
+               .GreaterThan(0).WithMessage("User Id must be greater than Zero.");
 
             RuleFor(user => user.FirstName)
                 .NotEmpty().WithMessage("First Name is Required.")
@@ -46,7 +46,7 @@ namespace HRMS.Utility.Validators.User.User
 
             RuleFor(user => user.DateOfBirth)
                 .NotEmpty().WithMessage("Date of Birth is Required.")
-                .LessThan(DateOnly.FromDateTime(DateTime.Today)).WithMessage("Date of Birth must be in the past.");
+                .LessThan(DateTime.Today).WithMessage("Date of Birth must be in the past.");
 
             RuleFor(user => user.IsActive)
                 .NotNull().WithMessage("IsActive must be true or false.");
@@ -57,7 +57,7 @@ namespace HRMS.Utility.Validators.User.User
             RuleFor(user => user.TenantId)
                .NotNull().WithMessage("Tenant ID is Required.");
 
-            RuleFor(user => user.RoleId)
+            RuleFor(user => user.UserRoleId)
                .NotNull().WithMessage("Role ID is Required.");
 
             RuleFor(user => user.TenancyRoleId)

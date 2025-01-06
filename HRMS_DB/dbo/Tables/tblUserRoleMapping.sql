@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[tblUserRoleMapping] (
     [UserRoleMappingId] INT      IDENTITY (1, 1) NOT NULL,
     [UserId]            INT      NOT NULL,
-    [RoleId]            INT      NOT NULL,
+    [UserRoleId]        INT      NOT NULL,
     [CreatedBy]         INT      NOT NULL,
     [UpdatedBy]         INT      NULL,
     [CreatedAt]         DATETIME DEFAULT (getdate()) NOT NULL,
