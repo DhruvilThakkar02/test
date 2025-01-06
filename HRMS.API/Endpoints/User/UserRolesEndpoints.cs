@@ -242,8 +242,7 @@ namespace HRMS.API.Endpoints.User
 
                     return Results.Ok(
                            ResponseHelper<UserRoleDeleteResponseDto>.Success(
-                               message: "Role Deleted Successfully",
-                               data: result
+                               message: "Role Deleted Successfully"
                            ).ToDictionary()
                        );
                 }
