@@ -2,10 +2,10 @@
 {
     public static class UserRolesStoredProcedure
     {
-        public const string GetUserRoles = "spUserRolesGetAll";
-        public const string GetUserRoleById = "spUserRolesGet";
-        public const string CreateUserRoles = "spUserRolesAdd";
-        public const string UpdateUserRoles = "spUserRolesUpdate";
-        public const string DeleteUserRoles = "spUserRolesDelete";
+        public const string GetUserRoles = "spUserRoleGetAll";
+        public const string GetUserRoleById = "spUserRoleGet";
+        public const string CreateUserRoles = "spUserRoleAdd";
+        public const string UpdateUserRoles = "spUserRoleUpdate";
+        public const string DeleteUserRoles = "spUserRoleDelete";
     }
 }
