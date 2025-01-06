@@ -19,7 +19,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to create a new Tenant Registration with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateTenantRegistration", async (TenantRegistrationCreateRequestDto dto, ITenantRegistrationService _tenantRegistrationService) =>
+            app.MapPost("/tenantregistration/create", async (TenantRegistrationCreateRequestDto dto, ITenantRegistrationService _tenantRegistrationService) =>
             {
                 var validator = new TenantRegistrationCreateRequestValidator();
                 var validationResult = validator.Validate(dto);

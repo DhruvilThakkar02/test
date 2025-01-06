@@ -20,7 +20,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint returns a List of Subdomains. If no Subdomains are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A List of Subdomains or a 404 status code if no Subdomains are found.</returns>
-            app.MapGet("/GetSubdomains", async (ISubdomainService service) =>
+            app.MapGet("/subdomain/getall", async (ISubdomainService service) =>
             {
                 var subdomains = await service.GetSubdomains();
                 if (subdomains != null && subdomains.Any())
@@ -42,7 +42,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint return Subdomain by Id. If no Subdomain are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A Subdomain or a 404 status code if no Subdomain are found.</returns>
-            app.MapGet("/GetSubdomainById/{id}", async (ISubdomainService service, int id) =>
+            app.MapGet("/subdomain/{id}", async (ISubdomainService service, int id) =>
             {
                 var validator = new SubdomainReadRequestValidator();
                 var subdomainRequestDto = new SubdomainReadRequestDto { SubdomainId = id };
@@ -101,7 +101,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to create a new Subdomain with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateSubdomain", async (SubdomainCreateRequestDto dto, ISubdomainService _subdomainservice) =>
+            app.MapPost("/subdomain/create", async (SubdomainCreateRequestDto dto, ISubdomainService _subdomainservice) =>
             {
                 var validator = new SubdomainCreateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -149,7 +149,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to update Subdomain details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateSubdomain", async (SubdomainUpdateRequestDto dto, ISubdomainService _subdomainservice) =>
+            app.MapPut("/subdomain/update", async (SubdomainUpdateRequestDto dto, ISubdomainService _subdomainservice) =>
             {
                 var validator = new SubdomainUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -194,7 +194,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a Subdomain based on the provided Subdomain Id.</remarks>
-            app.MapDelete("/DeleteSubdomain", async (ISubdomainService service, [FromBody] SubdomainDeleteRequestDto dto) =>
+            app.MapDelete("/subdomain/delete", async (ISubdomainService service, [FromBody] SubdomainDeleteRequestDto dto) =>
             {
                 var validator = new SubdomainDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -226,8 +226,7 @@ namespace HRMS.API.Endpoints.Tenant
 
                     return Results.Ok(
                        ResponseHelper<SubdomainDeleteResponseDto>.Success(
-                           message: "Subdomain Deleted Successfully",
-                           data: result
+                           message: "Subdomain Deleted Successfully"
                        ).ToDictionary()
                    );
                 }
