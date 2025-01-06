@@ -1,0 +1,8 @@
+﻿namespace HRMS.Entities.User.UserRolesMapping.UserRolesMappingResponseEntities
+{
+    public class UserRoleMappingDeleteResponseEntity
+    {
+        public int UserRoleMappingId { get; set; }
+        public bool IsDelete { get; set; }
+    }
+}
