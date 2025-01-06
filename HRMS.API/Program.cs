@@ -6,6 +6,7 @@ using HRMS.BusinessLayer.Interfaces;
 using HRMS.BusinessLayer.Services;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.PersistenceLayer.Repositories;
+using HRMS.Utility.AutoMapperProfiles.Tenant.CompanyMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.OrganizationMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.SubdomainMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenancyRoleMapping;
@@ -60,6 +61,9 @@ namespace HRMS.API
             builder.Services.AddScoped<ITenantRegistrationRepository, TenantRegistrationRepository>();
             builder.Services.AddScoped<ITenantRegistrationService, TenantRegistrationService>();
 
+            builder.Services.AddScoped<ICompanyRepository,CompanyRepository>();
+            builder.Services.AddScoped<ICompanyService,CompanyService>();
+
             builder.Services.AddSingleton<IDbConnection>(_ => new SqlConnection(builder.Configuration.GetConnectionString("HRMS_DB")));
 
             builder.Services.AddAutoMapper(typeof(UserMappingProfile),
@@ -70,6 +74,7 @@ namespace HRMS.API
                                            typeof(TenantRegistrationMappingProfile),
                                            typeof(SubdomainMappingProfile),
                                            typeof(OrganizationMappingProfile),
+                                           typeof(CompanyMappingProfile),
                                            typeof(TenantMappingProfile));
 
             builder.Services.AddAuthorization();
@@ -110,6 +115,7 @@ namespace HRMS.API
             app.MapTenantEndpoints();
             app.MapTenantRegistrationEndpoints();
             app.MapUserRolesMappingEndpoints();
+            app.MapCompanyEndpoints();
 
             app.Run();
         }

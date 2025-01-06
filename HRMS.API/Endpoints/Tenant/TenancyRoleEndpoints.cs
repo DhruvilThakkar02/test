@@ -20,7 +20,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint returns a List of Tenancy Roles. If no Tenancy Roles are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A List of Tenancy Roles or a 404 status code if no Tenancy Roles are found.</returns>
-            app.MapGet("/GetTenancyRoles", async (ITenancyRoleService service) =>
+            app.MapGet("/tenancyrole/getall", async (ITenancyRoleService service) =>
             {
                 var roles = await service.GetTenancyRoles();
                 if (roles != null && roles.Any())
@@ -42,7 +42,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint return Tenancy Role by Id. If no Tenancy Role are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A Tenancy Role or a 404 status code if no Tenancy Role are found.</returns>
-            app.MapGet("/GetTenancyRoleById/{id}", async (ITenancyRoleService service, int id) =>
+            app.MapGet("/TenancyRole/{id}", async (ITenancyRoleService service, int id) =>
             {
                 var validator = new TenancyRoleReadRequestValidator();
                 var roleRequestDto = new TenancyRoleReadRequestDto { TenancyRoleId = id };
@@ -101,7 +101,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to create a new Tenancy Role with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateTenancyRole", async (TenancyRoleCreateRequestDto dto, ITenancyRoleService _tenancyroleService) =>
+            app.MapPost("/tenancyrole/create", async (TenancyRoleCreateRequestDto dto, ITenancyRoleService _tenancyroleService) =>
             {
                 var validator = new TenancyRoleCreateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -149,7 +149,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to update Tenancy Role details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateTenancyRole", async (ITenancyRoleService service, [FromBody] TenancyRoleUpdateRequestDto dto) =>
+            app.MapPut("/tenancyrole/update", async (ITenancyRoleService service, [FromBody] TenancyRoleUpdateRequestDto dto) =>
             {
                 var validator = new TenancyRoleUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -206,7 +206,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a Tenancy Role based on the provided Tenancy Role Id.</remarks>
-            app.MapDelete("/DeleteTenancyRole", async (ITenancyRoleService service, [FromBody] TenancyRoleDeleteRequestDto dto) =>
+            app.MapDelete("/tenancyrole/delete", async (ITenancyRoleService service, [FromBody] TenancyRoleDeleteRequestDto dto) =>
             {
                 var validator = new TenancyRoleDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -238,8 +238,7 @@ namespace HRMS.API.Endpoints.Tenant
 
                     return Results.Ok(
                        ResponseHelper<TenancyRoleDeleteResponseDto>.Success(
-                           message: "Tenancy Role Deleted Successfully",
-                           data: result
+                           message: "Tenancy Role Deleted Successfully"
                        ).ToDictionary()
                    );
                 }

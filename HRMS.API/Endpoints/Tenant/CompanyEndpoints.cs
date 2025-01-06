@@ -1,52 +1,54 @@
 ﻿using HRMS.BusinessLayer.Interfaces;
-using HRMS.Dtos.Tenant.Tenant.TenantRequestDtos;
-using HRMS.Dtos.Tenant.Tenant.TenantResponseDtos;
-using HRMS.Utility.Validators.Tenant.Tenant;
-using Microsoft.AspNetCore.Mvc;
-using HRMS.Utility.Helpers.Handlers;
-using Swashbuckle.AspNetCore.Annotations;
+using HRMS.Dtos.Tenant.Company.CompanyRequestDtos;
+using HRMS.Dtos.Tenant.Company.CompanyResponseDtos;
+using HRMS.Dtos.User.User.UserRequestDtos;
 using HRMS.Utility.Helpers.Enums;
+using HRMS.Utility.Helpers.Handlers;
+using HRMS.Utility.Validators.Tenant.Company;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace HRMS.API.Endpoints.Tenant
 {
-    public static class TenantEndpoints
+    public static class CompanyEndpoints
     {
-        public static void MapTenantEndpoints(this IEndpointRouteBuilder app)
+        public static void MapCompanyEndpoints(this IEndpointRouteBuilder app)
         {
             /// <summary> 
-            /// Retrieves a List of Tenants. 
+            /// Retrieves a List of Companys. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint returns a List of Tenants. If no Tenants are found, a 404 status code is returned. 
+            /// This endpoint returns a List of Companys. If no Companys are found, a 404 status code is returned. 
             /// </remarks> 
-            /// <returns>A List of Tenants or a 404 status code if no Tenants are found.</returns>
-            app.MapGet("/tenant/getall", async (ITenantService service) =>
+            /// <returns>A List of Companys or a 404 status code if no Companys are found.</returns>
+            app.MapGet("/company/getall", async (ICompanyService service) =>
             {
-                var tenant = await service.GetTenants();
-                if (tenant != null && tenant.Any())
+                var Companys = await service.GetCompanys();
+                if (Companys != null && Companys.Any())
                 {
-                    var response = ResponseHelper<List<TenantReadResponseDtos>>.Success("Tenants Retrieved Successfully", tenant.ToList());
+                    var response = ResponseHelper<List<CompanyReadResponseDto>>.Success("Companys Retrieved Successfully", Companys.ToList());
                     return Results.Ok(response.ToDictionary());
                 }
-                var errorResponse = ResponseHelper<List<TenantReadResponseDtos>>.Error("No Tenants Found");
+
+                var errorResponse = ResponseHelper<List<CompanyReadResponseDto>>.Error("No Companys Found");
                 return Results.NotFound(errorResponse.ToDictionary());
-            }).WithTags("Tenant")
-            .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Tenants", description: "This endpoint returns a List of Tenants. If no Tenants are found, a 404 status code is returned."
+            }).WithTags("Company")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Companys", description: "This endpoint returns a List of Companys. If no Companys are found, a 404 status code is returned."
             ));
 
             /// <summary> 
-            /// Retrieve Tenant by Id. 
+            /// Retrieve Company by Id. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint return Tenant by Id. If no Tenant are found, a 404 status code is returned. 
+            /// This endpoint return Company by Id. If no Company are found, a 404 status code is returned. 
             /// </remarks> 
-            /// <returns>A Tenant or a 404 status code if no Tenant are found.</returns>
-            app.MapGet("/tenant/{id}", async (ITenantService service, int id) =>
+            /// <returns>A Company or a 404 status code if no Company are found.</returns>
+            app.MapGet("/company/{id}", async (ICompanyService service, int id) =>
             {
-                var validator = new TenantReadRequestValidator();
-                var tenantRequestDto = new TenantReadRequestDtos { TenantId = id };
+                var validator = new CompanyReadRequestValidator();
+                var CompanyRequestDto = new CompanyReadRequestDto { CompanyId = id };
 
-                var validationResult = validator.Validate(tenantRequestDto);
+                var validationResult = validator.Validate(CompanyRequestDto);
                 if (!validationResult.IsValid)
                 {
                     var errorMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
@@ -60,21 +62,21 @@ namespace HRMS.API.Endpoints.Tenant
                 }
                 try
                 {
-                    var tenant = await service.GetTenantById(id);
-                    if (tenant == null)
+                    var Company = await service.GetCompanyById(id);
+                    if (Company == null)
                     {
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
-                                message: "Tenant Not Found",
+                                message: "Company Not Found",
                                 statusCode: StatusCodeEnum.NOT_FOUND
                             ).ToDictionary()
                         );
                     }
 
                     return Results.Ok(
-                        ResponseHelper<TenantReadResponseDtos>.Success(
-                            message: "Tenant Retrieved Successfully",
-                            data: tenant
+                        ResponseHelper<CompanyReadResponseDto>.Success(
+                            message: "Company Retrieved Successfully",
+                            data: Company
                         ).ToDictionary()
                     );
                 }
@@ -89,20 +91,21 @@ namespace HRMS.API.Endpoints.Tenant
                         ).ToDictionary()
                     );
                 }
-            }).WithTags("Tenant")
-            .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieve Tenant by Id", description: "This endpoint return Tenant by Id. If no Tenant are found, a 404 status code is returned."
+            }).WithTags("Company")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieve Company by Id", description: "This endpoint return Company by Id. If no Company are found, a 404 status code is returned."
             ));
 
+
             /// <summary> 
-            /// Creates a new Tenant. 
+            /// Creates a new Company. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint allows you to create a new Tenant with the provided details. 
+            /// This endpoint allows you to create a new Company with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/tenant/create", async (TenantCreateRequestDtos dto, ITenantService _service) =>
+            app.MapPost("/company/create", async (CompanyCreateRequestDto dto, ICompanyService _companyService) =>
             {
-                var validator = new TenantCreateRequestValidator();
+                var validator = new CompanyCreateRequestValidator();
                 var validationResult = validator.Validate(dto);
 
                 if (!validationResult.IsValid)
@@ -116,13 +119,14 @@ namespace HRMS.API.Endpoints.Tenant
                         ).ToDictionary()
                     );
                 }
+
                 try
                 {
-                    var newUser = await _service.CreateTenant(dto);
+                    var newCompany = await _companyService.CreateCompany(dto);
                     return Results.Ok(
-                        ResponseHelper<TenantCreateResponseDtos>.Success(
-                            message: "Tenant Created Successfully",
-                            data: newUser
+                        ResponseHelper<CompanyCreateResponseDto>.Success(
+                            message: "Company Created Successfully",
+                            data: newCompany
                         ).ToDictionary()
                     );
                 }
@@ -130,27 +134,28 @@ namespace HRMS.API.Endpoints.Tenant
                 {
                     return Results.Json(
                         ResponseHelper<string>.Error(
-                            message: "An Unexpected Error occurred while Creating the Tenant.",
+                            message: "An Unexpected Error occurred while Creating the Company.",
                             exception: ex,
                             isWarning: false,
                             statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
-            }).WithTags("Tenant")
-            .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new Tenant.", description: "This endpoint allows you to create a new Tenant with the provided details."
+            }).WithTags("Company")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new Company.", description: "This endpoint allows you to create a new Company with the provided details."
             ));
 
+
             /// <summary> 
-            /// Updates existing Tenant details. 
+            /// Updates existing Company details. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint allows you to update Tenant details with the provided Id. 
+            /// This endpoint allows you to update Company details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/tenant/update", async (ITenantService _service, [FromBody] TenantUpdateRequestDtos dto) =>
+            app.MapPut("/UpdateCompany", async (ICompanyService service, [FromBody] CompanyUpdateRequestDto dto) =>
             {
-                var validator = new TenantUpdateRequestValidator();
+                var validator = new CompanyUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);
 
                 if (!validationResult.IsValid)
@@ -167,21 +172,21 @@ namespace HRMS.API.Endpoints.Tenant
                 }
                 try
                 {
-                    var updatedTenant = await _service.UpdateTenant(dto);
-                    if (updatedTenant == null)
+                    var updatedCompany = await service.UpdateCompany(dto);
+                    if (updatedCompany == null)
                     {
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
-                               message: "Tenant Not Found",
+                               message: "Company Not Found",
                                statusCode: StatusCodeEnum.NOT_FOUND
                            ).ToDictionary()
                        );
                     }
 
                     return Results.Ok(
-                        ResponseHelper<TenantUpdateResponseDtos>.Success(
-                            message: "Tenant Updated Successfully",
-                            data: updatedTenant
+                        ResponseHelper<CompanyUpdateResponseDto>.Success(
+                            message: "Company Updated Successfully",
+                            data: updatedCompany
                         ).ToDictionary()
                     );
                 }
@@ -189,25 +194,25 @@ namespace HRMS.API.Endpoints.Tenant
                 {
                     return Results.Json(
                         ResponseHelper<string>.Error(
-                            message: "An Unexpected Error occurred while Updating the Tenant.",
+                            message: "An Unexpected Error occurred while Updating the Company.",
                             exception: ex,
                             isWarning: false,
                             statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
-            }).WithTags("Tenant")
-            .WithMetadata(new SwaggerOperationAttribute(summary: "Updates existing Tenant details", description: "This endpoint allows you to update Tenant details with the provided Id."
+            }).WithTags("Company")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Updates existing Company details", description: "This endpoint allows you to update Company details with the provided Id."
             ));
 
             /// <summary> 
-            /// Deletes a Tenant. 
+            /// Deletes a Company. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint allows you to delete a Tenant based on the provided Tenant Id.</remarks>
-            app.MapDelete("/tenant/delete", async (ITenantService service, [FromBody] TenantDeleteRequestDtos dto) =>
+            /// This endpoint allows you to delete a Company based on the provided Company Id.</remarks>
+            app.MapDelete("/Company/delete", async (ICompanyService service, [FromBody] CompanyDeleteRequestDto dto) =>
             {
-                var validator = new TenantDeleteRequestValidator();
+                var validator = new CompanyDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);
 
                 if (!validationResult.IsValid)
@@ -224,20 +229,20 @@ namespace HRMS.API.Endpoints.Tenant
                 }
                 try
                 {
-                    var result = await service.DeleteTenant(dto);
+                    var result = await service.DeleteCompany(dto);
                     if (result == null)
                     {
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
-                               message: "Tenant Not Found",
+                               message: "Company Not Found",
                                statusCode: StatusCodeEnum.NOT_FOUND
                            ).ToDictionary()
                        );
                     }
 
                     return Results.Ok(
-                       ResponseHelper<TenantDeleteResponseDtos>.Success(
-                           message: "Tenant Deleted Successfully"
+                       ResponseHelper<CompanyDeleteResponseDto>.Success(
+                           message: "Company Deleted Successfully"
                        ).ToDictionary()
                    );
                 }
@@ -245,15 +250,15 @@ namespace HRMS.API.Endpoints.Tenant
                 {
                     return Results.Json(
                         ResponseHelper<string>.Error(
-                            message: "An Unexpected Error occurred while Deleting the Tenant.",
+                            message: "An Unexpected Error occurred while Deleting the Company.",
                             exception: ex,
                             isWarning: false,
                             statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
-            }).WithTags("Tenant")
-            .WithMetadata(new SwaggerOperationAttribute(summary: "Deletes a Tenant. ", description: "This endpoint allows you to delete a Tenant based on the provided Tenant Id."
+            }).WithTags("Company")
+            .WithMetadata(new SwaggerOperationAttribute(summary: "Deletes a Company. ", description: "This endpoint allows you to delete a Company based on the provided Company Id."
             ));
         }
     }
