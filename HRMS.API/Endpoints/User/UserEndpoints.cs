@@ -238,8 +238,7 @@ namespace HRMS.API.Modules.User
 
                     return Results.Ok(
                        ResponseHelper<UserDeleteResponseDto>.Success(
-                           message: "User Deleted Successfully",
-                           data: result
+                           message: "User Deleted Successfully"                         
                        ).ToDictionary()
                    );
                 }

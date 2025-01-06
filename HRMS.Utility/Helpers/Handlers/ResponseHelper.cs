@@ -54,7 +54,7 @@ namespace HRMS.Utility.Helpers.Handlers
             Errors = errors;
         }
 
-        public Dictionary<string, object> ToDictionary()
+        public Dictionary<string, object> ToDictionary() 
         {
             var result = new Dictionary<string, object>
             {

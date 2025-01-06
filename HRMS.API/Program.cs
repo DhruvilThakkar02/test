@@ -52,8 +52,8 @@ namespace HRMS.API
             builder.Services.AddScoped<IUserRolesRepository, UserRolesRepository>();
             builder.Services.AddScoped<IUserRolesService, UserRolesService>();
 
-            builder.Services.AddScoped<IUserRolesMappingRepository, UserRolesMappingRepository>();
-            builder.Services.AddScoped<IUserRolesMappingService, UserRolesMappingService>();
+            builder.Services.AddScoped<IUserRoleMappingRepository, UserRoleMappingRepository>();
+            builder.Services.AddScoped<IUserRoleMappingService, UserRolesMappingService>();
 
             builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();
@@ -68,7 +68,7 @@ namespace HRMS.API
 
             builder.Services.AddAutoMapper(typeof(UserMappingProfile),
                                            typeof(TenancyRoleMappingProfile),
-                                           typeof(UserRolesMappingProfile),
+                                           typeof(UserRoleMappingProfile),
                                            typeof(OrganizationMappingProfile),
                                            typeof(SubdomainMappingProfile),
                                            typeof(TenantRegistrationMappingProfile),
