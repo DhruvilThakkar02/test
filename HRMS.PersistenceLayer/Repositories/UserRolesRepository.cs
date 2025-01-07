@@ -23,10 +23,10 @@ namespace HRMS.PersistenceLayer.Repositories
             return roles;
         }
 
-        public async Task<UserRoleReadResponseEntity?> GetUserRoleById(int? rolesId)
+        public async Task<UserRoleReadResponseEntity?> GetUserRoleById(int? roleId)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("@UserRoleId", rolesId);
+            parameters.Add("@UserRoleId", roleId);
 
             var roles = await _dbConnection.QueryFirstOrDefaultAsync<UserRoleReadResponseEntity>(UserRolesStoredProcedure.GetUserRoleById, parameters, commandType: CommandType.StoredProcedure);
 

@@ -59,7 +59,7 @@ namespace HRMS.API.Endpoints.User
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -72,7 +72,7 @@ namespace HRMS.API.Endpoints.User
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "User Role Mapping Not Found ",
-                                statusCode: StatusCodeEnum.NOT_FOUND
+                                statusCode: StatusCode.NOT_FOUND
                                 ).ToDictionary()
                                 );
                     }
@@ -92,7 +92,7 @@ namespace HRMS.API.Endpoints.User
                             message: "An Unexpected Error occurred.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -119,7 +119,7 @@ namespace HRMS.API.Endpoints.User
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -140,7 +140,7 @@ namespace HRMS.API.Endpoints.User
                             message: "An Unexpected Error occurred while Creating the Role.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -159,7 +159,7 @@ namespace HRMS.API.Endpoints.User
                        ResponseHelper<List<string>>.Error(
                            message: "Validation Failed",
                            errors: errorMessages,
-                           statusCode: StatusCodeEnum.BAD_REQUEST
+                           statusCode: StatusCode.BAD_REQUEST
                        ).ToDictionary()
                    );
                 }
@@ -171,7 +171,7 @@ namespace HRMS.API.Endpoints.User
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "User Mapping Roles Not Found",
-                                statusCode: StatusCodeEnum.NOT_FOUND
+                                statusCode: StatusCode.NOT_FOUND
                             ).ToDictionary()
                          );
                     }
@@ -189,7 +189,7 @@ namespace HRMS.API.Endpoints.User
                             message: "An Unexpected Error occurred while Updating the User Mapping Roles.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
 
@@ -217,7 +217,7 @@ namespace HRMS.API.Endpoints.User
                       ResponseHelper<List<string>>.Error(
                           message: "Validation Failed",
                           errors: errorMessages,
-                          statusCode: StatusCodeEnum.BAD_REQUEST
+                          statusCode: StatusCode.BAD_REQUEST
                       ).ToDictionary()
                   );
                 }
@@ -230,7 +230,7 @@ namespace HRMS.API.Endpoints.User
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "User Role Mapping Not Found",
-                                statusCode: StatusCodeEnum.NOT_FOUND
+                                statusCode: StatusCode.NOT_FOUND
                                 ).ToDictionary()
                             );
                     }
@@ -248,7 +248,7 @@ namespace HRMS.API.Endpoints.User
                             message: "An Unexpected Error occurred while Deleting User Role Mapping.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
 

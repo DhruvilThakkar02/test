@@ -19,7 +19,7 @@ namespace HRMS.Utility.Helpers.Handlers
                     List<string>? errors = null,
                     Exception? exception = null,
                     bool isWarning = false,
-                    StatusCodeEnum statusCode = StatusCodeEnum.BAD_REQUEST
+                    StatusCode statusCode = StatusCode.BAD_REQUEST
                 )
         {
             var exceptionResponse = exception != null
