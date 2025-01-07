@@ -34,7 +34,7 @@ namespace HRMS.API.Endpoints.Tenant
                 if (organizations != null && organizations.Any())
                 {
                     var response = ResponseHelper<List<OrganizationReadResponseDto>>.Success("Organizations Retrieved Successfully", organizations.ToList());
-                    logger.LogInformation("Successfully retrieved {Count} Organizations.", organizations.Count());
+                    logger.LogInformation("Successfully retrieved {Count} Organizations.", organizations.Count);
                     return Results.Ok(response.ToDictionary());
                 }
 
@@ -189,7 +189,7 @@ namespace HRMS.API.Endpoints.Tenant
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
 
-                logger.LogInformation("Updating Organization with ID {OrganizationId}.", dto.OrganizationID);
+                logger.LogInformation("Updating Organization with ID {OrganizationId}.", dto.OrganizationId);
 
                 var validator = new OrganizationUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -258,7 +258,7 @@ namespace HRMS.API.Endpoints.Tenant
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
 
-                logger.LogInformation("Deleting Organization with Id {OrganizationId}.", dto.OrganizationID);
+                logger.LogInformation("Deleting Organization with Id {OrganizationId}.", dto.OrganizationId);
 
                 var validator = new OrganizationDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);

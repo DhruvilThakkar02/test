@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using HRMS.API.Endpoints.CompanyBranch;
 using HRMS.API.Endpoints.Tenant;
 using HRMS.API.Endpoints.User;
 using HRMS.API.Modules.User;
@@ -6,6 +7,7 @@ using HRMS.BusinessLayer.Interfaces;
 using HRMS.BusinessLayer.Services;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.PersistenceLayer.Repositories;
+using HRMS.Utility.AutoMapperProfiles.CompanyBranch.CompanyBranchMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.OrganizationMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.SubdomainMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenancyRoleMapping;
@@ -35,6 +37,10 @@ namespace HRMS.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddScoped<IOrganizationLogger, OrganinizationLogger>();
+            builder.Services.AddScoped<ICompanyBranchLogger, CompanyBranchLogger>();
+
+            builder.Services.AddScoped<ICompanyBranchRepository, CompanyBranchRepository>();
+            builder.Services.AddScoped<ICompanyBranchService, CompanyBranchService>();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
@@ -70,7 +76,8 @@ namespace HRMS.API
                                            typeof(TenantRegistrationMappingProfile),
                                            typeof(SubdomainMappingProfile),
                                            typeof(OrganizationMappingProfile),
-                                           typeof(TenantMappingProfile));
+                                           typeof(TenantMappingProfile),
+                                           typeof(CompanyBranchMappingProfile));
 
             builder.Services.AddAuthorization();
             builder.Services.AddCors();
@@ -110,6 +117,7 @@ namespace HRMS.API
             app.MapTenantEndpoints();
             app.MapTenantRegistrationEndpoints();
             app.MapUserRolesMappingEndpoints();
+            app.MapCompanyBranchEndpoints();
 
             app.Run();
         }
