@@ -9,13 +9,17 @@ namespace HRMS.Utility.Helpers.Handlers
         {
             return new ResponseResult<T>(ResponseStatus.Success, message, data);
         }
+        public static ResponseResult<T> Success(string message)
+        {
+            return new ResponseResult<T>(ResponseStatus.Success, message);
+        }
 
         public static ResponseResult<T> Error(
                     string message,
                     List<string>? errors = null,
                     Exception? exception = null,
                     bool isWarning = false,
-                    StatusCodeEnum statusCode = StatusCodeEnum.BAD_REQUEST
+                    StatusCode statusCode = StatusCode.BAD_REQUEST
                 )
         {
             var exceptionResponse = exception != null
@@ -42,8 +46,15 @@ namespace HRMS.Utility.Helpers.Handlers
             ExceptionDetails = exceptionDetails;
             Errors = errors;
         }
+        public ResponseResult(ResponseStatus status, string message, ExceptionResponse? exceptionDetails = null, List<string>? errors = null)
+        {
+            Status = status;
+            Message = message;
+            ExceptionDetails = exceptionDetails;
+            Errors = errors;
+        }
 
-        public Dictionary<string, object> ToDictionary()
+        public Dictionary<string, object> ToDictionary() 
         {
             var result = new Dictionary<string, object>
             {
@@ -51,7 +62,7 @@ namespace HRMS.Utility.Helpers.Handlers
                 { "message", Message }
             };
 
-            if (Data != null)
+            if (!EqualityComparer<object>.Default.Equals(Data, default))
                 result["data"] = Data;
 
             if (ExceptionDetails != null)

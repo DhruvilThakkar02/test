@@ -57,7 +57,7 @@ namespace HRMS.Utility.Validators.User.User
             RuleFor(user => user.TenantId)
                .NotNull().WithMessage("Tenant ID is Required.");
 
-            RuleFor(user => user.RoleId)
+            RuleFor(user => user.UserRoleId)
                .NotNull().WithMessage("Role ID is Required.");
 
             RuleFor(user => user.TenancyRoleId)

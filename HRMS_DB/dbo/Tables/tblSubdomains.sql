@@ -6,7 +6,8 @@ CREATE TABLE [dbo].[tblSubdomains] (
     [CreatedAt]     DATETIME       NULL,
     [UpdatedAt]     DATETIME       NULL,
     [IsActive]      BIT            CONSTRAINT [DF_Subdomains_IsActive] DEFAULT ((0)) NULL,
-    [IsDelete]      BIT            CONSTRAINT [DF_Subdomains_IsDelete] DEFAULT ((0)) NULL
+    [IsDelete]      BIT            CONSTRAINT [DF_Subdomains_IsDelete] DEFAULT ((0)) NULL,
+    [DomainId]      INT            NOT NULL
 );
 GO
 

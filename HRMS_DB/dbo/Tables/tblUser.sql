@@ -14,12 +14,13 @@ CREATE TABLE [dbo].[tblUser] (
     [UpdatedBy]     INT            NULL,
     [TenantId]      INT            NULL,
     [MiddleName]    NVARCHAR (100) NULL,
-    [IsDelete]      BIT            NULL,
-    [RoleId]        INT            NULL,
+    [IsDelete]      BIT            CONSTRAINT [DF_tblUser_IsDelete] DEFAULT ((0)) NULL,
+    [UserRoleId]    INT            NULL,
     [TenancyRoleId] INT            NULL,
     CONSTRAINT [PK__tblUser__1788CC4C5F945034] PRIMARY KEY CLUSTERED ([UserId] ASC)
 );
 GO
+
 
 
 

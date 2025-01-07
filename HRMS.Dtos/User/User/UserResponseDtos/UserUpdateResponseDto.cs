@@ -12,7 +12,7 @@
         public string Gender { get; set; } = string.Empty;
         public DateTime DateOfBirth { get; set; }
         public int TenantId { get; set; }
-        public int RoleId { get; set; }
+        public int UserRoleId { get; set; }
         public int TenancyRoleId { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; }

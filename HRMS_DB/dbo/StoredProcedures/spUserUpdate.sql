@@ -11,9 +11,9 @@ CREATE PROCEDURE [dbo].[spUserUpdate]
 @IsActive BIT = NULL,
 @IsDelete BIT = NULL,
 @UpdatedBy INT = NULL,
-@TenantID INT = NULL,
-@RoleID INT = NULL,
-@TenancyRoleID INT = NULL
+@TenantId INT = NULL,
+@UserRoleId INT = NULL,
+@TenancyRoleId INT = NULL
 
 AS
 BEGIN
@@ -45,9 +45,9 @@ SET NOCOUNT ON;
             IsDelete = @IsDelete,
             UpdatedBy = @UpdatedBy,
             UpdatedAt = SYSDATETIME(),
-            TenantID = @TenantID,
-            RoleID = @RoleID,
-            TenancyRoleID = @TenancyRoleID
+            TenantId = @TenantId,
+            UserRoleId = @UserRoleId,
+            TenancyRoleId = @TenancyRoleId
 	    WHERE UserId = @UserId;
 
         -- Commit the transaction

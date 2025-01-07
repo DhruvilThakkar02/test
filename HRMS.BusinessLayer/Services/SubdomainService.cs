@@ -36,6 +36,7 @@ namespace HRMS.BusinessLayer.Services
             var response = _mapper.Map<SubdomainReadResponseDto>(subdomain);
             return response;
         }
+
         public async Task<SubdomainCreateResponseDto> CreateSubdomain(SubdomainCreateRequestDto subdomainDto)
         {
             var subdomainEntity = _mapper.Map<SubdomainCreateRequestEntity>(subdomainDto);
@@ -43,6 +44,7 @@ namespace HRMS.BusinessLayer.Services
             var response = _mapper.Map<SubdomainCreateResponseDto>(addedSubdomain);
             return response;
         }
+
         public async Task<SubdomainUpdateResponseDto> UpdateSubdomain(SubdomainUpdateRequestDto subdomainDto)
         {
             var sundomainEntity = _mapper.Map<SubdomainUpdateRequestEntity>(subdomainDto);
@@ -50,6 +52,7 @@ namespace HRMS.BusinessLayer.Services
             var response = _mapper.Map<SubdomainUpdateResponseDto>(updatedSubdomain);
             return response;
         }
+
         public async Task<SubdomainDeleteResponseDto?> DeleteSubdomain(SubdomainDeleteRequestDto subdomainDto)
         {
             var subdomainEntity = _mapper.Map<SubdomainDeleteRequestEntity>(subdomainDto);

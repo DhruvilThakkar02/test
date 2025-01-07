@@ -23,7 +23,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint returns a List of Tenancy Roles. If no Tenancy Roles are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A List of Tenancy Roles or a 404 status code if no Tenancy Roles are found.</returns>
-            app.MapGet("/GetTenancyRoles", async (ITenancyRoleService service, ITenancyRoleLogger logger) =>
+            app.MapGet("/tenancyrole/getall", async (ITenancyRoleService service, ITenancyRoleLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(new { service });
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -51,7 +51,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint return Tenancy Role by Id. If no Tenancy Role are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A Tenancy Role or a 404 status code if no Tenancy Role are found.</returns>
-            app.MapGet("/GetTenancyRoleById/{id}", async (ITenancyRoleService service, int id, ITenancyRoleLogger logger) =>
+            app.MapGet("/tenancyRole/{id}", async (ITenancyRoleService service, int id, ITenancyRoleLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(new { id });
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -70,7 +70,7 @@ namespace HRMS.API.Endpoints.Tenant
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -82,7 +82,7 @@ namespace HRMS.API.Endpoints.Tenant
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "Tenancy Role Not Found",
-                                statusCode: StatusCodeEnum.NOT_FOUND
+                                statusCode: StatusCode.NOT_FOUND
                             ).ToDictionary()
                         );
                     }
@@ -102,7 +102,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -122,7 +122,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to create a new Tenancy Role with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateTenancyRole", async (TenancyRoleCreateRequestDto dto, ITenancyRoleService _tenancyroleService, ITenancyRoleLogger logger) =>
+            app.MapPost("/tenancyrole/create", async (TenancyRoleCreateRequestDto dto, ITenancyRoleService _tenancyroleService, ITenancyRoleLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -139,7 +139,7 @@ namespace HRMS.API.Endpoints.Tenant
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -162,7 +162,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred while Creating the Tenancy Role.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -181,7 +181,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to update Tenancy Role details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateTenancyRole", async (ITenancyRoleService service, [FromBody] TenancyRoleUpdateRequestDto dto, ITenancyRoleLogger logger) =>
+            app.MapPut("/tenancyrole/update", async (ITenancyRoleService service, [FromBody] TenancyRoleUpdateRequestDto dto, ITenancyRoleLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -199,7 +199,7 @@ namespace HRMS.API.Endpoints.Tenant
                        ResponseHelper<List<string>>.Error(
                            message: "Validation Failed",
                            errors: errorMessages,
-                           statusCode: StatusCodeEnum.BAD_REQUEST
+                           statusCode: StatusCode.BAD_REQUEST
                        ).ToDictionary()
                    );
                 }
@@ -212,7 +212,7 @@ namespace HRMS.API.Endpoints.Tenant
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "Tenancy Role Not Found",
-                               statusCode: StatusCodeEnum.NOT_FOUND
+                               statusCode: StatusCode.NOT_FOUND
                            ).ToDictionary()
                        );
                     }
@@ -233,7 +233,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred while Updating the Tenancy Role.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -250,7 +250,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a Tenancy Role based on the provided Tenancy Role Id.</remarks>
-            app.MapDelete("/DeleteTenancyRole", async (ITenancyRoleService service, [FromBody] TenancyRoleDeleteRequestDto dto, ITenancyRoleLogger logger) =>
+            app.MapDelete("/tenancyrole/delete", async (ITenancyRoleService service, [FromBody] TenancyRoleDeleteRequestDto dto, ITenancyRoleLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -268,7 +268,7 @@ namespace HRMS.API.Endpoints.Tenant
                       ResponseHelper<List<string>>.Error(
                           message: "Validation Failed",
                           errors: errorMessages,
-                          statusCode: StatusCodeEnum.BAD_REQUEST
+                          statusCode: StatusCode.BAD_REQUEST
                       ).ToDictionary()
                   );
                 }
@@ -281,7 +281,7 @@ namespace HRMS.API.Endpoints.Tenant
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "Tenancy Role Not Found",
-                               statusCode: StatusCodeEnum.NOT_FOUND
+                               statusCode: StatusCode.NOT_FOUND
                            ).ToDictionary()
                        );
                     }
@@ -289,8 +289,7 @@ namespace HRMS.API.Endpoints.Tenant
                     logger.LogInformation("Successfully updated TenancyRole with Id {TenancyRoleId}.", dto.TenancyRoleId);
                     return Results.Ok(
                        ResponseHelper<TenancyRoleDeleteResponseDto>.Success(
-                           message: "Tenancy Role Deleted Successfully",
-                           data: result
+                           message: "Tenancy Role Deleted Successfully"
                        ).ToDictionary()
                    );
                 }
@@ -302,7 +301,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred while Deleting the Tenancy Role.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }

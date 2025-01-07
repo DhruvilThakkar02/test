@@ -29,6 +29,7 @@ namespace HRMS.PersistenceLayer.Repositories
             var subdomain = await _dbConnection.QueryFirstOrDefaultAsync<SubdomainReadResponseEntity>(SubdomainStoredProcedures.GetSubdomainById, parameters, commandType: CommandType.StoredProcedure);
             return subdomain;
         }
+
         public async Task<SubdomainCreateResponseEntity> CreateSubdomain(SubdomainCreateRequestEntity subdomain)
         {
             var parameters = new DynamicParameters();
@@ -56,6 +57,7 @@ namespace HRMS.PersistenceLayer.Repositories
             };
             return CreatedSubdomain;
         }
+
         public async Task<SubdomainUpdateResponseEntity?> UpdateSubdomain(SubdomainUpdateRequestEntity subdomain)
         {
             var parameters = new DynamicParameters();

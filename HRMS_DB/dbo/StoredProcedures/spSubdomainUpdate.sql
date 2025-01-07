@@ -1,5 +1,6 @@
 CREATE PROCEDURE [dbo].[spSubdomainUpdate]
     @SubdomainId INT = NULL,
+	@DomainId INT = NULL,
     @SubdomainName NVARCHAR(100) = NULL,
     @UpdatedBy INT = NULL,
 	@IsActive bit = NULL,
@@ -9,7 +10,6 @@ BEGIN
 SET NOCOUNT ON;
     
     BEGIN TRY
-
         -- Start transaction
         BEGIN TRANSACTION;
 
@@ -23,7 +23,7 @@ SET NOCOUNT ON;
     UPDATE [dbo].[tblSubdomains]
     SET		
         SubdomainName = @SubdomainName,		
-        DomainId = ISNULL(@DomainId, DomainId),
+        DomainId = @DomainId,
         UpdatedBy = @UpdatedBy,
         UpdatedAt = SYSDATETIME(),
 		IsActive = @IsActive,
@@ -49,8 +49,7 @@ SET NOCOUNT ON;
             @ErrorSeverity = ERROR_SEVERITY(), 
             @ErrorState = ERROR_STATE()
 
-        PRINT 'Error: ' + @ErrorMessage;
-
+		PRINT 'Error: ' + @ErrorMessage;
         RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
                 
     END CATCH

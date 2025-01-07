@@ -6,6 +6,7 @@ using HRMS.PersistenceLayer.Interfaces;
 using HRMS.Utility.Helpers.SqlHelpers.Tenant;
 using HRMS.Utility.Helpers.SqlHelpers.User;
 using System.Data;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace HRMS.PersistenceLayer.Repositories
 {
@@ -69,7 +70,7 @@ namespace HRMS.PersistenceLayer.Repositories
         public async Task<TenantUpdateResponseEntity?> UpdateTenant(TenantUpdateRequestEntity tenant)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("@TenantId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@TenantId", tenant.TenantId);
             parameters.Add("@OrganizationId", tenant.OrganizationId);
             parameters.Add("@TenantName", tenant.TenantName);
             parameters.Add("@DomainId", tenant.DomainId);
@@ -92,6 +93,10 @@ namespace HRMS.PersistenceLayer.Repositories
                 TenantName = tenant.TenantName,
                 DomainId = tenant.DomainId,
                 SubdomainId = tenant.DomainId,
+                CreatedBy = result.CreatedBy,
+                CreatedAt = result.CreatedAt,
+                UpdatedBy = tenant.UpdatedBy,
+                UpdatedAt = DateTime.Now,
                 IsActive = tenant.IsActive,
                 IsDelete = tenant.IsDelete
             };

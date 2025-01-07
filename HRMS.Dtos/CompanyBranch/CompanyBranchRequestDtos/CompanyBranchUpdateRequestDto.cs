@@ -12,6 +12,5 @@
         public int CompanyId { get; set; }  
         public int UpdatedBy { get; set; }  
         public bool IsActive { get; set; }
-       // public bool? IsDelete { get; set; }
     }
 }

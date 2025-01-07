@@ -27,13 +27,13 @@ SET NOCOUNT ON;
         SET @UpdatedBy = ISNULL(@UpdatedBy, @CreatedBy);
         
         -- Insert the subdomain with timestamps
-        INSERT INTO Subdomains (DomainId,  SubdomainName, CreatedBy, UpdatedBy, CreatedAt, UpdatedAt, IsActive)
+        INSERT INTO [dbo].[tblSubdomains] (DomainId,  SubdomainName, CreatedBy, UpdatedBy, CreatedAt, UpdatedAt, IsActive)
         VALUES (@DomainId, @SubdomainName, @CreatedBy, @UpdatedBy, SYSDATETIME(), SYSDATETIME(),@IsActive);
 
          -- Capture the UserId of the inserted record
         SET @SubdomainId = SCOPE_IDENTITY();
         
-        SELECT * FROM [dbo].[Subdomains] WHERE SubdomainId = @SubdomainId;
+        SELECT * FROM [dbo].[tblSubdomains] WHERE SubdomainId = @SubdomainId;
 
         -- Commit the transaction
         COMMIT TRANSACTION;

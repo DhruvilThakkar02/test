@@ -24,7 +24,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
             /// This endpoint returns a List of CompanyBranches. If no CompanyBranches are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A List of CompanyBranches or a 404 status code if no CompanyBranches are found.</returns>
-            app.MapGet("/GetCompanyBranches", async (ICompanyBranchService service, ICompanyBranchLogger logger) =>
+            app.MapGet("/companyBranch/getall", async (ICompanyBranchService service, ICompanyBranchLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(new { service });
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -35,14 +35,14 @@ namespace HRMS.API.Endpoints.CompanyBranch
                 if (companyBranches != null && companyBranches.Any())
                 {
                     var response = ResponseHelper<List<CompanyBranchReadResponseDto>>.Success("CompanyBranches Retrieved Successfully", companyBranches.ToList());
-                    logger.LogInformation("Successfully retrieved {Count} CompanyBranches.", companyBranches.Count());
+                    logger.LogInformation("Successfully retrieved {Count} CompanyBranches.", companyBranches.Count);
                     return Results.Ok(response.ToDictionary());
                 }
 
                 logger.LogWarning("No CompanyBranches found.");
                 var errorResponse = ResponseHelper<IEnumerable<CompanyBranchReadResponseDto>>.Error("No CompanyBranches Found");
                 return Results.NotFound(errorResponse.ToDictionary());
-            }).WithTags("CompanyBranch")
+            }).WithTags("Company Branch")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of CompanyBranches", description: "This endpoint returns a List of CompanyBranches. If no CompanyBranches are found, a 404 status code is returned."
             ));
 
@@ -53,7 +53,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
             /// This endpoint returns a CompanyBranch by Id. If no CompanyBranch is found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A CompanyBranch or a 404 status code if no CompanyBranch is found.</returns>
-            app.MapGet("/GetCompanyBranchById/{id}", async (ICompanyBranchService service, int id, ICompanyBranchLogger logger) =>
+            app.MapGet("/companyBranch/{id}", async (ICompanyBranchService service, int id, ICompanyBranchLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(new { id });
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -72,7 +72,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -85,7 +85,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "CompanyBranch Not Found",
-                                statusCode: StatusCodeEnum.NOT_FOUND
+                                statusCode: StatusCode.NOT_FOUND
                             ).ToDictionary()
                         );
                     }
@@ -106,7 +106,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                             message: "An Unexpected Error occurred.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -114,7 +114,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                 {
                     Log.CloseAndFlush();
                 }
-            }).WithTags("CompanyBranch")
+            }).WithTags("Company Branch")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieve CompanyBranch by Id", description: "This endpoint returns a CompanyBranch by Id. If no CompanyBranch is found, a 404 status code is returned."
             ));
 
@@ -125,7 +125,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
             /// This endpoint allows you to create a new CompanyBranch with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateCompanyBranch", async (CompanyBranchCreateRequestDto dto, ICompanyBranchService _companyBranchService, ICompanyBranchLogger logger) =>
+            app.MapPost("/companyBranch/create", async (CompanyBranchCreateRequestDto dto, ICompanyBranchService _companyBranchService, ICompanyBranchLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -143,7 +143,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -166,7 +166,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                             message: "An Unexpected Error occurred while Creating the CompanyBranch.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -174,7 +174,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                 {
                     Log.CloseAndFlush();
                 }
-            }).WithTags("CompanyBranch")
+            }).WithTags("Company Branch")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new CompanyBranch.", description: "This endpoint allows you to create a new CompanyBranch with the provided details."
             ));
 
@@ -185,7 +185,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
             /// This endpoint allows you to update CompanyBranch details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateCompanyBranch", async (ICompanyBranchService service, [FromBody] CompanyBranchUpdateRequestDto dto, ICompanyBranchLogger logger) =>
+            app.MapPut("/companyBranch/update", async (ICompanyBranchService service, [FromBody] CompanyBranchUpdateRequestDto dto, ICompanyBranchLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -203,7 +203,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                        ResponseHelper<List<string>>.Error(
                            message: "Validation Failed",
                            errors: errorMessages,
-                           statusCode: StatusCodeEnum.BAD_REQUEST
+                           statusCode: StatusCode.BAD_REQUEST
                        ).ToDictionary()
                    );
                 }
@@ -216,7 +216,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "CompanyBranch Not Found",
-                               statusCode: StatusCodeEnum.NOT_FOUND
+                               statusCode: StatusCode.NOT_FOUND
                            ).ToDictionary()
                        );
                     }
@@ -237,7 +237,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                             message: "An Unexpected Error occurred while Updating the CompanyBranch.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -245,7 +245,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                 {
                     Log.CloseAndFlush();
                 }
-            }).WithTags("CompanyBranch")
+            }).WithTags("Company Branch")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Updates existing CompanyBranch details", description: "This endpoint allows you to update CompanyBranch details with the provided Id."
             ));
 
@@ -254,7 +254,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a CompanyBranch based on the provided CompanyBranch Id.</remarks>
-            app.MapDelete("/DeleteCompanyBranch", async (ICompanyBranchService service, [FromBody] CompanyBranchDeleteRequestDto dto, ICompanyBranchLogger logger) =>
+            app.MapDelete("/companyBranch/delete", async (ICompanyBranchService service, [FromBody] CompanyBranchDeleteRequestDto dto, ICompanyBranchLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -272,7 +272,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                       ResponseHelper<List<string>>.Error(
                           message: "Validation Failed",
                           errors: errorMessages,
-                          statusCode: StatusCodeEnum.BAD_REQUEST
+                          statusCode: StatusCode.BAD_REQUEST
                       ).ToDictionary()
                   );
                 }
@@ -285,7 +285,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "CompanyBranch Not Found",
-                               statusCode: StatusCodeEnum.NOT_FOUND
+                               statusCode: StatusCode.NOT_FOUND
                            ).ToDictionary()
                        );
                     }
@@ -306,7 +306,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                             message: "An Unexpected Error occurred while Deleting the CompanyBranch.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -314,7 +314,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                 {
                     Log.CloseAndFlush();
                 }
-            }).WithTags("CompanyBranch")
+            }).WithTags("Company  Branch")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Deletes a CompanyBranch.", description: "This endpoint allows you to delete a CompanyBranch based on the provided CompanyBranch Id."
             ));
         }

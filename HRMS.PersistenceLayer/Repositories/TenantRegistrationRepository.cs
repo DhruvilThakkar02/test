@@ -16,38 +16,48 @@ namespace HRMS.PersistenceLayer.Repositories
         {
             _dbConnection = dbConnection;
         }
-
-        public async Task<TenantRegistrationCreateResponseEntity> CreateTenantRegistration(TenantRegistrationCreateRequestEntity tenantregistration)
+        public async Task<TenantRegistrationCreateResponseEntity> CreateTenantRegistration(TenantRegistrationCreateRequestEntity tenantRegistration)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@UserId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@SubdomainId", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            parameters.Add("@TenantId ", dbType: DbType.Int64, direction: ParameterDirection.Output);
-            parameters.Add("@SubdomainName", tenantregistration.SubdomainName);
-            parameters.Add("@FirstName", tenantregistration.FirstName);
-            parameters.Add("@LastName", tenantregistration.LastName);
-            parameters.Add("@UserName", tenantregistration.UserName);
-            parameters.Add("@Email", tenantregistration.Email);
-            parameters.Add("@Password", tenantregistration.Password);
+            parameters.Add("@TenantId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@OrganizationId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@UserRoleId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@DomainId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@SubdomainName", tenantRegistration.SubdomainName);
+            parameters.Add("@FirstName", tenantRegistration.FirstName);
+            parameters.Add("@LastName", tenantRegistration.LastName);
+            parameters.Add("@UserName", tenantRegistration.UserName);
+            parameters.Add("@Email", tenantRegistration.Email);
+            parameters.Add("@Password", tenantRegistration.Password);
 
-            await _dbConnection.ExecuteAsync(TenantRegistrationStoreProcedures.CreateTenantRegistration, parameters, commandType: CommandType.StoredProcedure);
+            await _dbConnection.ExecuteAsync( TenantRegistrationStoreProcedures.CreateTenantRegistration,parameters,commandType: CommandType.StoredProcedure);
 
             var userId = parameters.Get<int>("@UserId");
             var subdomainId = parameters.Get<int>("@SubdomainId");
-            var hashedPassword = PasswordHashingUtility.HashPassword(tenantregistration.Password);
+            var tenantId = parameters.Get<int>("@TenantId");
+            var organizationId = parameters.Get<int>("@OrganizationId");
+            var domainId = parameters.Get<int>("@DomainId");
+            var userRoleId = parameters.Get<int>("@UserRoleId");
+            var hashedPassword = PasswordHashingUtility.HashPassword(tenantRegistration.Password);
+
             var createdTenantregistration = new TenantRegistrationCreateResponseEntity
             {
                 UserId = userId,
                 SubdomainId = subdomainId,
-                SubdomainName = tenantregistration.SubdomainName,
-                FirstName = tenantregistration.FirstName,
-                LastName = tenantregistration.LastName,
-                UserName = tenantregistration.UserName,
-                Email = tenantregistration.Email,
-                Password = hashedPassword
+                TenantId = tenantId,
+                OrganizationId = organizationId,
+                DomainId = domainId,
+                SubdomainName = tenantRegistration.SubdomainName,
+                FirstName = tenantRegistration.FirstName,
+                LastName = tenantRegistration.LastName,
+                UserName = tenantRegistration.UserName,
+                Email = tenantRegistration.Email,
+                Password = hashedPassword,
+                UserRoleId = userRoleId,
             };
-
-            return createdTenantregistration;
+          return createdTenantregistration;
         }
     }
 }
