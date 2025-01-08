@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using HRMS.API.Endpoints.Address;
 using HRMS.API.Endpoints.Tenant;
 using HRMS.API.Endpoints.User;
 using HRMS.API.Modules.User;
@@ -6,6 +7,7 @@ using HRMS.BusinessLayer.Interfaces;
 using HRMS.BusinessLayer.Services;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.PersistenceLayer.Repositories;
+using HRMS.Utility.AutoMapperProfiles.Address.AddressMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.OrganizationMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.SubdomainMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenancyRoleMapping;
@@ -39,6 +41,9 @@ namespace HRMS.API
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
 
+            builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+            builder.Services.AddScoped<IAddressService, AddressService>();
+
             builder.Services.AddScoped<ITenantRepository, TenantRepository>();
             builder.Services.AddScoped<ITenantService, TenantService>();
 
@@ -70,7 +75,8 @@ namespace HRMS.API
                                            typeof(TenantRegistrationMappingProfile),
                                            typeof(SubdomainMappingProfile),
                                            typeof(OrganizationMappingProfile),
-                                           typeof(TenantMappingProfile));
+                                           typeof(TenantMappingProfile),
+                                           typeof(AddressMappingProfile));
 
             builder.Services.AddAuthorization();
             builder.Services.AddCors();
@@ -110,7 +116,7 @@ namespace HRMS.API
             app.MapTenantEndpoints();
             app.MapTenantRegistrationEndpoints();
             app.MapUserRolesMappingEndpoints();
-
+            app.MapAddressEndpoints();
             app.Run();
         }
     }
