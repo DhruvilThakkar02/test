@@ -5,6 +5,6 @@ namespace HRMS.PersistenceLayer.Interfaces
 {
     public interface ILoginRepository
     {
-        Task<LoginResponseEntity> LoginAsync(LoginRequestEntity request);
+        Task<LoginResponseEntity> Login(LoginRequestEntity request);
     }
 }

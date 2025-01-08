@@ -30,7 +30,7 @@ namespace HRMS.API.Endpoints.User
 
                 try
                 {
-                    var loginResponse = await loginService.LoginAsync(request);
+                    var loginResponse = await loginService.Login(request);
 
                     if (!string.IsNullOrEmpty(loginResponse.ErrorMessage))
                     {

@@ -16,11 +16,15 @@ using HRMS.Utility.AutoMapperProfiles.Tenant.TenantRegistrationMapping;
 using HRMS.Utility.AutoMapperProfiles.User.Login;
 using HRMS.Utility.AutoMapperProfiles.User.UserMapping;
 using HRMS.Utility.AutoMapperProfiles.User.UserRolesMapping;
+using HRMS.Utility.Helpers.JwtSecretKey;
 using HRMS.Utility.Helpers.LogHelpers.Interface;
 using HRMS.Utility.Helpers.LogHelpers.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Data;
+using System.Text;
 
 namespace HRMS.API
 {
@@ -89,6 +93,23 @@ namespace HRMS.API
                                            typeof(CompanyMappingProfile),
                                            typeof(LoginMappingProfile));
 
+            builder.Services.AddSingleton<JwtSecretKey>();
+
+            builder.Services.Configure<JwtSecretKey>(builder.Configuration.GetSection("JwtSecretKey"));
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                var key = builder.Configuration["JwtSecretKey:Secret"];
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                };
+            });
+
             builder.Services.AddAuthorization();
             builder.Services.AddCors();
             builder.Host.UseSerilog();
@@ -117,6 +138,8 @@ namespace HRMS.API
 
             app.UseHttpsRedirection();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapUserEndpoints();

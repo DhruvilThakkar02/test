@@ -5,6 +5,6 @@ namespace HRMS.BusinessLayer.Interfaces
 {
     public interface ILoginService
     {
-        Task<LoginResponseDto> LoginAsync(LoginRequestDto request);
+        Task<LoginResponseDto> Login(LoginRequestDto request);
     }
 }
