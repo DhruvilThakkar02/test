@@ -41,13 +41,16 @@ namespace HRMS.PersistenceLayer.Repositories
         public async Task<UserCreateResponseEntity> CreateUser(UserCreateRequestEntity user)
         {
             var parameters = new DynamicParameters();
+            
+            var hashedPassword = PasswordHashingUtility.HashPassword(user.Password);
+
             parameters.Add("@UserId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@FirstName", user.FirstName);
             parameters.Add("@MiddleName", user.MiddleName);
             parameters.Add("@LastName", user.LastName);
             parameters.Add("@UserName", user.UserName);
             parameters.Add("@Email", user.Email);
-            parameters.Add("@Password", user.Password);
+            parameters.Add("@Password", hashedPassword);
             parameters.Add("@Gender", user.Gender);
             parameters.Add("@DateOfBirth", user.DateOfBirth);
             parameters.Add("@IsActive", user.IsActive);
@@ -59,7 +62,6 @@ namespace HRMS.PersistenceLayer.Repositories
             var result = await _dbConnection.QuerySingleOrDefaultAsync<dynamic>(UserStoredProcedures.CreateUser, parameters, commandType: CommandType.StoredProcedure);
 
             var userId = parameters.Get<int>("@UserId");
-            var hashedPassword = PasswordHashingUtility.HashPassword(user.Password);
 
             var createdUser = new UserCreateResponseEntity
             {

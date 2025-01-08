@@ -13,6 +13,7 @@ using HRMS.Utility.AutoMapperProfiles.Tenant.SubdomainMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenancyRoleMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenantMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenantRegistrationMapping;
+using HRMS.Utility.AutoMapperProfiles.User.Login;
 using HRMS.Utility.AutoMapperProfiles.User.UserMapping;
 using HRMS.Utility.AutoMapperProfiles.User.UserRolesMapping;
 using HRMS.Utility.Helpers.LogHelpers.Interface;
@@ -70,6 +71,9 @@ namespace HRMS.API
             builder.Services.AddScoped<ICompanyBranchRepository, CompanyBranchRepository>();
             builder.Services.AddScoped<ICompanyBranchService, CompanyBranchService>();
 
+            builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+            builder.Services.AddScoped<ILoginService, LoginService>();
+
             builder.Services.AddSingleton<IDbConnection>(_ => new SqlConnection(builder.Configuration.GetConnectionString("HRMS_DB")));
 
             builder.Services.AddAutoMapper(typeof(UserMappingProfile),
@@ -82,7 +86,8 @@ namespace HRMS.API
                                            typeof(OrganizationMappingProfile),
                                            typeof(CompanyMappingProfile),
                                            typeof(TenantMappingProfile),
-                                           typeof(CompanyMappingProfile));
+                                           typeof(CompanyMappingProfile),
+                                           typeof(LoginMappingProfile));
 
             builder.Services.AddAuthorization();
             builder.Services.AddCors();
@@ -124,6 +129,7 @@ namespace HRMS.API
             app.MapUserRolesMappingEndpoints();
             app.MapCompanyEndpoints();
             app.MapCompanyBranchEndpoints();
+            app.MapLoginEndpoints();
 
             app.Run();
         }

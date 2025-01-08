@@ -1,10 +1,8 @@
 ﻿using Dapper;
 using HRMS.Entities.Tenant.Company.CompanyRequestEntities;
 using HRMS.Entities.Tenant.Company.CompanyResponseEntities;
-using HRMS.Entities.Tenant.Organization.OrganizationResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.Utility.Helpers.SqlHelpers.Tenant;
-using System.ComponentModel.Design;
 using System.Data;
 
 namespace HRMS.PersistenceLayer.Repositories
@@ -126,7 +124,7 @@ namespace HRMS.PersistenceLayer.Repositories
                 Email = company.Email,
                 AddressId = company.AddressId,
                 TenantId = company.TenantId,
-                CreatedBy =company.CreatedBy,
+                CreatedBy = company.CreatedBy,
                 UpdatedBy = result.UpdatedBy,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
