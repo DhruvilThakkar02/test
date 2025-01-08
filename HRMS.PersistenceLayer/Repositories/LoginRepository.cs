@@ -54,7 +54,8 @@ namespace HRMS.PersistenceLayer.Repositories
                 };
             }
             var storedPasswordHash = parameters.Get<string>("@StoredPasswordHash");
-            bool isPasswordValid = PasswordHashingUtility.VerifyPassword(request.Password, storedPasswordHash);
+            bool isPasswordValid = PasswordHashingUtility.Verify(request.Password, storedPasswordHash);
+
 
             if (!isPasswordValid)
             {

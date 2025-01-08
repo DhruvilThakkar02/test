@@ -6,11 +6,12 @@
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
-        public static bool VerifyPassword(string password, string storedHash)
+        public static bool Verify(string password, string storedHash)
         {
             try
             {
-                return BCrypt.Net.BCrypt.Verify(password, storedHash);
+                var res = BCrypt.Net.BCrypt.Verify(password, storedHash);
+                return res;
             }
             catch (Exception ex)
             {
