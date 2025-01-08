@@ -29,15 +29,16 @@ namespace HRMS.API.Endpoints.Tenant
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
 
                 logger.LogInformation("Fetching all Tenancy Roles.");
+
                 var roles = await service.GetTenancyRoles();
                 if (roles != null && roles.Any())
                 {
                     var response = ResponseHelper<List<TenancyRoleReadResponseDto>>.Success("Tenancy Roles Retrieved Successfully", roles.ToList());
-                    logger.LogInformation("Successfully retrieved {Count} Organizations.", roles.Count());
+                    logger.LogInformation("Successfully retrieved {Count} TenancyRole.", roles.Count());
                     return Results.Ok(response.ToDictionary());
                 }
 
-                logger.LogWarning("No Organizations found.");
+                logger.LogWarning("No Tenancy Roles found.");
                 var errorResponse = ResponseHelper<List<TenancyRoleReadResponseDto>>.Error("No Tenancy Roles Found");
                 return Results.NotFound(errorResponse.ToDictionary());
             }).WithTags("Tenancy Role")
@@ -56,7 +57,7 @@ namespace HRMS.API.Endpoints.Tenant
                 var requestJson = JsonConvert.SerializeObject(new { id });
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
 
-                logger.LogInformation("Fetching Organization with Id {OrganizationId}.", id);
+                logger.LogInformation("Fetching TenancyRole with Id {TenancyRoleId}.", id);
 
                 var validator = new TenancyRoleReadRequestValidator();
                 var roleRequestDto = new TenancyRoleReadRequestDto { TenancyRoleId = id };
@@ -79,6 +80,7 @@ namespace HRMS.API.Endpoints.Tenant
                     var role = await service.GetTenancyRoleById(id);
                     if (role == null)
                     {
+                        logger.LogWarning("TenancyRole with Id {TenancyRoleId} not found.", id);
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "Tenancy Role Not Found",
@@ -227,7 +229,7 @@ namespace HRMS.API.Endpoints.Tenant
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "An unexpected error occurred while updating the TenancyRole with Id {TenancyRoleId}.", dto.TenancyRoleId);
+                    logger.LogError(ex, "An unexpected error occurred while updating the TenancyRole with Id {UserId}.", dto.TenancyRoleId);
                     return Results.Json(
                         ResponseHelper<string>.Error(
                             message: "An Unexpected Error occurred while Updating the Tenancy Role.",
@@ -255,7 +257,7 @@ namespace HRMS.API.Endpoints.Tenant
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
 
-                logger.LogInformation("Updating TenancyRole with ID {TenancyRoleId}.", dto.TenancyRoleId);
+                logger.LogInformation("Deleting TenancyRole with ID {TenancyRoleId}.", dto.TenancyRoleId);
 
                 var validator = new TenancyRoleDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -263,7 +265,7 @@ namespace HRMS.API.Endpoints.Tenant
                 if (!validationResult.IsValid)
                 {
                     var errorMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-                    logger.LogWarning("Validation failed for updating TenancyRole with Id {TenancyRoleId}: {Errors}", dto.TenancyRoleId, string.Join(", ", errorMessages));
+                    logger.LogWarning("Validation failed for Deleting TenancyRole with Id {TenancyRoleId}: {Errors}", dto.TenancyRoleId, string.Join(", ", errorMessages));
                     return Results.BadRequest(
                       ResponseHelper<List<string>>.Error(
                           message: "Validation Failed",
@@ -277,7 +279,7 @@ namespace HRMS.API.Endpoints.Tenant
                     var result = await service.DeleteTenancyRole(dto);
                     if (result == null)
                     {
-                        logger.LogWarning("TenancyRole with Id {TenancyRoleId} not found for update.", dto.TenancyRoleId);
+                        logger.LogWarning("TenancyRole with Id {TenancyRoleId} not found for Delete.", dto.TenancyRoleId);
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "Tenancy Role Not Found",
@@ -286,7 +288,7 @@ namespace HRMS.API.Endpoints.Tenant
                        );
                     }
 
-                    logger.LogInformation("Successfully updated TenancyRole with Id {TenancyRoleId}.", dto.TenancyRoleId);
+                    logger.LogInformation("Successfully Delete TenancyRole with Id {TenancyRoleId}.", dto.TenancyRoleId);
                     return Results.Ok(
                        ResponseHelper<TenancyRoleDeleteResponseDto>.Success(
                            message: "Tenancy Role Deleted Successfully"
@@ -295,7 +297,7 @@ namespace HRMS.API.Endpoints.Tenant
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "An unexpected error occurred while updating the TenancyRole with Id {TenancyRoleId}.", dto.TenancyRoleId);
+                    logger.LogError(ex, "An unexpected error occurred while Deleting the TenancyRole with Id {TenancyRoleId}.", dto.TenancyRoleId);
                     return Results.Json(
                         ResponseHelper<string>.Error(
                             message: "An Unexpected Error occurred while Deleting the Tenancy Role.",
