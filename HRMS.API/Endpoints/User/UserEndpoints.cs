@@ -1,4 +1,5 @@
 ﻿using HRMS.BusinessLayer.Interfaces;
+using HRMS.BusinessLayer.JwtAuthentication.JwtHelper;
 using HRMS.Dtos.User.User.UserRequestDtos;
 using HRMS.Dtos.User.User.UserResponseDtos;
 using HRMS.Utility.Helpers.Enums;
@@ -20,7 +21,9 @@ namespace HRMS.API.Modules.User
             /// This endpoint returns a List of Users. If no Users are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A List of Users or a 404 status code if no Users are found.</returns>
-            app.MapGet("/GetUsers", async (IUserService service) =>
+            /// 
+
+            app.MapGet("/GetUsers", [Jwtattribute]  async (IUserService service) =>
             {
                 var users = await service.GetUsers();
                 if (users != null && users.Any())
@@ -238,7 +241,7 @@ namespace HRMS.API.Modules.User
 
                     return Results.Ok(
                        ResponseHelper<UserDeleteResponseDto>.Success(
-                           message: "User Deleted Successfully"                         
+                           message: "User Deleted Successfully"
                        ).ToDictionary()
                    );
                 }

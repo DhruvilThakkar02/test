@@ -68,8 +68,8 @@ namespace HRMS.PersistenceLayer.Repositories
 
 
             var result = await _dbConnection.QuerySingleOrDefaultAsync<UserRoleMappingUpdateResponseEntity>(UserRolesMappingStoredProcedure.UpdateUserRoleMapping, paramters, commandType: CommandType.StoredProcedure);
-
-            if (result == null || result.UserRoleMappingId == -1)
+           
+            if (result == null || result.UserRoleMappingId == -1  )
             {
                 return null;
             }

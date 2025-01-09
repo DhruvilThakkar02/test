@@ -30,7 +30,6 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@SubdomainName", request.SubdomainName);
             parameters.Add("@UserNameOrEmail", request.UserNameOrEmail);
             parameters.Add("@Password", request.Password);
-
             parameters.Add("@UserId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@UserName", dbType: DbType.String, size: 255, direction: ParameterDirection.Output);
             parameters.Add("@TenantId", dbType: DbType.Int32, direction: ParameterDirection.Output);
@@ -38,7 +37,7 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@ErrorMessage", dbType: DbType.String, size: 255, direction: ParameterDirection.Output);
 
 
-            var result = await _dbConnection.ExecuteAsync(
+            await _dbConnection.ExecuteAsync(
                 LoginStoreProcedure.Userlogin,
                 parameters,
                 commandType: CommandType.StoredProcedure
@@ -86,12 +85,12 @@ namespace HRMS.PersistenceLayer.Repositories
 
             return loginResponse;
         }
-        internal async Task<string> GenerateJwtToken(LoginResponseEntity user)
+        public async Task<string> GenerateJwtToken(LoginResponseEntity user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = await Task.Run(() =>
             {
-                var key = Encoding.ASCII.GetBytes(_jwtSecretKey.Secret);
+                var key = Encoding.ASCII.GetBytes("THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET,IT CAN BE ANY STRING");
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new[]

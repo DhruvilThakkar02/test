@@ -4,13 +4,13 @@
     {
         public static string HashPassword(string password)
         {
-            return BCrypt.Net.BCrypt.HashPassword(password);
+            return BCrypt.Net.BCrypt.EnhancedHashPassword(password);
         }
         public static bool VerifyPassword(string password, string storedHash)
         {
             try
             {
-                return BCrypt.Net.BCrypt.Verify(password, storedHash);
+                return BCrypt.Net.BCrypt.EnhancedVerify(password, storedHash);
             }
             catch (Exception ex)
             {
