@@ -10,11 +10,14 @@ namespace HRMS.Utility.AutoMapperProfiles.User.Login
     {
         public LoginMappingProfile()
         {
+            CreateMap<TokenInformation, TokenInfo>();
+
             CreateMap<LoginRequestDto, LoginRequestEntity>();
 
             CreateMap<LoginRequestEntity, LoginResponseEntity>();
 
-            CreateMap<LoginResponseEntity, LoginResponseDto>();
+            CreateMap<LoginResponseEntity, LoginResponseDto>()
+          .ForMember(dest => dest.TokenDetails, opt => opt.MapFrom(src => src.TokenDetails));
         }
 
     }

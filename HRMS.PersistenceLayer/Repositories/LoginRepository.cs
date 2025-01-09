@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using HRMS.Dtos.User.Login.LoginResponseDtos;
 using HRMS.Entities.User.Login.LoginRequestEntities;
 using HRMS.Entities.User.Login.LoginResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
@@ -56,7 +57,6 @@ namespace HRMS.PersistenceLayer.Repositories
             var storedPasswordHash = parameters.Get<string>("@StoredPasswordHash");
             bool isPasswordValid = PasswordHashingUtility.Verify(request.Password, storedPasswordHash);
 
-
             if (!isPasswordValid)
             {
                 return new LoginResponseEntity
@@ -68,21 +68,27 @@ namespace HRMS.PersistenceLayer.Repositories
             var userId = parameters.Get<int>("@UserId");
             var userName = parameters.Get<string>("@UserName");
             var tenantId = parameters.Get<int>("@TenantId");
+            var tokenExpiryTime = DateTime.UtcNow.AddHours(1);
 
-            var user = new LoginResponseEntity
+
+
+            var token = await GenerateJwtToken(new LoginResponseEntity
             {
                 UserId = userId,
                 UserName = userName,
                 TenantId = tenantId
-            };
+            });
 
-            var token = await GenerateJwtToken(user);
             var loginResponse = new LoginResponseEntity
             {
                 UserId = userId,
                 UserName = userName,
                 TenantId = tenantId,
-                Token = token
+                TokenDetails = new TokenInformation
+                {
+                    Token = token,
+                    ExpiryTime = tokenExpiryTime
+                },
             };
 
             return loginResponse;
