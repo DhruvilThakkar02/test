@@ -3,6 +3,7 @@ using HRMS.Dtos.User.User.UserResponseDtos;
 using HRMS.Utility.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,10 +17,10 @@ namespace HRMS.Utility.JwtAuthentication.JwtHelper
         private readonly RequestDelegate _next;
         private readonly JwtSecretKey _jwtSecretKey;
 
-        public JwtMiddleWare(RequestDelegate next, JwtSecretKey jwtSecretKey)
+        public JwtMiddleWare(RequestDelegate next, IOptions<JwtSecretKey> jwtSecretKey)
         {
             _next = next;
-            _jwtSecretKey = jwtSecretKey;
+            _jwtSecretKey = jwtSecretKey.Value;
         }
 
         public async Task Invoke(HttpContext context, IUserService userService)

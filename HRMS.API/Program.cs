@@ -104,12 +104,8 @@ namespace HRMS.API
                                            typeof(CompanyMappingProfile),
                                            typeof(LoginMappingProfile));
 
-
-            builder.Services.AddSingleton(new JwtSecretKey
-            {
-                Secret = builder.Configuration["JwtSecretKey:Secret"]
-            });
-
+            builder.Services.Configure<JwtSecretKey>(builder.Configuration.GetSection("JwtSecretKey"));
+            builder.Services.AddSingleton<JwtSecretKey>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

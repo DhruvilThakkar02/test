@@ -26,7 +26,7 @@ namespace HRMS.PersistenceLayer.Repositories
             _jwtSecretKey = jwtsecretkey.Value;
 
         }
-        public async Task<LoginResponseEntity> Login(LoginRequestEntity request, string secret)
+        public async Task<LoginResponseEntity> Login(LoginRequestEntity request)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@SubdomainName", request.SubdomainName);
