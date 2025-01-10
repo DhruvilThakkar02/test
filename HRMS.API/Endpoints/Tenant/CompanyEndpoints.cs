@@ -153,7 +153,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to update Company details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateCompany", async (ICompanyService service, [FromBody] CompanyUpdateRequestDto dto) =>
+            app.MapPut("/company/update", async (ICompanyService service, [FromBody] CompanyUpdateRequestDto dto) =>
             {
                 var validator = new CompanyUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);

@@ -67,7 +67,5 @@ namespace HRMS.API.Endpoints.User
     ));
 
         }
-
-
     }
 }
