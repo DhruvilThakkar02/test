@@ -5,7 +5,10 @@ using HRMS.Dtos.User.User.UserResponseDtos;
 using HRMS.Utility.Helpers.Enums;
 using HRMS.Utility.Helpers.Handlers;
 using HRMS.Utility.Validators.User.User;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace HRMS.API.Modules.User
@@ -23,7 +26,7 @@ namespace HRMS.API.Modules.User
             /// <returns>A List of Users or a 404 status code if no Users are found.</returns>
             /// 
 
-            app.MapGet("/GetUsers", [Jwtattribute]  async (IUserService service) =>
+            app.MapGet("/GetUsers", async (IUserService service) =>
             {
                 var users = await service.GetUsers();
                 if (users != null && users.Any())
@@ -34,9 +37,47 @@ namespace HRMS.API.Modules.User
 
                 var errorResponse = ResponseHelper<List<UserReadResponseDto>>.Error("No Users Found");
                 return Results.NotFound(errorResponse.ToDictionary());
-            }).WithTags("User")
+            })
+            .WithTags("User")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Users", description: "This endpoint returns a List of Users. If no Users are found, a 404 status code is returned."
             ));
+
+            //app.MapGet("/GetUsers", async (HttpContext context, IUserService service) =>
+            //{
+            //    // Manually check for JWT authorization using Jwtattribute
+            //    var jwtAttribute = new Jwtattribute();
+            //    var actionContext = new ActionContext(context, context.GetRouteData(), new Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor());
+            //    var filterContext = new AuthorizationFilterContext(
+            //        actionContext,
+            //        new List<IFilterMetadata>()
+            //    );
+
+            //    // Apply the custom Jwtattribute authorization
+            //    jwtAttribute.OnAuthorization(filterContext);
+
+            //    if (filterContext.Result != null)
+            //    {
+            //        // If authorization fails, handle the result
+            //        var jsonResult = (JsonResult)filterContext.Result;
+            //        context.Response.StatusCode = jsonResult.StatusCode ?? StatusCodes.Status400BadRequest;
+            //        await context.Response.WriteAsync(jsonResult.Value.ToString());
+            //        return Results.StatusCode(context.Response.StatusCode);  // Return the appropriate IResult type
+            //    }
+
+            //    // Proceed with fetching users if authorization passes
+            //    var users = await service.GetUsers();
+            //    if (users != null && users.Any())
+            //    {
+            //        var response = ResponseHelper<List<UserReadResponseDto>>.Success("Users Retrieved Successfully", users.ToList());
+            //        return Results.Ok(response.ToDictionary());
+            //    }
+
+            //    var errorResponse = ResponseHelper<List<UserReadResponseDto>>.Error("No Users Found");
+            //    return Results.NotFound(errorResponse.ToDictionary());
+            //})
+            //.WithTags("User")
+            //.WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Users", description: "This endpoint returns a List of Users. If no Users are found, a 404 status code is returned."));
+
 
             /// <summary> 
             /// Retrieve User by Id. 

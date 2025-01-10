@@ -21,6 +21,7 @@ using HRMS.Utility.Helpers.JwtSecretKey;
 using HRMS.Utility.Helpers.LogHelpers.Interface;
 using HRMS.Utility.Helpers.LogHelpers.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -113,6 +114,12 @@ namespace HRMS.API
                 };
             });
 
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add<Jwtattribute>();
+            });
+
+
             builder.Services.AddSwaggerGen(swagger =>
             {
                 //This is to generate the Default UI of Swagger Documentation
@@ -184,7 +191,7 @@ namespace HRMS.API
             app.UseHttpsRedirection();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-            app.UseMiddleware<JwtMiddleWare>();  
+            app.UseMiddleware<JwtMiddleWare>();
             app.UseAuthentication();  
             app.UseAuthorization();
 

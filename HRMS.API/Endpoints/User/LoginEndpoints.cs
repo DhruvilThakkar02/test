@@ -60,6 +60,7 @@ namespace HRMS.API.Endpoints.User
                     );
                 }
             }).WithTags("Authentication")
+            .AllowAnonymous()
     .WithMetadata(new SwaggerOperationAttribute(
         summary: "User Login",
         description: "This endpoint allows you to login with your username/email and password."
