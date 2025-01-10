@@ -10,7 +10,7 @@
         {
             try
             {
-                var res = BCrypt.Net.BCrypt.Verify(password, storedHash);
+                var res = BCrypt.Net.BCrypt.EnhancedVerify(password, storedHash);
                 return res;
             }
             catch (Exception ex)

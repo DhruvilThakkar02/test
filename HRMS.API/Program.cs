@@ -21,8 +21,8 @@ using HRMS.Utility.Helpers.LogHelpers.Interface;
 using HRMS.Utility.Helpers.LogHelpers.Services;
 using HRMS.Utility.JwtAuthentication.JwtHelper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -33,7 +33,7 @@ namespace HRMS.API
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
@@ -44,6 +44,7 @@ namespace HRMS.API
 
             var builder = WebApplication.CreateBuilder(args);
 
+            // Add services to the container.
             builder.Services.AddScoped<IOrganizationLogger, OrganinizationLogger>();
             builder.Services.AddScoped<ICompanyLogger, CompanyLogger>();
             builder.Services.AddScoped<ICompanyBranchLogger, CompanyBranchLogger>();
@@ -88,7 +89,6 @@ namespace HRMS.API
             builder.Services.AddScoped<ILoginRepository, LoginRepository>();
             builder.Services.AddScoped<ILoginService, LoginService>();
 
-
             builder.Services.AddSingleton<IDbConnection>(_ => new SqlConnection(builder.Configuration.GetConnectionString("HRMS_DB")));
 
             builder.Services.AddAutoMapper(typeof(UserMappingProfile),
@@ -114,7 +114,6 @@ namespace HRMS.API
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -123,9 +122,18 @@ namespace HRMS.API
                 };
             });
 
+
+            // Add Authorization with Roles
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("ManagerOnly", policy => policy.RequireRole("Manager"));
+            });
+
+
             builder.Services.AddSwaggerGen(swagger =>
             {
-                //This is to generate the Default UI of Swagger Documentation
+                // This is to generate the Default UI of Swagger Documentation
                 swagger.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
@@ -159,7 +167,7 @@ namespace HRMS.API
                 });
             });
 
-            builder.Services.AddAuthorization();
+
             builder.Services.AddCors();
             builder.Host.UseSerilog();
 
@@ -194,7 +202,6 @@ namespace HRMS.API
             app.UseHttpsRedirection();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-          
             app.UseAuthentication();
             app.UseMiddleware<JwtMiddleWare>();
             app.UseAuthorization();
@@ -211,7 +218,7 @@ namespace HRMS.API
             app.MapCompanyBranchEndpoints();
             app.MapLoginEndpoints();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }

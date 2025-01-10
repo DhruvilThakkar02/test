@@ -14,6 +14,7 @@ namespace HRMS.Utility.JwtAuthentication.JwtHelper
 {
     public class JwtMiddleWare
     {
+
         private readonly RequestDelegate _next;
         private readonly JwtSecretKey _jwtSecretKey;
 
@@ -50,6 +51,10 @@ namespace HRMS.Utility.JwtAuthentication.JwtHelper
                     {
                         context.Items["UserReadResponseDto"] = user;
                         context.Items["IsTokenValid"] = "True";
+
+                   
+
+
                     }
                     else
                     {
@@ -76,6 +81,8 @@ namespace HRMS.Utility.JwtAuthentication.JwtHelper
                 await _next(context);
             }
         }
+       
+
 
         public async Task<UserReadResponseDto> AttachUserToContext(HttpContext context, string token, IUserService userService)
         {
@@ -96,9 +103,12 @@ namespace HRMS.Utility.JwtAuthentication.JwtHelper
                 var jwtToken = (JwtSecurityToken)validatedToken;
 
                 var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "UserId").Value);
+                var roleId = int.Parse(jwtToken.Claims.First(x => x.Type == "UserRoleId").Value);
+                var role = jwtToken.Claims.FirstOrDefault(x => x.Type == "UserRoleName")?.Value;
+                var loginResponse = await userService.GetUserById(userId);
+               
 
-                var user = await userService.GetUserById(userId);
-                return user;
+                return loginResponse;
             }
             catch (Exception ex)
             {

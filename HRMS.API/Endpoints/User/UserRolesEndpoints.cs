@@ -175,6 +175,7 @@ namespace HRMS.API.Endpoints.User
                     Log.CloseAndFlush();
                 }
             }).WithTags("User Role")
+            .AllowAnonymous()
             .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new User Role.", description: "This endpoint allows you to create a new User Role with the provided details."
             ));
 

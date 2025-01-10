@@ -37,6 +37,11 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@TenantId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@StoredPasswordHash", dbType: DbType.String, size: 255, direction: ParameterDirection.Output);
             parameters.Add("@ErrorMessage", dbType: DbType.String, size: 255, direction: ParameterDirection.Output);
+            parameters.Add("@UserRoleId", dbType: DbType.Int32,size:255, direction: ParameterDirection.Output);
+            parameters.Add("@UserRoleName", dbType: DbType.String, size: 255, direction: ParameterDirection.Output);
+
+
+
 
 
             await _dbConnection.ExecuteAsync(
@@ -45,6 +50,8 @@ namespace HRMS.PersistenceLayer.Repositories
                 commandType: CommandType.StoredProcedure
             );
             var errorMessage = parameters.Get<string>("@ErrorMessage");
+            var userRoleId = parameters.Get<int?>("@UserRoleId")??0;
+            var userRoleName = parameters.Get<string>("@UserRoleName")??"Unknwon";
 
 
             if (!string.IsNullOrEmpty(errorMessage))
@@ -76,7 +83,10 @@ namespace HRMS.PersistenceLayer.Repositories
             {
                 UserId = userId,
                 UserName = userName,
-                TenantId = tenantId
+                TenantId = tenantId,
+                UserRoleId = userRoleId,
+                UserRoleName = userRoleName,
+
             });
 
             var loginResponse = new LoginResponseEntity
@@ -84,6 +94,9 @@ namespace HRMS.PersistenceLayer.Repositories
                 UserId = userId,
                 UserName = userName,
                 TenantId = tenantId,
+                UserRoleId = userRoleId,
+                UserRoleName = userRoleName,
+               
                 TokenDetails = new TokenInformation
                 {
                     Token = token,
@@ -104,6 +117,9 @@ namespace HRMS.PersistenceLayer.Repositories
                     Subject = new ClaimsIdentity(new[]
                     {
                         new Claim("UserId", user.UserId.ToString()),
+                        new Claim("UserRoleId", user.UserRoleId.ToString()),
+                        new Claim("UserRoleName",user.UserRoleName.ToString())
+                        
                     }
                     ),
                     Expires = DateTime.UtcNow.AddMinutes(60),
