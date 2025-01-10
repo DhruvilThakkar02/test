@@ -50,7 +50,7 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@LastName", user.LastName);
             parameters.Add("@UserName", user.UserName);
             parameters.Add("@Email", user.Email);
-            parameters.Add("@Password", hashedPassword);
+            parameters.Add("@Password",hashedPassword);
             parameters.Add("@Gender", user.Gender);
             parameters.Add("@DateOfBirth", user.DateOfBirth);
             parameters.Add("@IsActive", user.IsActive);
@@ -71,7 +71,7 @@ namespace HRMS.PersistenceLayer.Repositories
                 LastName = user.LastName,
                 UserName = user.UserName,
                 Email = user.Email,
-                Password = hashedPassword,
+                Password = user.Password,
                 Gender = user.Gender,
                 DateOfBirth = user.DateOfBirth,
                 TenantId = user.TenantId,
