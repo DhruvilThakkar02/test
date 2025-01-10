@@ -38,9 +38,9 @@ namespace HRMS.BusinessLayer.Services
             return addressDtos;
         }
 
-        public async Task<AddressReadResponseDto?> GetAddressById(int? addressId)
+        public async Task<AddressReadResponseDto?> GetAddressById(int? id)
         {
-            var address = await _addressRepository.GetAddressById(addressId);
+            var address = await _addressRepository.GetAddressById(id);
             if (address == null)
             {
                 return null;

@@ -13,7 +13,7 @@ namespace HRMS.BusinessLayer.Interfaces
     public interface IAddressService
     {
         Task<List<AddressReadResponseDto>> GetAddresses();
-        Task<AddressReadResponseDto?> GetAddressById(int? addressId);
+        Task<AddressReadResponseDto?> GetAddressById(int? id);
         Task<AddressCreateResponseDto> CreateAddress(AddressCreateRequestDto dto);
         Task<AddressUpdateResponseDto> UpdateAddress(AddressUpdateRequestDto dto);
         Task<AddressDeleteResponseDto?> DeleteAddress(AddressDeleteRequestDto dto);

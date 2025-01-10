@@ -26,7 +26,7 @@ namespace HRMS.API.Endpoints.User
                 var roles = await _rolesService.GetUserRoles();
                 if (roles != null && roles.Any())
                 {
-                    var response = ResponseHelper<List<UserRolesReadResponseDto>>.Success("User Roles Retrieved Successfully ", roles.ToList());
+                    var response = ResponseHelper<List<UserRoleReadResponseDto>>.Success("User Roles Retrieved Successfully ", roles.ToList());
                     return Results.Ok(response.ToDictionary());
                 }
 
@@ -45,8 +45,8 @@ namespace HRMS.API.Endpoints.User
             /// <returns>A User Role or a 404 status code if no User Role are found.</returns>
             app.MapGet("/GetUserRoleById/{id}", async (IUserRolesService _rolesService, int id) =>
             {
-                var validator = new UserRolesReadRequestValidator();
-                var rolesRequestDto = new UserRolesReadRequestDto { UserRoleId = id };
+                var validator = new UserRoleReadRequestValidator();
+                var rolesRequestDto = new UserRoleReadRequestDto { UserRoleId = id };
 
                 var validationResult = validator.Validate(rolesRequestDto);
                 if (!validationResult.IsValid)
@@ -56,7 +56,7 @@ namespace HRMS.API.Endpoints.User
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -68,13 +68,13 @@ namespace HRMS.API.Endpoints.User
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "Role Not Found ",
-                                statusCode: StatusCodeEnum.NOT_FOUND
+                                statusCode: StatusCode.NOT_FOUND
                                 ).ToDictionary()
                                 );
                     }
 
                     return Results.Ok(
-                        ResponseHelper<UserRolesReadResponseDto>.Success(
+                        ResponseHelper<UserRoleReadResponseDto>.Success(
                             message: "Role Retrieved Successfully",
                             data: role
                             ).ToDictionary()
@@ -88,7 +88,7 @@ namespace HRMS.API.Endpoints.User
                             message: "An Unexpected Error occurred.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -103,9 +103,9 @@ namespace HRMS.API.Endpoints.User
             /// This endpoint allows you to create a new User Role with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateUserRole", async (UserRolesCreateRequestDto dto, IUserRolesService _rolesService) =>
+            app.MapPost("/CreateUserRole", async (UserRoleCreateRequestDto dto, IUserRolesService _rolesService) =>
             {
-                var validator = new UserRolesCreateRequestValidator();
+                var validator = new UserRoleCreateRequestValidator();
                 var validationResult = validator.Validate(dto);
 
                 if (!validationResult.IsValid)
@@ -115,7 +115,7 @@ namespace HRMS.API.Endpoints.User
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -123,7 +123,7 @@ namespace HRMS.API.Endpoints.User
                 {
                     var newRole = await _rolesService.CreateUserRole(dto);
                     return Results.Ok(
-                        ResponseHelper<UserRolesCreateResponseDto>.Success(
+                        ResponseHelper<UserRoleCreateResponseDto>.Success(
                             message: "Role Created Successfully",
                             data: newRole
                         ).ToDictionary()
@@ -136,7 +136,7 @@ namespace HRMS.API.Endpoints.User
                             message: "An Unexpected Error occurred while Creating the Role.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -151,9 +151,9 @@ namespace HRMS.API.Endpoints.User
             /// This endpoint allows you to update User Role details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateUserRole", async (IUserRolesService _rolesService, [FromBody] UserRolesUpdateRequestDto dto) =>
+            app.MapPut("/UpdateUserRole", async (IUserRolesService _rolesService, [FromBody] UserRoleUpdateRequestDto dto) =>
             {
-                var validator = new UserRolesUpdateRequestValidator();
+                var validator = new UserRoleUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);
 
                 if (!validationResult.IsValid)
@@ -164,25 +164,25 @@ namespace HRMS.API.Endpoints.User
                        ResponseHelper<List<string>>.Error(
                            message: "Validation Failed",
                            errors: errorMessages,
-                           statusCode: StatusCodeEnum.BAD_REQUEST
+                           statusCode: StatusCode.BAD_REQUEST
                        ).ToDictionary()
                    );
                 }
 
                 try
                 {
-                    var updatedUserRoles = await _rolesService.UpdateUserRoles(dto);
+                    var updatedUserRoles = await _rolesService.UpdateUserRole(dto);
                     if (updatedUserRoles == null)
                     {
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "User Roles Not Found",
-                                statusCode: StatusCodeEnum.NOT_FOUND
+                                statusCode: StatusCode.NOT_FOUND
                             ).ToDictionary()
                          );
                     }
                     return Results.Ok(
-                        ResponseHelper<UserRolesUpdateResponseDto>.Success(
+                        ResponseHelper<UserRoleUpdateResponseDto>.Success(
                             message: "User Roles Updated Succesfully ",
                             data: updatedUserRoles
                             ).ToDictionary()
@@ -195,7 +195,7 @@ namespace HRMS.API.Endpoints.User
                             message: "An Unexpected Error occurred while Updating the User Roles.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
 
@@ -210,9 +210,9 @@ namespace HRMS.API.Endpoints.User
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a User Role based on the provided User Role Id.</remarks>
-            app.MapDelete("/DeleteUserRole", async (IUserRolesService _rolesService, [FromBody] UserRolesDeleteRequestDto dto) =>
+            app.MapDelete("/DeleteUserRole", async (IUserRolesService _rolesService, [FromBody] UserRoleDeleteRequestDto dto) =>
             {
-                var validator = new UserRolesDeleteRequestValidator();
+                var validator = new UserRoleDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);
 
                 if (!validationResult.IsValid)
@@ -223,27 +223,26 @@ namespace HRMS.API.Endpoints.User
                       ResponseHelper<List<string>>.Error(
                           message: "Validation Failed",
                           errors: errorMessages,
-                          statusCode: StatusCodeEnum.BAD_REQUEST
+                          statusCode: StatusCode.BAD_REQUEST
                       ).ToDictionary()
                   );
                 }
                 try
                 {
-                    var result = await _rolesService.DeleteUserRoles(dto);
+                    var result = await _rolesService.DeleteUserRole(dto);
                     if (result == null)
                     {
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "User Roles Not Found",
-                                statusCode: StatusCodeEnum.NOT_FOUND
+                                statusCode: StatusCode.NOT_FOUND
                                 ).ToDictionary()
                             );
                     }
 
                     return Results.Ok(
-                           ResponseHelper<UserRolesDeleteResponseDto>.Success(
-                               message: "Role Deleted Successfully",
-                               data: result
+                           ResponseHelper<UserRoleDeleteResponseDto>.Success(
+                               message: "Role Deleted Successfully"
                            ).ToDictionary()
                        );
                 }
@@ -254,7 +253,7 @@ namespace HRMS.API.Endpoints.User
                             message: "An Unexpected Error occurred while Deleting the User Roles.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
 

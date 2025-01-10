@@ -19,14 +19,18 @@
 		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
 		<PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
 		<PackageReference Include="SonarAnalyzer.CSharp" Version="10.4.0.108396">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\HRMS.Dtos\HRMS.Dtos.csproj" />
 		<ProjectReference Include="..\HRMS.Entities\HRMS.Entities.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="AutoMapperProfiles\Address\Address\" />
 	</ItemGroup>
 
 </Project>
