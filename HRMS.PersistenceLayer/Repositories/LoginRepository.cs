@@ -1,9 +1,8 @@
 ﻿using Dapper;
-using HRMS.Dtos.User.Login.LoginResponseDtos;
 using HRMS.Entities.User.Login.LoginRequestEntities;
 using HRMS.Entities.User.Login.LoginResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
-using HRMS.Utility.Helpers.JwtSecretKey;
+using HRMS.Utility.Helpers;
 using HRMS.Utility.Helpers.Passwords;
 using HRMS.Utility.Helpers.SqlHelpers.User;
 using Microsoft.Extensions.Options;
@@ -20,12 +19,14 @@ namespace HRMS.PersistenceLayer.Repositories
         private readonly IDbConnection _dbConnection;
         private readonly JwtSecretKey _jwtSecretKey;
 
-        public LoginRepository(IDbConnection dbConnection, IOptions<JwtSecretKey> jwtSecretKey)
+
+        public LoginRepository(IDbConnection dbConnection, IOptions<JwtSecretKey> jwtsecretkey)
         {
             _dbConnection = dbConnection;
-            _jwtSecretKey = jwtSecretKey.Value;
+            _jwtSecretKey = jwtsecretkey.Value;
+
         }
-        public async Task<LoginResponseEntity> Login(LoginRequestEntity request)
+        public async Task<LoginResponseEntity> Login(LoginRequestEntity request, string secret)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@SubdomainName", request.SubdomainName);
@@ -97,7 +98,7 @@ namespace HRMS.PersistenceLayer.Repositories
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = await Task.Run(() =>
             {
-                var key = Encoding.ASCII.GetBytes("THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET,IT CAN BE ANY STRING");
+                var key = Encoding.ASCII.GetBytes(_jwtSecretKey.Secret);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new[]

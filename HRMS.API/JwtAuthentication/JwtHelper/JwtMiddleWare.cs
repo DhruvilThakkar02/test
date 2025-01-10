@@ -1,27 +1,25 @@
 ﻿using HRMS.BusinessLayer.Interfaces;
 using HRMS.Dtos.User.User.UserResponseDtos;
+using HRMS.Utility.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 
-namespace HRMS.BusinessLayer.JwtAuthentication.JwtHelper
+namespace HRMS.Utility.JwtAuthentication.JwtHelper
 {
     public class JwtMiddleWare
     {
         private readonly RequestDelegate _next;
+        private readonly JwtSecretKey _jwtSecretKey;
 
-        public JwtMiddleWare(RequestDelegate next)
+        public JwtMiddleWare(RequestDelegate next, JwtSecretKey jwtSecretKey)
         {
             _next = next;
+            _jwtSecretKey = jwtSecretKey;
         }
 
         public async Task Invoke(HttpContext context, IUserService userService)
@@ -50,7 +48,7 @@ namespace HRMS.BusinessLayer.JwtAuthentication.JwtHelper
                     if (user != null)
                     {
                         context.Items["UserReadResponseDto"] = user;
-                        context.Items["IsTokenValid"] = "True"; 
+                        context.Items["IsTokenValid"] = "True";
                     }
                     else
                     {
@@ -60,17 +58,17 @@ namespace HRMS.BusinessLayer.JwtAuthentication.JwtHelper
                 }
                 catch (SecurityTokenExpiredException)
                 {
-                   await HandleInvalidToken(context, "Token has expired");
+                    await HandleInvalidToken(context, "Token has expired");
                     return;
                 }
                 catch (SecurityTokenException)
                 {
-                   await HandleInvalidToken(context, "Invalid token");
+                    await HandleInvalidToken(context, "Invalid token");
                     return;
                 }
                 catch (Exception ex)
                 {
-                   await HandleInvalidToken(context, $"Unauthorized: {ex.Message}");
+                    await HandleInvalidToken(context, $"Unauthorized: {ex.Message}");
                     return;
                 }
 
@@ -83,14 +81,14 @@ namespace HRMS.BusinessLayer.JwtAuthentication.JwtHelper
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes("THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING");
+                var key = Encoding.ASCII.GetBytes(_jwtSecretKey.Secret);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidateLifetime = true, 
+                    ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
 
@@ -109,12 +107,12 @@ namespace HRMS.BusinessLayer.JwtAuthentication.JwtHelper
 
         private static async Task HandleInvalidToken(HttpContext context, string errorMessage)
         {
-            context.Items["IsTokenValid"] = "False"; 
+            context.Items["IsTokenValid"] = "False";
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await context.Response.WriteAsync(errorMessage);
- 
+
         }
     }
 
-   
+
 }

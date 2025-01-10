@@ -1,16 +1,15 @@
 ﻿using HRMS.BusinessLayer.Interfaces;
-using HRMS.BusinessLayer.JwtAuthentication.JwtHelper;
 using HRMS.Dtos.User.User.UserRequestDtos;
 using HRMS.Dtos.User.User.UserResponseDtos;
 using HRMS.Utility.Helpers.Enums;
 using HRMS.Utility.Helpers.Handlers;
-using HRMS.Utility.Validators.User.User;
 using HRMS.Utility.Helpers.LogHelpers.Interface;
+using HRMS.Utility.Validators.User.User;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Serilog;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Data;
-using Serilog;
 
 namespace HRMS.API.Modules.User
 {

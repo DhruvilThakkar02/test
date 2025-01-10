@@ -19,7 +19,7 @@ namespace HRMS.BusinessLayer.Services
         public async Task<LoginResponseDto> Login(LoginRequestDto request)
         {
             var response = _mapper.Map<LoginRequestEntity>(request);
-            var loginResponse = await _loginRepository.Login(response);
+            var loginResponse = await _loginRepository.Login(response,"secretkey");
             return _mapper.Map<LoginResponseDto>(loginResponse);
         }
     }

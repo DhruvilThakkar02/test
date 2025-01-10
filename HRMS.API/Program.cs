@@ -4,7 +4,6 @@ using HRMS.API.Endpoints.Tenant;
 using HRMS.API.Endpoints.User;
 using HRMS.API.Modules.User;
 using HRMS.BusinessLayer.Interfaces;
-using HRMS.BusinessLayer.JwtAuthentication.JwtHelper;
 using HRMS.BusinessLayer.Services;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.PersistenceLayer.Repositories;
@@ -17,11 +16,12 @@ using HRMS.Utility.AutoMapperProfiles.Tenant.TenantRegistrationMapping;
 using HRMS.Utility.AutoMapperProfiles.User.Login;
 using HRMS.Utility.AutoMapperProfiles.User.UserMapping;
 using HRMS.Utility.AutoMapperProfiles.User.UserRolesMapping;
-using HRMS.Utility.Helpers.JwtSecretKey;
+using HRMS.Utility.Helpers;
 using HRMS.Utility.Helpers.LogHelpers.Interface;
 using HRMS.Utility.Helpers.LogHelpers.Services;
+using HRMS.Utility.JwtAuthentication.JwtHelper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -87,7 +87,7 @@ namespace HRMS.API
 
             builder.Services.AddScoped<ILoginRepository, LoginRepository>();
             builder.Services.AddScoped<ILoginService, LoginService>();
-          
+
 
             builder.Services.AddSingleton<IDbConnection>(_ => new SqlConnection(builder.Configuration.GetConnectionString("HRMS_DB")));
 
@@ -104,28 +104,28 @@ namespace HRMS.API
                                            typeof(CompanyMappingProfile),
                                            typeof(LoginMappingProfile));
 
-            //builder.Services.AddSingleton<JwtSecretKey>();
 
-            //builder.Services.Configure<JwtSecretKey>(builder.Configuration.GetSection("JwtSecretKey"));
+            builder.Services.AddSingleton(new JwtSecretKey
+            {
+                Secret = builder.Configuration["JwtSecretKey:Secret"]
+            });
+
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
-               
+                string? secretKey = builder.Configuration["JwtSecretKey:Secret"];
+                var key = Encoding.UTF8.GetBytes(secretKey);
+
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET,IT CAN BE ANY STRING"))
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
             });
-
-            builder.Services.AddControllers(options =>
-            {
-                options.Filters.Add<Jwtattribute>();
-            });
-
 
             builder.Services.AddSwaggerGen(swagger =>
             {
@@ -198,8 +198,9 @@ namespace HRMS.API
             app.UseHttpsRedirection();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
+          
+            app.UseAuthentication();
             app.UseMiddleware<JwtMiddleWare>();
-            app.UseAuthentication();  
             app.UseAuthorization();
 
             app.MapUserEndpoints();

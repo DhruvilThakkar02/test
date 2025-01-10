@@ -1,16 +1,11 @@
-﻿using FluentValidation;
-using HRMS.BusinessLayer.Interfaces;
-using HRMS.BusinessLayer.JwtAuthentication.JwtHelper;
+﻿using HRMS.BusinessLayer.Interfaces;
 using HRMS.Dtos.User.User.UserResponseDtos;
-using HRMS.Dtos.User.UserRoles.UserRolesRequestDtos;
 using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingRequestDtos;
 using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingResponseDtos;
 using HRMS.Utility.Helpers.Enums;
 using HRMS.Utility.Helpers.Handlers;
 using HRMS.Utility.Helpers.LogHelpers.Interface;
-using HRMS.Utility.Validators.User.UserRoles;
 using HRMS.Utility.Validators.User.UserRolesMapping;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
@@ -253,7 +248,7 @@ namespace HRMS.API.Endpoints.User
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a User Roles Mapping based on the provided User Role Mapping Id.</remarks>
-            app.MapDelete("/DeleteUserRoleMapping", async (IUserRoleMappingService _rolesmappingService,[FromBody] UserRoleMappingDeleteRequestDto dto, IUserRoleMappingLogger logger) =>
+            app.MapDelete("/DeleteUserRoleMapping", async (IUserRoleMappingService _rolesmappingService, [FromBody] UserRoleMappingDeleteRequestDto dto, IUserRoleMappingLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
