@@ -42,8 +42,15 @@ namespace HRMS.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddScoped<IOrganizationLogger, OrganinizationLogger>();
+            builder.Services.AddScoped<ICompanyLogger, CompanyLogger>();
             builder.Services.AddScoped<ICompanyBranchLogger, CompanyBranchLogger>();
             builder.Services.AddScoped<ITenancyRoleLogger, TenancyRoleLogger>();
+            builder.Services.AddScoped<ITenantRegistrationLogger, TenantRegistrationLogger>();
+            builder.Services.AddScoped<IUserLogger, UserLogger>();
+            builder.Services.AddScoped<IUserRoleLogger, UserRoleLogger>();
+            builder.Services.AddScoped<IUserRoleMappingLogger, UserRoleMappingLogger>();
+            builder.Services.AddScoped<ISubdomainLogger, SubdomainLogger>();
+            builder.Services.AddScoped<ITenantLogger, TenantLogger>();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
