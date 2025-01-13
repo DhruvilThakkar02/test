@@ -1,22 +1,13 @@
 ﻿using Dapper;
 using HRMS.Entities.Address.Address.AddressRequestEntities;
 using HRMS.Entities.Address.Address.AddressResponseEntities;
-using HRMS.Entities.User.User.UserRequestEntities;
-using HRMS.Entities.User.User.UserResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
-using HRMS.Utility.Helpers.Passwords;
 using HRMS.Utility.Helpers.SqlHelpers.Address;
-using HRMS.Utility.Helpers.SqlHelpers.User;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRMS.PersistenceLayer.Repositories
 {
-    public class AddressRepository:IAddressRepository
+    public class AddressRepository : IAddressRepository
     {
         private readonly IDbConnection _dbConnection;
 
@@ -52,23 +43,23 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@CountryId", address.CountryId);
             parameters.Add("@PostalCode", address.PostalCode);
             parameters.Add("@AddressTypeId", address.AddressTypeId);
-            parameters.Add("@IsActive", address.IsActive);  
+            parameters.Add("@IsActive", address.IsActive);
             parameters.Add("@CreatedBy", address.CreatedBy);
-           
+
 
             var result = await _dbConnection.QuerySingleOrDefaultAsync<AddressCreateResponseEntity>(AddressStoredProcedures.CreateAddress, parameters, commandType: CommandType.StoredProcedure);
 
             var addressId = parameters.Get<int>("@AddressId");
-           
+
             var createdAddress = new AddressCreateResponseEntity
             {
-               AddressId  = addressId,
+                AddressId = addressId,
                 AddressLine1 = address.AddressLine1,
                 AddressLine2 = address.AddressLine2,
                 CityId = address.CityId,
                 StateId = address.StateId,
                 CountryId = address.CountryId,
-          
+
                 PostalCode = address.PostalCode,
                 AddressTypeId = address.AddressTypeId,
                 CreatedBy = address.CreatedBy,
@@ -76,7 +67,7 @@ namespace HRMS.PersistenceLayer.Repositories
                 UpdatedBy = result?.UpdatedBy,
                 UpdatedAt = DateTime.Now,
                 IsActive = address.IsActive,
-                IsDelete = result ?.IsDelete
+                IsDelete = result?.IsDelete
             };
 
             return createdAddress;
@@ -88,15 +79,15 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@AddressId", address.AddressId);
             parameters.Add("@AddressLine1", address.AddressLine1);
             parameters.Add("@AddressLine2", address.AddressLine2);
-            parameters.Add("@CityId", address.CityId);          
+            parameters.Add("@CityId", address.CityId);
             parameters.Add("@StateId", address.StateId);
             parameters.Add("@CountryId", address.CountryId);
             parameters.Add("@PostalCode", address.PostalCode);
             parameters.Add("@AddressTypeId", address.AddressTypeId);
             parameters.Add("@IsActive", address.IsActive);
-            parameters.Add("@IsDelete",address.IsDelete);
+            parameters.Add("@IsDelete", address.IsDelete);
             parameters.Add("@UpdatedBy", address.UpdatedBy);
-    
+
             var result = await _dbConnection.QuerySingleOrDefaultAsync<AddressUpdateResponseEntity>(AddressStoredProcedures.UpdateAddress, parameters, commandType: CommandType.StoredProcedure);
 
             if (result == null || result.AddressId == -1)
@@ -104,7 +95,7 @@ namespace HRMS.PersistenceLayer.Repositories
                 return null;
             }
 
-           
+
 
             var updatedAddress = new AddressUpdateResponseEntity
             {

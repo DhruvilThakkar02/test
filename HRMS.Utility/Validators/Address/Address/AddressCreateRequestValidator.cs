@@ -1,14 +1,9 @@
 ﻿using FluentValidation;
 using HRMS.Dtos.Address.Address.AddressRequestDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRMS.Utility.Validators.Address.Address
 {
-    public class AddressCreateRequestValidator: AbstractValidator<AddressCreateRequestDto>
+    public class AddressCreateRequestValidator : AbstractValidator<AddressCreateRequestDto>
     {
         public AddressCreateRequestValidator()
         {
@@ -31,14 +26,14 @@ namespace HRMS.Utility.Validators.Address.Address
 
             RuleFor(address => address.PostalCode)
                .NotNull().WithMessage("PostalCode is Required.");
-            
+
             RuleFor(address => address.AddressTypeId)
                .NotNull().WithMessage("AddressTypeId is Required.");
 
             RuleFor(address => address.IsActive)
                 .NotNull().WithMessage("IsActive must be true or false.");
 
-        
+
 
         }
     }

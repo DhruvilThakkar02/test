@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HRMS.Dtos.Address.Address.AddressRequestDtos
+﻿namespace HRMS.Dtos.Address.Address.AddressRequestDtos
 {
     public class AddressUpdateRequestDto
     {
@@ -34,7 +28,7 @@ namespace HRMS.Dtos.Address.Address.AddressRequestDtos
         {
             get; set;
         }
-        
+
         public bool IsActive
         {
             get; set;

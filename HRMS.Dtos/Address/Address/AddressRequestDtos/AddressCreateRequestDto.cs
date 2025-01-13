@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HRMS.Dtos.Address.Address.AddressRequestDtos
+﻿namespace HRMS.Dtos.Address.Address.AddressRequestDtos
 {
-    public  class AddressCreateRequestDto
+    public class AddressCreateRequestDto
     {
         public string AddressLine1 { get; set; } = string.Empty;
         public string AddressLine2 { get; set; } = string.Empty;
-        public int CityId { get; set; } 
-        public int StateId { get; set; } 
-        public int CountryId { get; set; } 
-        public int PostalCode { get; set; } 
-        public int AddressTypeId { get; set; } 
-       
+        public int CityId { get; set; }
+        public int StateId { get; set; }
+        public int CountryId { get; set; }
+        public int PostalCode { get; set; }
+        public int AddressTypeId { get; set; }
+
         public bool IsActive
         {
             get; set;
@@ -24,7 +18,7 @@ namespace HRMS.Dtos.Address.Address.AddressRequestDtos
         {
             get; set;
         }
-       
-       
+
+
     }
 }

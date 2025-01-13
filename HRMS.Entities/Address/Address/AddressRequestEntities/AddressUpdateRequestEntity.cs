@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HRMS.Entities.Address.Address.AddressRequestEntities
+﻿namespace HRMS.Entities.Address.Address.AddressRequestEntities
 {
     public class AddressUpdateRequestEntity
     {
@@ -43,12 +37,12 @@ namespace HRMS.Entities.Address.Address.AddressRequestEntities
         {
             get; set;
         }
-       
+
         public int UpdatedBy
         {
             get; set;
         }
 
-       
+
     }
 }

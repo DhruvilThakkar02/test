@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HRMS.Entities.Address.Address.AddressResponseEntities
+﻿namespace HRMS.Entities.Address.Address.AddressResponseEntities
 {
     public class AddressCreateResponseEntity
     {
@@ -39,7 +33,7 @@ namespace HRMS.Entities.Address.Address.AddressResponseEntities
         {
             get; set;
         }
-        public bool ?  IsDelete
+        public bool? IsDelete
         {
             get; set;
         }
@@ -47,7 +41,7 @@ namespace HRMS.Entities.Address.Address.AddressResponseEntities
         {
             get; set;
         }
-        public int ?  UpdatedBy 
+        public int? UpdatedBy
         {
             get; set;
         }

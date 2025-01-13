@@ -1,14 +1,9 @@
 ﻿using FluentValidation;
 using HRMS.Dtos.Address.Address.AddressRequestDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRMS.Utility.Validators.Address.Address
 {
-    public class AddressUpdateRequestValidator:AbstractValidator<AddressUpdateRequestDto>
+    public class AddressUpdateRequestValidator : AbstractValidator<AddressUpdateRequestDto>
     {
         public AddressUpdateRequestValidator()
         {

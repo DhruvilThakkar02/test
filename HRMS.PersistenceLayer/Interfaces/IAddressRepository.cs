@@ -1,12 +1,6 @@
 ﻿using HRMS.Entities.Address.Address.AddressRequestEntities;
 using HRMS.Entities.Address.Address.AddressResponseEntities;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace HRMS.PersistenceLayer.Interfaces
 {
     public interface IAddressRepository

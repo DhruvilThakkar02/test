@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HRMS.Dtos.Address.Address.AddressResponseDtos
+﻿namespace HRMS.Dtos.Address.Address.AddressResponseDtos
 {
-    public  class AddressCreateResponseDto
+    public class AddressCreateResponseDto
     {
         public int AddressId
         {
@@ -34,7 +28,7 @@ namespace HRMS.Dtos.Address.Address.AddressResponseDtos
         {
             get; set;
         }
-       
+
         public bool IsActive
         {
             get; set;
