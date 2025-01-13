@@ -75,6 +75,7 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@StateId", state.StateId);
             parameters.Add("@StateName", state.StateName);
             parameters.Add("@IsActive", state.IsActive);
+            parameters.Add("@IsDelete", state.IsDelete);
             parameters.Add("@UpdatedBy", state.UpdatedBy);
 
 

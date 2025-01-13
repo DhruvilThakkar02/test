@@ -3,7 +3,7 @@
     public static class CityMappingStoreProcedure
     {
         public const string GetCities = "spCityGetAll";
-        public const string GetCityById = "spCityGetById";
+        public const string GetCityById = "spCityGet";
         public const string CreateCity = "spCityAdd";
         public const string UpdateCity = "spCityUpdate";
         public const string DeleteCity = "spCityDelete";

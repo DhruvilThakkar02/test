@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE spCompanyBranchGetById
+CREATE PROCEDURE [spCompanyBranchGet]
     @CompanyBranchId INT
 AS
 BEGIN
