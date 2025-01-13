@@ -44,6 +44,7 @@ namespace HRMS.API.Modules.User
                 return Results.NotFound(errorResponse.ToDictionary());
             })
             .WithTags("User")
+            .RequireAuthorization("Admin")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Users", description: "This endpoint returns a List of Users. If no Users are found, a 404 status code is returned."
             ));
 
@@ -117,7 +118,7 @@ namespace HRMS.API.Modules.User
                     Log.CloseAndFlush();
                 }
             }).WithTags("User")
-            .RequireAuthorization("AdminOnly")
+            .RequireAuthorization("Manager")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieve User by Id", description: "This endpoint return User by Id. If no User are found, a 404 status code is returned."
             ));
 
