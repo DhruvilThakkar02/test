@@ -1,29 +1,21 @@
-
-CREATE PROCEDURE [dbo].[spCompanyDelete]
-@CompanyId INT = NULL
+create PROCEDURE [dbo].[spAddressTypeGet]
+@AddressTypeId INT = NULL
 AS
 BEGIN
+ SET NOCOUNT ON;
 
     BEGIN TRY
-        -- Check if UserId exists in tblUser
-        IF NOT EXISTS (SELECT 1 FROM [dbo].[tblCompany] WHERE CompanyId = @CompanyId)
-        BEGIN
-            -- Return -1 if UserId does not exist
-            SELECT -1 AS CompanyId;
-            RETURN;
-        END
-
+    
         -- Start transaction
         BEGIN TRANSACTION;
 
-        -- Delete the user record from tblUser
-	    DELETE FROM [dbo].[tblCompany] WHERE CompanyId = @CompanyId;
+    -- Select the user record or all records from tblUser based on the UserId
+	SELECT TOP 1 * 
+    FROM [dbo].[tblAddressType] 
+    WHERE (@AddressTypeId IS NULL OR AddressTypeId = @AddressTypeId);
 
-        -- Commit the transaction
-        COMMIT TRANSACTION;
-
-        -- Return the deleted UserId
-        SELECT @CompanyId AS CompanyId;
+    -- Commit the transaction
+    COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
         -- Handle errors and roll back the transaction if needed
