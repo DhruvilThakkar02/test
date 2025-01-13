@@ -1,5 +1,5 @@
-﻿using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingRequestDtos;
-using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingResponseDtos;
+﻿using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingRequestDtos;
+using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingResponseDtos;
 
 namespace HRMS.BusinessLayer.Interfaces
 {
@@ -8,7 +8,7 @@ namespace HRMS.BusinessLayer.Interfaces
         Task<IEnumerable<UserRoleMappingReadResponseDto>> GetUserRolesMapping();
         Task<UserRoleMappingReadResponseDto?> GetUserRoleMappingById(int? roleid);
         Task<UserRoleMappingCreateResponseDto> CreateUserRoleMapping(UserRoleMappingCreateRequestDto rolesMappingDto);
-        Task<UserRoleMappingUpdateResponseDto?> UpdateUserRolesMapping(UserRoleMappingUpdateRequestDto rolesMappingDto);
+        Task<UserRoleMappingUpdateResponseDto?> UpdateUserRoleMapping(UserRoleMappingUpdateRequestDto rolesMappingDto);
 
         Task<UserRoleMappingDeleteResponseDto?> DeleteUserRoleMapping(UserRoleMappingDeleteRequestDto rolesMappingDto);
     }

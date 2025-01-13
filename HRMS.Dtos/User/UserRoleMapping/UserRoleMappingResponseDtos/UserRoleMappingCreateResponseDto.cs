@@ -1,4 +1,4 @@
-﻿namespace HRMS.Dtos.User.UserRolesMapping.UserRolesMappingResponseDtos
+﻿namespace HRMS.Dtos.User.UserRoleMapping.UserRoleMappingResponseDtos
 {
     public class UserRoleMappingCreateResponseDto
     {

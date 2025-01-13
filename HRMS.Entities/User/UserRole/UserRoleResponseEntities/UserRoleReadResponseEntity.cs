@@ -1,4 +1,4 @@
-﻿namespace HRMS.Entities.User.UserRoles.UserRolesResponseEntities
+﻿namespace HRMS.Entities.User.UserRole.UserRoleResponseEntities
 {
     public class UserRoleReadResponseEntity
     {
