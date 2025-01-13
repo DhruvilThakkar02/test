@@ -4,7 +4,7 @@ using HRMS.Dtos.User.UserRoles.UserRolesResponseDtos;
 
 namespace HRMS.BusinessLayer.Interfaces
 {
-    public interface IUserRoleService
+    public interface IUserRolesService
     {
         Task<IEnumerable<UserRoleReadResponseDto>> GetUserRoles();
         Task<UserRoleReadResponseDto?> GetUserRoleById(int? rolesId);

@@ -9,12 +9,12 @@ using HRMS.PersistenceLayer.Interfaces;
 
 namespace HRMS.BusinessLayer.Services
 {
-    public class UserRoleMappingService : IUserRoleMappingService
+    public class UserRolesMappingService : IUserRoleMappingService
     {
         private readonly IMapper _mapper;
         private readonly IUserRoleMappingRepository _userRolesMappingRepository;
 
-        public UserRoleMappingService(IMapper mapper, IUserRoleMappingRepository userRolesMappingRepository)
+        public UserRolesMappingService(IMapper mapper, IUserRoleMappingRepository userRolesMappingRepository)
         {
 
             _mapper = mapper;

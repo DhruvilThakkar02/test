@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace HRMS.API.Endpoints.User
 {
-    public static class UserRoleEndpoints
+    public static class UserRolesEndpoints
     {
         public static void MapUserRolesEndpoints(this IEndpointRouteBuilder app)
         {
@@ -21,7 +21,7 @@ namespace HRMS.API.Endpoints.User
             /// This endpoint returns a List of User Roles. If no User Roles are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A List of User Roles or a 404 status code if no User Roles are found.</returns>
-            app.MapGet("/GetUserRoles", async (IUserRoleService _rolesService) =>
+            app.MapGet("/GetUserRoles", async (IUserRolesService _rolesService) =>
             {
                 var roles = await _rolesService.GetUserRoles();
                 if (roles != null && roles.Any())
@@ -43,7 +43,7 @@ namespace HRMS.API.Endpoints.User
             /// This endpoint return User Role by Id. If no User Role are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A User Role or a 404 status code if no User Role are found.</returns>
-            app.MapGet("/GetUserRoleById/{id}", async (IUserRoleService _rolesService, int id) =>
+            app.MapGet("/GetUserRoleById/{id}", async (IUserRolesService _rolesService, int id) =>
             {
                 var validator = new UserRoleReadRequestValidator();
                 var rolesRequestDto = new UserRoleReadRequestDto { UserRoleId = id };
@@ -103,7 +103,7 @@ namespace HRMS.API.Endpoints.User
             /// This endpoint allows you to create a new User Role with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateUserRole", async (UserRoleCreateRequestDto dto, IUserRoleService _rolesService) =>
+            app.MapPost("/CreateUserRole", async (UserRoleCreateRequestDto dto, IUserRolesService _rolesService) =>
             {
                 var validator = new UserRoleCreateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -151,7 +151,7 @@ namespace HRMS.API.Endpoints.User
             /// This endpoint allows you to update User Role details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateUserRole", async (IUserRoleService _rolesService, [FromBody] UserRoleUpdateRequestDto dto) =>
+            app.MapPut("/UpdateUserRole", async (IUserRolesService _rolesService, [FromBody] UserRoleUpdateRequestDto dto) =>
             {
                 var validator = new UserRoleUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -210,7 +210,7 @@ namespace HRMS.API.Endpoints.User
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a User Role based on the provided User Role Id.</remarks>
-            app.MapDelete("/DeleteUserRole", async (IUserRoleService _rolesService, [FromBody] UserRoleDeleteRequestDto dto) =>
+            app.MapDelete("/DeleteUserRole", async (IUserRolesService _rolesService, [FromBody] UserRoleDeleteRequestDto dto) =>
             {
                 var validator = new UserRoleDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);

@@ -1,7 +1,7 @@
 ﻿
 namespace HRMS.Utility.Helpers.SqlHelpers.User
 {
-    public static class UserRoleMappingStoredProcedure
+    public static class UserRolesMappingStoredProcedure
     {
         public const string GetUserRolesMapping = "spUserRoleMappingGetAll";
         public const string GetUserRoleMappingById = "spUserRoleMappingGetById";
