@@ -47,41 +47,7 @@ namespace HRMS.API.Modules.User
             .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Users", description: "This endpoint returns a List of Users. If no Users are found, a 404 status code is returned."
             ));
 
-            //app.MapGet("/GetUsers", async (HttpContext context, IUserService service) =>
-            //{
-            //    // Manually check for JWT authorization using Jwtattribute
-            //    var jwtAttribute = new Jwtattribute();
-            //    var actionContext = new ActionContext(context, context.GetRouteData(), new Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor());
-            //    var filterContext = new AuthorizationFilterContext(
-            //        actionContext,
-            //        new List<IFilterMetadata>()
-            //    );
-
-            //    // Apply the custom Jwtattribute authorization
-            //    jwtAttribute.OnAuthorization(filterContext);
-
-            //    if (filterContext.Result != null)
-            //    {
-            //        // If authorization fails, handle the result
-            //        var jsonResult = (JsonResult)filterContext.Result;
-            //        context.Response.StatusCode = jsonResult.StatusCode ?? StatusCodes.Status400BadRequest;
-            //        await context.Response.WriteAsync(jsonResult.Value.ToString());
-            //        return Results.StatusCode(context.Response.StatusCode);  // Return the appropriate IResult type
-            //    }
-
-            //    // Proceed with fetching users if authorization passes
-            //    var users = await service.GetUsers();
-            //    if (users != null && users.Any())
-            //    {
-            //        var response = ResponseHelper<List<UserReadResponseDto>>.Success("Users Retrieved Successfully", users.ToList());
-            //        return Results.Ok(response.ToDictionary());
-            //    }
-
-            //    var errorResponse = ResponseHelper<List<UserReadResponseDto>>.Error("No Users Found");
-            //    return Results.NotFound(errorResponse.ToDictionary());
-            //})
-            //.WithTags("User")
-            //.WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Users", description: "This endpoint returns a List of Users. If no Users are found, a 404 status code is returned."));
+           
 
 
             /// <summary> 
@@ -162,7 +128,7 @@ namespace HRMS.API.Modules.User
             /// This endpoint allows you to create a new User with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateUser", async (UserCreateRequestDto dto, IUserService _userService, IUserLogger logger) =>
+            app.MapPost("/user/create", async (UserCreateRequestDto dto, IUserService _userService, IUserLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -211,7 +177,7 @@ namespace HRMS.API.Modules.User
                 {
                     Log.CloseAndFlush();
                 }
-            }).WithTags("User")
+            }).WithTags("User").AllowAnonymous()
             .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new User.", description: "This endpoint allows you to create a new User with the provided details."
             ));
 
@@ -222,7 +188,7 @@ namespace HRMS.API.Modules.User
             /// This endpoint allows you to update User details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateUser", async (IUserService service, [FromBody] UserUpdateRequestDto dto, IUserLogger logger) =>
+            app.MapPut("/user/update", async (IUserService service, [FromBody] UserUpdateRequestDto dto, IUserLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);

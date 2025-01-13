@@ -94,6 +94,7 @@ namespace HRMS.PersistenceLayer.Repositories
             return loginResponse;
         }
         public async Task<string> GenerateJwtToken(LoginResponseEntity user)
+        
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = await Task.Run(() =>
