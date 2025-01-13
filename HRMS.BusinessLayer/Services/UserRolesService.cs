@@ -19,52 +19,52 @@ namespace HRMS.BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<UserRolesReadResponseDto>> GetUserRoles()
+        public async Task<IEnumerable<UserRoleReadResponseDto>> GetUserRoles()
         {
             var roles = await _rolesRepository.GetUserRoles();
-            var response = _mapper.Map<IEnumerable<UserRolesReadResponseDto>>(roles);
+            var response = _mapper.Map<IEnumerable<UserRoleReadResponseDto>>(roles);
             return response;
         }
 
-        public async Task<UserRolesReadResponseDto?> GetUserRoleById(int? rolesId)
+        public async Task<UserRoleReadResponseDto?> GetUserRoleById(int? rolesId)
         {
             var role = await _rolesRepository.GetUserRoleById(rolesId);
             if (role == null || role.UserRoleId == -1)
             {
                 return null;
             }
-            var response = _mapper.Map<UserRolesReadResponseDto>(role);
+            var response = _mapper.Map<UserRoleReadResponseDto>(role);
             return response;
         }
 
-        public async Task<UserRolesCreateResponseDto> CreateUserRole(UserRolesCreateRequestDto rolesDto)
+        public async Task<UserRoleCreateResponseDto> CreateUserRole(UserRoleCreateRequestDto rolesDto)
         {
-            var rolesEntity = _mapper.Map<UserRolesCreateRequestEntity>(rolesDto);
+            var rolesEntity = _mapper.Map<UserRoleCreateRequestEntity>(rolesDto);
             var addedRole = await _rolesRepository.CreateUserRole(rolesEntity);
-            var response = _mapper.Map<UserRolesCreateResponseDto>(addedRole);
+            var response = _mapper.Map<UserRoleCreateResponseDto>(addedRole);
             return response;
         }
 
-        public async Task<UserRolesUpdateResponseDto> UpdateUserRoles(UserRolesUpdateRequestDto rolesDTo)
+        public async Task<UserRoleUpdateResponseDto> UpdateUserRole(UserRoleUpdateRequestDto rolesDTo)
         {
-            var rolesEntity = _mapper.Map<UserRolesUpdateRequestEntity>(rolesDTo);
-            var updatedUserRoles = await _rolesRepository.UpdateUserRoles(rolesEntity);
-            var response = _mapper.Map<UserRolesUpdateResponseDto>(updatedUserRoles);
+            var rolesEntity = _mapper.Map<UserRoleUpdateRequestEntity>(rolesDTo);
+            var updatedUserRoles = await _rolesRepository.UpdateUserRole(rolesEntity);
+            var response = _mapper.Map<UserRoleUpdateResponseDto>(updatedUserRoles);
             return response;
         }
 
-        public async Task<UserRolesDeleteResponseDto?> DeleteUserRoles(UserRolesDeleteRequestDto rolesDto)
+        public async Task<UserRoleDeleteResponseDto?> DeleteUserRole(UserRoleDeleteRequestDto rolesDto)
         {
-            var rolesEntity = _mapper.Map<UserRolesDeleteRequestEntity>(rolesDto);
-            var result = await _rolesRepository.DeleteUserRoles(rolesEntity);
+            var rolesEntity = _mapper.Map<UserRoleDeleteRequestEntity>(rolesDto);
+            var result = await _rolesRepository.DeleteUserRole(rolesEntity);
 
             if (result == -1)
             {
                 return null;
             }
 
-            var responseEntity = new UserRolesDeleteResponseEntity { UserRoleId = rolesEntity.UserRoleId };
-            var responseDto = _mapper.Map<UserRolesDeleteResponseDto>(responseEntity);
+            var responseEntity = new UserRoleDeleteResponseEntity { UserRoleId = rolesEntity.UserRoleId };
+            var responseDto = _mapper.Map<UserRoleDeleteResponseDto>(responseEntity);
 
             return responseDto;
         }

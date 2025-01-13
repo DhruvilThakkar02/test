@@ -20,7 +20,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint returns a List of Tenants. If no Tenants are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A List of Tenants or a 404 status code if no Tenants are found.</returns>
-            app.MapGet("/GetTenants", async (ITenantService service) =>
+            app.MapGet("/tenant/getall", async (ITenantService service) =>
             {
                 var tenant = await service.GetTenants();
                 if (tenant != null && tenant.Any())
@@ -41,7 +41,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint return Tenant by Id. If no Tenant are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A Tenant or a 404 status code if no Tenant are found.</returns>
-            app.MapGet("/GetTenantById/{id}", async (ITenantService service, int id) =>
+            app.MapGet("/tenant/{id}", async (ITenantService service, int id) =>
             {
                 var validator = new TenantReadRequestValidator();
                 var tenantRequestDto = new TenantReadRequestDtos { TenantId = id };
@@ -54,7 +54,7 @@ namespace HRMS.API.Endpoints.Tenant
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -66,7 +66,7 @@ namespace HRMS.API.Endpoints.Tenant
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "Tenant Not Found",
-                                statusCode: StatusCodeEnum.NOT_FOUND
+                                statusCode: StatusCode.NOT_FOUND
                             ).ToDictionary()
                         );
                     }
@@ -85,7 +85,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -100,7 +100,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to create a new Tenant with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateTenant", async (TenantCreateRequestDtos dto, ITenantService _service) =>
+            app.MapPost("/tenant/create", async (TenantCreateRequestDtos dto, ITenantService _service) =>
             {
                 var validator = new TenantCreateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -112,7 +112,7 @@ namespace HRMS.API.Endpoints.Tenant
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -133,7 +133,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred while Creating the Tenant.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -148,7 +148,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to update Tenant details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateTenant", async (ITenantService _service, [FromBody] TenantUpdateRequestDtos dto) =>
+            app.MapPut("/tenant/update", async (ITenantService _service, [FromBody] TenantUpdateRequestDtos dto) =>
             {
                 var validator = new TenantUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -161,7 +161,7 @@ namespace HRMS.API.Endpoints.Tenant
                        ResponseHelper<List<string>>.Error(
                            message: "Validation Failed",
                            errors: errorMessages,
-                           statusCode: StatusCodeEnum.BAD_REQUEST
+                           statusCode: StatusCode.BAD_REQUEST
                        ).ToDictionary()
                    );
                 }
@@ -173,7 +173,7 @@ namespace HRMS.API.Endpoints.Tenant
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "Tenant Not Found",
-                               statusCode: StatusCodeEnum.NOT_FOUND
+                               statusCode: StatusCode.NOT_FOUND
                            ).ToDictionary()
                        );
                     }
@@ -192,7 +192,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred while Updating the Tenant.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -205,7 +205,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a Tenant based on the provided Tenant Id.</remarks>
-            app.MapDelete("/DeleteTenant", async (ITenantService service, [FromBody] TenantDeleteRequestDtos dto) =>
+            app.MapDelete("/tenant/delete", async (ITenantService service, [FromBody] TenantDeleteRequestDtos dto) =>
             {
                 var validator = new TenantDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -218,7 +218,7 @@ namespace HRMS.API.Endpoints.Tenant
                       ResponseHelper<List<string>>.Error(
                           message: "Validation Failed",
                           errors: errorMessages,
-                          statusCode: StatusCodeEnum.BAD_REQUEST
+                          statusCode: StatusCode.BAD_REQUEST
                       ).ToDictionary()
                   );
                 }
@@ -230,15 +230,14 @@ namespace HRMS.API.Endpoints.Tenant
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "Tenant Not Found",
-                               statusCode: StatusCodeEnum.NOT_FOUND
+                               statusCode: StatusCode.NOT_FOUND
                            ).ToDictionary()
                        );
                     }
 
                     return Results.Ok(
                        ResponseHelper<TenantDeleteResponseDtos>.Success(
-                           message: "Tenant Deleted Successfully",
-                           data: result
+                           message: "Tenant Deleted Successfully"
                        ).ToDictionary()
                    );
                 }
@@ -249,7 +248,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred while Deleting the Tenant.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }

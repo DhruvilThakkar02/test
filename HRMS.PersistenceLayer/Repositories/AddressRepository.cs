@@ -18,15 +18,15 @@ namespace HRMS.PersistenceLayer.Repositories
 
         public async Task<IEnumerable<AddressReadResponseEntity>> GetAddresses()
         {
-            var addresses = await _dbConnection.QueryAsync<AddressReadResponseEntity>(AddressStoredProcedures.GetAddresses, commandType: CommandType.StoredProcedure);
+            var addresses = await _dbConnection.QueryAsync<AddressReadResponseEntity>(AddressStoredProcedures.GetAddresses  , commandType: CommandType.StoredProcedure);
 
             return addresses;
         }
 
-        public async Task<AddressReadResponseEntity?> GetAddressById(int? addressId)
+        public async Task<AddressReadResponseEntity?> GetAddressById(int? id)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("@AddressId", addressId);
+            parameters.Add("@AddressId", id);
 
             var address = await _dbConnection.QueryFirstOrDefaultAsync<AddressReadResponseEntity>(AddressStoredProcedures.GetAddressById, parameters, commandType: CommandType.StoredProcedure);
             return address;

@@ -57,7 +57,7 @@ namespace HRMS.API.Endpoints.Address
                             ResponseHelper<List<string>>.Error(
                                 message: "Validation Failed",
                                 errors: errorMessages,
-                                statusCode: StatusCodeEnum.BAD_REQUEST
+                                statusCode: StatusCode.BAD_REQUEST
                             ).ToDictionary()
                         );
                     }
@@ -71,7 +71,7 @@ namespace HRMS.API.Endpoints.Address
                             return Results.NotFound(
                                 ResponseHelper<string>.Error(
                                     message: "City Not Found",
-                                    statusCode: StatusCodeEnum.NOT_FOUND
+                                    statusCode: StatusCode.NOT_FOUND
                                 ).ToDictionary()
                             );
                         }
@@ -92,7 +92,7 @@ namespace HRMS.API.Endpoints.Address
                                 message: "An Unexpected Error occurred.",
                                 exception: ex,
                                 isWarning: false,
-                                statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                                statusCode: StatusCode.INTERNAL_SERVER_ERROR
                             ).ToDictionary()
                         );
                     }
@@ -122,7 +122,7 @@ namespace HRMS.API.Endpoints.Address
                             ResponseHelper<List<string>>.Error(
                                 message: "Validation Failed",
                                 errors: errorMessages,
-                                statusCode: StatusCodeEnum.BAD_REQUEST
+                                statusCode: StatusCode.BAD_REQUEST
                             ).ToDictionary()
                         );
                     }
@@ -142,11 +142,11 @@ namespace HRMS.API.Endpoints.Address
                     {
                         logger.LogError(ex, "An unexpected error occurred while creating the City.");
                         return Results.Json(
-                            ResponseHelper<string>.Error(
+                           ResponseHelper<string>.Error(
                                 message: "An Unexpected Error occurred while Creating the City.",
                                 exception: ex,
                                 isWarning: false,
-                                statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                                statusCode: StatusCode.INTERNAL_SERVER_ERROR
                             ).ToDictionary()
                         );
                     }
@@ -175,7 +175,7 @@ namespace HRMS.API.Endpoints.Address
                            ResponseHelper<List<string>>.Error(
                                message: "Validation Failed",
                                errors: errorMessages,
-                               statusCode: StatusCodeEnum.BAD_REQUEST
+                               statusCode: StatusCode.BAD_REQUEST
                            ).ToDictionary()
                        );
                     }
@@ -189,7 +189,7 @@ namespace HRMS.API.Endpoints.Address
                             return Results.NotFound(
                                ResponseHelper<string>.Error(
                                    message: "City Not Found",
-                                   statusCode: StatusCodeEnum.NOT_FOUND
+                                   statusCode: StatusCode.NOT_FOUND
                                ).ToDictionary()
                            );
                         }
@@ -210,7 +210,7 @@ namespace HRMS.API.Endpoints.Address
                                 message: "An Unexpected Error occurred while Updating the City.",
                                 exception: ex,
                                 isWarning: false,
-                                statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                                statusCode: StatusCode.INTERNAL_SERVER_ERROR
                             ).ToDictionary()
                         );
                     }
@@ -239,7 +239,7 @@ namespace HRMS.API.Endpoints.Address
                           ResponseHelper<List<string>>.Error(
                               message: "Validation Failed",
                               errors: errorMessages,
-                              statusCode: StatusCodeEnum.BAD_REQUEST
+                              statusCode: StatusCode.BAD_REQUEST
                           ).ToDictionary()
                       );
                     }
@@ -253,7 +253,7 @@ namespace HRMS.API.Endpoints.Address
                             return Results.NotFound(
                                ResponseHelper<string>.Error(
                                    message: "City Not Found",
-                                   statusCode: StatusCodeEnum.NOT_FOUND
+                                   statusCode: StatusCode.NOT_FOUND
                                ).ToDictionary()
                            );
                         }
@@ -274,7 +274,7 @@ namespace HRMS.API.Endpoints.Address
                                 message: "An Unexpected Error occurred while Deleting the City.",
                                 exception: ex,
                                 isWarning: false,
-                                statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                                statusCode: StatusCode.INTERNAL_SERVER_ERROR
                             ).ToDictionary()
                         );
                     }

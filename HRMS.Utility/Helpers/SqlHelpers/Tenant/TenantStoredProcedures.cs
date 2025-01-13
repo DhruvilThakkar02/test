@@ -1,6 +1,6 @@
 ﻿namespace HRMS.Utility.Helpers.SqlHelpers.Tenant
 {
-    public class TenantStoredProcedures
+    public static class TenantStoredProcedures
     {
         public const string GetTenants = "spTenantGetAll";
         public const string GetTenantById = "spTenantGet";

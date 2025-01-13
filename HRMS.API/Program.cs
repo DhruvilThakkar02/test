@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using HRMS.API.Endpoints.CompanyBranch;
 using HRMS.API.Endpoints.Address;
 using HRMS.API.Endpoints.Tenant;
 using HRMS.API.Endpoints.User;
@@ -7,6 +8,7 @@ using HRMS.BusinessLayer.Interfaces;
 using HRMS.BusinessLayer.Services;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.PersistenceLayer.Repositories;
+using HRMS.Utility.AutoMapperProfiles.Tenant.CompanyMapping;
 using HRMS.Utility.AutoMapperProfiles.Address.AddressMapping;
 using HRMS.Utility.AutoMapperProfiles.Address.City;
 using HRMS.Utility.AutoMapperProfiles.Address.Country;
@@ -24,6 +26,7 @@ using Microsoft.Data.SqlClient;
 using Serilog;
 using System.Data;
 using System.Diagnostics.Metrics;
+using HRMS.Utility.AutoMapperProfiles.Address.AddressTypeMapping;
 
 namespace HRMS.API
 {
@@ -39,8 +42,12 @@ namespace HRMS.API
                 .CreateLogger();
 
             var builder = WebApplication.CreateBuilder(args);
-
+            //builder.Services.AddScoped<>
+            builder.Services.AddScoped<IAddressTypeLogger, AddressTypeLogger>();
+            builder.Services.AddScoped<IAddressLogger, AddressLogger>();
             builder.Services.AddScoped<IOrganizationLogger, OrganinizationLogger>();
+            builder.Services.AddScoped<ICompanyBranchLogger, CompanyBranchLogger>();
+            builder.Services.AddScoped<ITenancyRoleLogger, TenancyRoleLogger>();
             builder.Services.AddScoped<ICityLogger, CityLogger>();
             builder.Services.AddScoped<ICountryLogger, CountryLogger>();
             builder.Services.AddScoped<IStateLogger, StateLogger>();
@@ -56,7 +63,7 @@ namespace HRMS.API
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
-
+         
             builder.Services.AddScoped<IAddressRepository, AddressRepository>();
             builder.Services.AddScoped<IAddressService, AddressService>();
 
@@ -72,8 +79,8 @@ namespace HRMS.API
             builder.Services.AddScoped<IUserRolesRepository, UserRolesRepository>();
             builder.Services.AddScoped<IUserRolesService, UserRolesService>();
 
-            builder.Services.AddScoped<IUserRolesMappingRepository, UserRolesMappingRepository>();
-            builder.Services.AddScoped<IUserRolesMappingService, UserRolesMappingService>();
+            builder.Services.AddScoped<IUserRoleMappingRepository, UserRoleMappingRepository>();
+            builder.Services.AddScoped<IUserRoleMappingService, UserRolesMappingService>();
 
             builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();
@@ -81,17 +88,31 @@ namespace HRMS.API
             builder.Services.AddScoped<ITenantRegistrationRepository, TenantRegistrationRepository>();
             builder.Services.AddScoped<ITenantRegistrationService, TenantRegistrationService>();
 
+            builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+            builder.Services.AddScoped<ICompanyService, CompanyService>();
+
+            builder.Services.AddScoped<ICompanyBranchRepository, CompanyBranchRepository>();
+            builder.Services.AddScoped<ICompanyBranchService, CompanyBranchService>();
+
+            builder.Services.AddScoped<IAddressTypeRepository, AddressTypeRepository>();
+            builder.Services.AddScoped<IAddressTypeService, AddressTypeService>();
+
             builder.Services.AddSingleton<IDbConnection>(_ => new SqlConnection(builder.Configuration.GetConnectionString("HRMS_DB")));
 
             builder.Services.AddAutoMapper(typeof(UserMappingProfile),
                                            typeof(TenancyRoleMappingProfile),
-                                           typeof(UserRolesMappingProfile),
+                                           typeof(UserRoleMappingProfile),
                                            typeof(OrganizationMappingProfile),
                                            typeof(SubdomainMappingProfile),
                                            typeof(TenantRegistrationMappingProfile),
                                            typeof(SubdomainMappingProfile),
                                            typeof(OrganizationMappingProfile),
+                                           typeof(CompanyMappingProfile),
                                            typeof(TenantMappingProfile),
+                                           typeof(CompanyMappingProfile),
+                                           typeof(TenantMappingProfile),
+                                           typeof(AddressMappingProfile),
+                                           typeof(AddressTypeMappingProfile),
                                            typeof(AddressMappingProfile),
                                            typeof(StateMappingProfile),
                                            typeof(CityMappingProfile),
@@ -135,7 +156,11 @@ namespace HRMS.API
             app.MapTenantEndpoints();
             app.MapTenantRegistrationEndpoints();
             app.MapUserRolesMappingEndpoints();
+            app.MapCompanyEndpoints();
+            app.MapCompanyBranchEndpoints();
             app.MapAddressEndpoints();
+            app.MapAddressTypeEndpoints();
+
             app.MapCityEndpoints();
             app.MapCountryEndpoints();
             app.MapStateEndpoints();

@@ -58,7 +58,7 @@ namespace HRMS.API.Endpoints.Address
                             ResponseHelper<List<string>>.Error(
                                 message: "Validation Failed",
                                 errors: errorMessages,
-                                statusCode: StatusCodeEnum.BAD_REQUEST
+                                statusCode: StatusCode.BAD_REQUEST
                             ).ToDictionary()
                         );
                     }
@@ -71,7 +71,7 @@ namespace HRMS.API.Endpoints.Address
                             return Results.NotFound(
                                 ResponseHelper<string>.Error(
                                     message: "Country Not Found",
-                                    statusCode: StatusCodeEnum.NOT_FOUND
+                                    statusCode: StatusCode.NOT_FOUND
                                 ).ToDictionary()
                             );
                         }
@@ -92,7 +92,7 @@ namespace HRMS.API.Endpoints.Address
                                 message: "An Unexpected Error occurred.",
                                 exception: ex,
                                 isWarning: false,
-                                statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                                statusCode: StatusCode.INTERNAL_SERVER_ERROR
                             ).ToDictionary()
                         );
                     }
@@ -122,7 +122,7 @@ namespace HRMS.API.Endpoints.Address
                             ResponseHelper<List<string>>.Error(
                                 message: "Validation Failed",
                                 errors: errorMessages,
-                                statusCode: StatusCodeEnum.BAD_REQUEST
+                                statusCode: StatusCode.BAD_REQUEST
                             ).ToDictionary()
                         );
                     }
@@ -145,7 +145,7 @@ namespace HRMS.API.Endpoints.Address
                                 message: "An Unexpected Error occurred while Creating the Country.",
                                 exception: ex,
                                 isWarning: false,
-                                statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                                statusCode: StatusCode.INTERNAL_SERVER_ERROR
                             ).ToDictionary()
                         );
                     }
@@ -175,7 +175,7 @@ namespace HRMS.API.Endpoints.Address
                            ResponseHelper<List<string>>.Error(
                                message: "Validation Failed",
                                errors: errorMessages,
-                               statusCode: StatusCodeEnum.BAD_REQUEST
+                               statusCode: StatusCode.BAD_REQUEST
                            ).ToDictionary()
                        );
                     }
@@ -188,7 +188,7 @@ namespace HRMS.API.Endpoints.Address
                             return Results.NotFound(
                                ResponseHelper<string>.Error(
                                    message: "Country Not Found",
-                                   statusCode: StatusCodeEnum.NOT_FOUND
+                                   statusCode: StatusCode.NOT_FOUND
                                ).ToDictionary()
                            );
                         }
@@ -209,7 +209,7 @@ namespace HRMS.API.Endpoints.Address
                                 message: "An Unexpected Error occurred while Updating the Country.",
                                 exception: ex,
                                 isWarning: false,
-                                statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                                statusCode: StatusCode.INTERNAL_SERVER_ERROR
                             ).ToDictionary()
                         );
                     }
@@ -239,7 +239,7 @@ namespace HRMS.API.Endpoints.Address
                           ResponseHelper<List<string>>.Error(
                               message: "Validation Failed",
                               errors: errorMessages,
-                              statusCode: StatusCodeEnum.BAD_REQUEST
+                              statusCode: StatusCode.BAD_REQUEST
                           ).ToDictionary()
                       );
                     }
@@ -252,7 +252,7 @@ namespace HRMS.API.Endpoints.Address
                             return Results.NotFound(
                                ResponseHelper<string>.Error(
                                    message: "Country Not Found",
-                                   statusCode: StatusCodeEnum.NOT_FOUND
+                                   statusCode: StatusCode.NOT_FOUND
                                ).ToDictionary()
                            );
                         }
@@ -273,7 +273,7 @@ namespace HRMS.API.Endpoints.Address
                                 message: "An Unexpected Error occurred while Deleting the Country.",
                                 exception: ex,
                                 isWarning: false,
-                                statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                                statusCode: StatusCode.INTERNAL_SERVER_ERROR
                             ).ToDictionary()
                         );
                     }

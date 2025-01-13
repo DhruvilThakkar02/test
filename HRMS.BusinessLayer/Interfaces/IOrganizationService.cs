@@ -1,7 +1,6 @@
 ﻿using HRMS.Dtos.Address.Address.AddressRequestDtos;
 using HRMS.Dtos.Tenant.Organization.OrganizationRequestDtos;
 using HRMS.Dtos.Tenant.Organization.OrganizationResponseDtos;
-using HRMS.Dtos.User.User.UserResponseDtos;
 
 namespace HRMS.BusinessLayer.Interfaces
 {

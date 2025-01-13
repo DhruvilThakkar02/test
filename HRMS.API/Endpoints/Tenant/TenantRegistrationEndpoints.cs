@@ -19,7 +19,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to create a new Tenant Registration with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateTenantRegistration", async (TenantRegistrationCreateRequestDto dto, ITenantRegistrationService _tenantRegistrationService) =>
+            app.MapPost("/tenantregistration/create", async (TenantRegistrationCreateRequestDto dto, ITenantRegistrationService _tenantRegistrationService) =>
             {
                 var validator = new TenantRegistrationCreateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -31,7 +31,7 @@ namespace HRMS.API.Endpoints.Tenant
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -52,7 +52,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred while Creating the Tenant Registration.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
