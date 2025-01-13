@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HRMS.BusinessLayer.Interfaces;
+using HRMS.Dtos.Address.Address.AddressRequestDtos;
 using HRMS.Dtos.Tenant.Organization.OrganizationRequestDtos;
 using HRMS.Dtos.Tenant.Organization.OrganizationResponseDtos;
 using HRMS.Entities.Tenant.Organization.OrganizationRequestEntities;
@@ -42,7 +43,7 @@ namespace HRMS.BusinessLayer.Services
             return response;
         }
 
-        public async Task<OrganizationCreateResponseDto> CreateOrganization(OrganizationCreateRequestDto dto)
+        public  async Task<OrganizationCreateResponseDto> CreateOrganization(OrganizationCreateRequestDto dto)
         {
             var organizations = _mapper.Map<OrganizationCreateRequestEntity>(dto);
             var createdOrganization = await _organizationRepository.CreateOrganization(organizations);
@@ -69,6 +70,21 @@ namespace HRMS.BusinessLayer.Services
             var responseEntity = new OrganizationDeleteResponseEntity { OrganizationId = organizationEntity.OrganizationId };
             var responseDto = _mapper.Map<OrganizationDeleteResponseDto>(responseEntity);
             return responseDto;
+        }
+
+        public Task<OrganizationCreateResponseDto> CreateOrganization(AddressCreateRequestDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OrganizationUpdateResponseDto> UpdateOrganization(AddressUpdateRequestDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OrganizationDeleteResponseDto?> DeleteOrganization(AddressDeleteRequestDto dto)
+        {
+            throw new NotImplementedException();
         }
     }
 }
