@@ -32,4 +32,9 @@
 		<ProjectReference Include="..\HRMS.Dtos\HRMS.Dtos.csproj" />
 		<ProjectReference Include="..\HRMS.Entities\HRMS.Entities.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="AutoMapperProfiles\Address\Address\" />
+	</ItemGroup>
+
 </Project>

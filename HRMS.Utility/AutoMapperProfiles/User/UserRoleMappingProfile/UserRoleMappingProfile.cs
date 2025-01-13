@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingRequestDtos;
-using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingResponseDtos;
-using HRMS.Entities.User.UserRolesMapping.UserRolesMappingRequestEntities;
-using HRMS.Entities.User.UserRolesMapping.UserRolesMappingResponseEntities;
+using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingRequestDtos;
+using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingResponseDtos;
+using HRMS.Entities.User.UserRoleMapping.UserRoleMappingRequestEntities;
+using HRMS.Entities.User.UserRoleMapping.UserRoleMappingResponseEntities;
 
-namespace HRMS.Utility.AutoMapperProfiles.User.UserRolesMappingProfile
+namespace HRMS.Utility.AutoMapperProfiles.User.UserRoleMappingProfile
 {
     public class UserRoleMappingProfile : Profile
     {
