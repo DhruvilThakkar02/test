@@ -1,10 +1,8 @@
 ﻿using Dapper;
 using HRMS.Entities.Tenant.TenancyRole.TenancyRoleRequestEntities;
 using HRMS.Entities.Tenant.TenancyRole.TenancyRoleResponseEntities;
-using HRMS.Entities.User.User.UserResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.Utility.Helpers.SqlHelpers.Tenant;
-using HRMS.Utility.Helpers.SqlHelpers.User;
 using System.Data;
 
 namespace HRMS.PersistenceLayer.Repositories

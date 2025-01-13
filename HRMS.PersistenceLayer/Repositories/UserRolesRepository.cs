@@ -1,6 +1,6 @@
 ﻿using Dapper;
-using HRMS.Entities.User.UserRoles.UserRolesRequestEntities;
-using HRMS.Entities.User.UserRoles.UserRolesResponseEntities;
+using HRMS.Entities.User.UserRole.UserRoleRequestEntities;
+using HRMS.Entities.User.UserRole.UserRoleResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.Utility.Helpers.SqlHelpers.User;
 using System.Data;
@@ -23,10 +23,10 @@ namespace HRMS.PersistenceLayer.Repositories
             return roles;
         }
 
-        public async Task<UserRoleReadResponseEntity?> GetUserRoleById(int? rolesId)
+        public async Task<UserRoleReadResponseEntity?> GetUserRoleById(int? roleId)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("@UserRoleId", rolesId);
+            parameters.Add("@UserRoleId", roleId);
 
             var roles = await _dbConnection.QueryFirstOrDefaultAsync<UserRoleReadResponseEntity>(UserRolesStoredProcedure.GetUserRoleById, parameters, commandType: CommandType.StoredProcedure);
 
@@ -42,7 +42,7 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@CreatedBy", roles.CreatedBy);
             parameters.Add("@IsActive", roles.IsActive);
 
-            var result = await _dbConnection.QuerySingleOrDefaultAsync<dynamic>(UserRolesStoredProcedure.CreateUserRoles, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<dynamic>(UserRoleStoredProcedure.CreateUserRole, parameters, commandType: CommandType.StoredProcedure);
 
             var userroleId = parameters.Get<int>("@UserRoleId");
 
@@ -72,14 +72,14 @@ namespace HRMS.PersistenceLayer.Repositories
             paramters.Add("@IsActive", roles.IsActive);
             paramters.Add("@IsDelete", roles.IsDelete);
 
-            var result = await _dbConnection.QuerySingleOrDefaultAsync<UserRoleUpdateResponseEntity>(UserRolesStoredProcedure.UpdateUserRoles, paramters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<UserRoleUpdateResponseEntity>(UserRoleStoredProcedure.UpdateUserRole, paramters, commandType: CommandType.StoredProcedure);
 
             if (result == null || result.UserRoleId == -1)
             {
                 return null;
             }
 
-            var updateUserRoles = new UserRoleUpdateResponseEntity
+            var updateUserRole = new UserRoleUpdateResponseEntity
             {
                 UserRoleId = roles.UserRoleId,
                 UserRoleName = roles.UserRoleName,
@@ -91,7 +91,7 @@ namespace HRMS.PersistenceLayer.Repositories
                 IsActive = roles.IsActive,
                 IsDelete = roles.IsDelete
             };
-            return updateUserRoles;
+            return updateUserRole;
         }
 
         public async Task<int> DeleteUserRole(UserRoleDeleteRequestEntity roles)
@@ -99,7 +99,7 @@ namespace HRMS.PersistenceLayer.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("@UserRoleId", roles.UserRoleId);
 
-            var result = await _dbConnection.ExecuteScalarAsync<int>(UserRolesStoredProcedure.DeleteUserRoles, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.ExecuteScalarAsync<int>(UserRoleStoredProcedure.DeleteUserRole, parameters, commandType: CommandType.StoredProcedure);
 
             return result;
         }

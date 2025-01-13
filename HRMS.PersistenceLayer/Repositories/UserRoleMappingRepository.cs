@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using HRMS.Entities.User.User.UserResponseEntities;
-using HRMS.Entities.User.UserRolesMapping.UserRolesMappingRequestEntities;
-using HRMS.Entities.User.UserRolesMapping.UserRolesMappingResponseEntities;
+using HRMS.Entities.User.UserRoleMapping.UserRoleMappingRequestEntities;
+using HRMS.Entities.User.UserRoleMapping.UserRoleMappingResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.Utility.Helpers.SqlHelpers.User;
 using System.Data;

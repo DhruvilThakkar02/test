@@ -1,6 +1,6 @@
 ﻿namespace HRMS.Utility.Helpers.Enums
 {
-    public enum StatusCodeEnum
+    public enum StatusCode
     {
         OK = 200,
         CREATED = 201,

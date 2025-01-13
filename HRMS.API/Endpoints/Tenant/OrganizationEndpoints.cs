@@ -23,7 +23,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint returns a List of Organizations. If no Organizations are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A List of Organizations or a 404 status code if no Organizations are found.</returns>
-            app.MapGet("/GetOrganizations", async (IOrganizationService service, IOrganizationLogger logger) =>
+            app.MapGet("/organization/getall", async (IOrganizationService service, IOrganizationLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(new { service });
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -52,7 +52,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint return Organization by Id. If no Organization are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A Organization or a 404 status code if no Organization are found.</returns>
-            app.MapGet("/GetOrganizationById/{id}", async (IOrganizationService service, int id, IOrganizationLogger logger) =>
+            app.MapGet("/organization/{id}", async (IOrganizationService service, int id, IOrganizationLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(new { id });
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -71,7 +71,7 @@ namespace HRMS.API.Endpoints.Tenant
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -84,7 +84,7 @@ namespace HRMS.API.Endpoints.Tenant
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
                                 message: "Organization Not Found",
-                                statusCode: StatusCodeEnum.NOT_FOUND
+                                statusCode: StatusCode.NOT_FOUND
                             ).ToDictionary()
                         );
                     }
@@ -105,7 +105,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -124,7 +124,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to create a new Organization with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateOrganization", async (OrganizationCreateRequestDto dto, IOrganizationService _organizationService, IOrganizationLogger logger) =>
+            app.MapPost("/organization/create", async (OrganizationCreateRequestDto dto, IOrganizationService _organizationService, IOrganizationLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -142,7 +142,7 @@ namespace HRMS.API.Endpoints.Tenant
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
                             errors: errorMessages,
-                            statusCode: StatusCodeEnum.BAD_REQUEST
+                            statusCode: StatusCode.BAD_REQUEST
                         ).ToDictionary()
                     );
                 }
@@ -165,7 +165,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred while Creating the Organization.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -184,7 +184,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// This endpoint allows you to update Organization details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateOrganization", async (IOrganizationService service, [FromBody] OrganizationUpdateRequestDto dto, IOrganizationLogger logger) =>
+            app.MapPut("/organization/update", async (IOrganizationService service, [FromBody] OrganizationUpdateRequestDto dto, IOrganizationLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -202,7 +202,7 @@ namespace HRMS.API.Endpoints.Tenant
                        ResponseHelper<List<string>>.Error(
                            message: "Validation Failed",
                            errors: errorMessages,
-                           statusCode: StatusCodeEnum.BAD_REQUEST
+                           statusCode: StatusCode.BAD_REQUEST
                        ).ToDictionary()
                    );
                 }
@@ -215,7 +215,7 @@ namespace HRMS.API.Endpoints.Tenant
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "Organization Not Found",
-                               statusCode: StatusCodeEnum.NOT_FOUND
+                               statusCode: StatusCode.NOT_FOUND
                            ).ToDictionary()
                        );
                     }
@@ -236,7 +236,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred while Updating the Organization.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }
@@ -253,7 +253,7 @@ namespace HRMS.API.Endpoints.Tenant
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a Organization based on the provided Organization Id.</remarks>
-            app.MapDelete("/DeleteOrganization", async (IOrganizationService service, [FromBody] OrganizationDeleteRequestDto dto, IOrganizationLogger logger) =>
+            app.MapDelete("/organization/delete", async (IOrganizationService service, [FromBody] OrganizationDeleteRequestDto dto, IOrganizationLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -271,7 +271,7 @@ namespace HRMS.API.Endpoints.Tenant
                       ResponseHelper<List<string>>.Error(
                           message: "Validation Failed",
                           errors: errorMessages,
-                          statusCode: StatusCodeEnum.BAD_REQUEST
+                          statusCode: StatusCode.BAD_REQUEST
                       ).ToDictionary()
                   );
                 }
@@ -284,7 +284,7 @@ namespace HRMS.API.Endpoints.Tenant
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "Organization Not Found",
-                               statusCode: StatusCodeEnum.NOT_FOUND
+                               statusCode: StatusCode.NOT_FOUND
                            ).ToDictionary()
                        );
                     }
@@ -292,8 +292,7 @@ namespace HRMS.API.Endpoints.Tenant
                     logger.LogInformation("Successfully deleted Organization with Id {OrganizationId}.", dto.OrganizationId);
                     return Results.Ok(
                        ResponseHelper<OrganizationDeleteResponseDto>.Success(
-                           message: "Organization Deleted Successfully",
-                           data: result
+                           message: "Organization Deleted Successfully"
                        ).ToDictionary()
                    );
                 }
@@ -305,7 +304,7 @@ namespace HRMS.API.Endpoints.Tenant
                             message: "An Unexpected Error occurred while Deleting the Organization.",
                             exception: ex,
                             isWarning: false,
-                            statusCode: StatusCodeEnum.INTERNAL_SERVER_ERROR
+                            statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
                 }

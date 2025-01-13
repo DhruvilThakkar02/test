@@ -1,0 +1,22 @@
+﻿namespace HRMS.Dtos.Tenant.Company.CompanyRequestDtos
+{
+    public class CompanyCreateRequestDto
+    {
+        public string CompanyName { get; set; } = string.Empty;
+        public string Industry { get; set; } = string.Empty;
+        public string CompanyType { get; set; } = string.Empty;
+        public DateTime FoundedDate { get; set; }
+        public int? NumberOfEmployees { get; set; }
+        public string WebsiteUrl { get; set; } = string.Empty;
+        public string TaxNumber { get; set; } = string.Empty;
+        public string GstNumber { get; set; } = string.Empty;
+        public string PfNumber { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string Logo { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public int? AddressId { get; set; }
+        public int TenantId { get; set; }
+        public int CreatedBy { get; set; }
+        public bool IsActive { get; set; }
+    }
+}

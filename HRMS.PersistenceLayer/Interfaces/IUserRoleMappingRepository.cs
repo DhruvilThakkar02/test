@@ -1,5 +1,5 @@
-﻿using HRMS.Entities.User.UserRolesMapping.UserRolesMappingRequestEntities;
-using HRMS.Entities.User.UserRolesMapping.UserRolesMappingResponseEntities;
+﻿using HRMS.Entities.User.UserRoleMapping.UserRoleMappingRequestEntities;
+using HRMS.Entities.User.UserRoleMapping.UserRoleMappingResponseEntities;
 
 namespace HRMS.PersistenceLayer.Interfaces
 {

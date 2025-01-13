@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using HRMS.API.Endpoints.CompanyBranch;
 using HRMS.API.Endpoints.Tenant;
 using HRMS.API.Endpoints.User;
 using HRMS.API.Modules.User;
@@ -6,13 +7,14 @@ using HRMS.BusinessLayer.Interfaces;
 using HRMS.BusinessLayer.Services;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.PersistenceLayer.Repositories;
+using HRMS.Utility.AutoMapperProfiles.Tenant.CompanyMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.OrganizationMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.SubdomainMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenancyRoleMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenantMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenantRegistrationMapping;
 using HRMS.Utility.AutoMapperProfiles.User.UserMapping;
-using HRMS.Utility.AutoMapperProfiles.User.UserRolesMapping;
+using HRMS.Utility.AutoMapperProfiles.User.UserRoleMapping;
 using HRMS.Utility.Helpers.LogHelpers.Interface;
 using HRMS.Utility.Helpers.LogHelpers.Services;
 using Microsoft.Data.SqlClient;
@@ -35,6 +37,15 @@ namespace HRMS.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddScoped<IOrganizationLogger, OrganinizationLogger>();
+            builder.Services.AddScoped<ICompanyLogger, CompanyLogger>();
+            builder.Services.AddScoped<ICompanyBranchLogger, CompanyBranchLogger>();
+            builder.Services.AddScoped<ITenancyRoleLogger, TenancyRoleLogger>();
+            builder.Services.AddScoped<ITenantRegistrationLogger, TenantRegistrationLogger>();
+            builder.Services.AddScoped<IUserLogger, UserLogger>();
+            builder.Services.AddScoped<IUserRoleLogger, UserRoleLogger>();
+            builder.Services.AddScoped<IUserRoleMappingLogger, UserRoleMappingLogger>();
+            builder.Services.AddScoped<ISubdomainLogger, SubdomainLogger>();
+            builder.Services.AddScoped<ITenantLogger, TenantLogger>();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
@@ -60,6 +71,12 @@ namespace HRMS.API
             builder.Services.AddScoped<ITenantRegistrationRepository, TenantRegistrationRepository>();
             builder.Services.AddScoped<ITenantRegistrationService, TenantRegistrationService>();
 
+            builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+            builder.Services.AddScoped<ICompanyService, CompanyService>();
+
+            builder.Services.AddScoped<ICompanyBranchRepository, CompanyBranchRepository>();
+            builder.Services.AddScoped<ICompanyBranchService, CompanyBranchService>();
+
             builder.Services.AddSingleton<IDbConnection>(_ => new SqlConnection(builder.Configuration.GetConnectionString("HRMS_DB")));
 
             builder.Services.AddAutoMapper(typeof(UserMappingProfile),
@@ -70,7 +87,9 @@ namespace HRMS.API
                                            typeof(TenantRegistrationMappingProfile),
                                            typeof(SubdomainMappingProfile),
                                            typeof(OrganizationMappingProfile),
-                                           typeof(TenantMappingProfile));
+                                           typeof(CompanyMappingProfile),
+                                           typeof(TenantMappingProfile),
+                                           typeof(CompanyMappingProfile));
 
             builder.Services.AddAuthorization();
             builder.Services.AddCors();
@@ -105,11 +124,13 @@ namespace HRMS.API
             app.MapUserEndpoints();
             app.MapOrganizationEndpoints();
             app.MapTenancyRoleEndpoints();
-            app.MapUserRolesEndpoints();
+            app.MapUserRoleEndpoints();
             app.MapSubdomainEndpoints();
             app.MapTenantEndpoints();
             app.MapTenantRegistrationEndpoints();
-            app.MapUserRolesMappingEndpoints();
+            app.MapUserRoleMappingEndpoints();
+            app.MapCompanyEndpoints();
+            app.MapCompanyBranchEndpoints();
 
             app.Run();
         }

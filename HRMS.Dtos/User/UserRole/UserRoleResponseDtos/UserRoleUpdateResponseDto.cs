@@ -1,4 +1,4 @@
-﻿namespace HRMS.Dtos.User.UserRoles.UserRolesResponseDtos
+﻿namespace HRMS.Dtos.User.UserRole.UserRoleResponseDtos
 {
     public class UserRoleUpdateResponseDto
     {

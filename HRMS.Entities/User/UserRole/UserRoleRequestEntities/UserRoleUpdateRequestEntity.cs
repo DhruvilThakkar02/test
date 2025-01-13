@@ -1,4 +1,4 @@
-﻿namespace HRMS.Entities.User.UserRoles.UserRolesRequestEntities
+﻿namespace HRMS.Entities.User.UserRole.UserRoleRequestEntities
 {
     public class UserRoleUpdateRequestEntity
     {
