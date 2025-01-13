@@ -48,7 +48,7 @@ namespace HRMS.API.Modules.User
             .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Users", description: "This endpoint returns a List of Users. If no Users are found, a 404 status code is returned."
             ));
 
-            
+         
 
             /// <summary> 
             /// Retrieve User by Id. 
@@ -129,7 +129,7 @@ namespace HRMS.API.Modules.User
             /// This endpoint allows you to create a new User with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateUser", async (UserCreateRequestDto dto, IUserService _userService, IUserLogger logger) =>
+            app.MapPost("/user/create", async (UserCreateRequestDto dto, IUserService _userService, IUserLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
@@ -190,7 +190,7 @@ namespace HRMS.API.Modules.User
             /// This endpoint allows you to update User details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateUser", async (IUserService service, [FromBody] UserUpdateRequestDto dto, IUserLogger logger) =>
+            app.MapPut("/user/update", async (IUserService service, [FromBody] UserUpdateRequestDto dto, IUserLogger logger) =>
             {
                 var requestJson = JsonConvert.SerializeObject(dto);
                 logger.LogInformation("Received request: {RequestJson}", requestJson);
