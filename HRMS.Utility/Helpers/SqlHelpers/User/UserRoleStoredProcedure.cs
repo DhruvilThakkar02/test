@@ -4,8 +4,8 @@
     {
         public const string GetUserRoles = "spUserRoleGetAll";
         public const string GetUserRoleById = "spUserRoleGet";
-        public const string CreateUserRoles = "spUserRoleAdd";
-        public const string UpdateUserRoles = "spUserRoleUpdate";
-        public const string DeleteUserRoles = "spUserRoleDelete";
+        public const string CreateUserRole = "spUserRoleAdd";
+        public const string UpdateUserRole = "spUserRoleUpdate";
+        public const string DeleteUserRole = "spUserRoleDelete";
     }
 }

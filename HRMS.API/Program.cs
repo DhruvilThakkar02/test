@@ -13,7 +13,7 @@ using HRMS.Utility.AutoMapperProfiles.Tenant.TenancyRoleMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenantMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenantRegistrationMapping;
 using HRMS.Utility.AutoMapperProfiles.User.UserMapping;
-using HRMS.Utility.AutoMapperProfiles.User.UserRolesMapping;
+using HRMS.Utility.AutoMapperProfiles.User.UserRoleMapping;
 using HRMS.Utility.Helpers.LogHelpers.Interface;
 using HRMS.Utility.Helpers.LogHelpers.Services;
 using Microsoft.Data.SqlClient;
@@ -110,11 +110,11 @@ namespace HRMS.API
             app.MapUserEndpoints();
             app.MapOrganizationEndpoints();
             app.MapTenancyRoleEndpoints();
-            app.MapUserRolesEndpoints();
+            app.MapUserRoleEndpoints();
             app.MapSubdomainEndpoints();
             app.MapTenantEndpoints();
             app.MapTenantRegistrationEndpoints();
-            app.MapUserRolesMappingEndpoints();
+            app.MapUserRoleMappingEndpoints();
             app.MapCompanyEndpoints();
 
             app.Run();

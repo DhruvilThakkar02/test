@@ -1,13 +1,10 @@
-﻿using FluentValidation;
-using HRMS.BusinessLayer.Interfaces;
+﻿using HRMS.BusinessLayer.Interfaces;
 using HRMS.Dtos.User.User.UserResponseDtos;
-using HRMS.Dtos.User.UserRoles.UserRolesRequestDtos;
-using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingRequestDtos;
-using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingResponseDtos;
+using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingRequestDtos;
+using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingResponseDtos;
 using HRMS.Utility.Helpers.Enums;
 using HRMS.Utility.Helpers.Handlers;
-using HRMS.Utility.Validators.User.UserRoles;
-using HRMS.Utility.Validators.User.UserRolesMapping;
+using HRMS.Utility.Validators.User.UserRoleMapping;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -15,7 +12,7 @@ namespace HRMS.API.Endpoints.User
 {
     public static class UserRoleMappingEndpoints
     {
-        public static void MapUserRolesMappingEndpoints(this IEndpointRouteBuilder app)
+        public static void MapUserRoleMappingEndpoints(this IEndpointRouteBuilder app)
         {
             /// <summary> 
             /// Retrieves a List of User Roles Mapping. 
@@ -165,8 +162,8 @@ namespace HRMS.API.Endpoints.User
                 }
                 try
                 {
-                    var updatedUserMappingRoles = await _rolesmappingService.UpdateUserRolesMapping(dto);
-                    if (updatedUserMappingRoles == null)
+                    var updatedUserMappingRole = await _rolesmappingService.UpdateUserRoleMapping(dto);
+                    if (updatedUserMappingRole == null)
                     {
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
@@ -178,7 +175,7 @@ namespace HRMS.API.Endpoints.User
                     return Results.Ok(
                         ResponseHelper<UserRoleMappingUpdateResponseDto>.Success(
                             message: "User Roles Updated Succesfully ",
-                            data: updatedUserMappingRoles
+                            data: updatedUserMappingRole
                             ).ToDictionary()
                         );
                 }
@@ -204,7 +201,7 @@ namespace HRMS.API.Endpoints.User
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a User Roles Mapping based on the provided User Role Mapping Id.</remarks>
-            app.MapDelete("/DeleteUserRoleMapping", async (IUserRoleMappingService _rolesmappingService,[FromBody] UserRoleMappingDeleteRequestDto dto) =>
+            app.MapDelete("/DeleteUserRoleMapping", async (IUserRoleMappingService _rolesmappingService, [FromBody] UserRoleMappingDeleteRequestDto dto) =>
             {
                 var validator = new UserRoleMappingDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);

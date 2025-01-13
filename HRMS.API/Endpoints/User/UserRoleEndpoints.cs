@@ -1,10 +1,10 @@
 ﻿using HRMS.BusinessLayer.Interfaces;
-using HRMS.Dtos.User.UserRoles.UserRolesRequestDtos;
-using HRMS.Dtos.User.UserRoles.UserRolesResponseDtos;
 using HRMS.Dtos.User.User.UserResponseDtos;
+using HRMS.Dtos.User.UserRole.UserRoleRequestDtos;
+using HRMS.Dtos.User.UserRole.UserRoleResponseDtos;
 using HRMS.Utility.Helpers.Enums;
 using HRMS.Utility.Helpers.Handlers;
-using HRMS.Utility.Validators.User.UserRoles;
+using HRMS.Utility.Validators.User.UserRole;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -12,7 +12,7 @@ namespace HRMS.API.Endpoints.User
 {
     public static class UserRoleEndpoints
     {
-        public static void MapUserRolesEndpoints(this IEndpointRouteBuilder app)
+        public static void MapUserRoleEndpoints(this IEndpointRouteBuilder app)
         {
             /// <summary> 
             /// Retrieves a List of User Roles. 
@@ -171,8 +171,8 @@ namespace HRMS.API.Endpoints.User
 
                 try
                 {
-                    var updatedUserRoles = await _rolesService.UpdateUserRole(dto);
-                    if (updatedUserRoles == null)
+                    var updatedUserRole = await _rolesService.UpdateUserRole(dto);
+                    if (updatedUserRole == null)
                     {
                         return Results.NotFound(
                             ResponseHelper<string>.Error(
@@ -184,7 +184,7 @@ namespace HRMS.API.Endpoints.User
                     return Results.Ok(
                         ResponseHelper<UserRoleUpdateResponseDto>.Success(
                             message: "User Roles Updated Succesfully ",
-                            data: updatedUserRoles
+                            data: updatedUserRole
                             ).ToDictionary()
                         );
                 }
