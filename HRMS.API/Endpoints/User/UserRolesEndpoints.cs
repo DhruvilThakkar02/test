@@ -13,7 +13,7 @@ using Serilog;
 
 namespace HRMS.API.Endpoints.User
 {
-    public static class UserRoleEndpoints
+    public static class UserRolesEndpoints
     {
         public static void MapUserRoleEndpoints(this IEndpointRouteBuilder app)
         {

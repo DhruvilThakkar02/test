@@ -59,11 +59,11 @@ namespace HRMS.API
             builder.Services.AddScoped<ITenancyRoleService, TenancyRoleService>();
             builder.Services.AddScoped<ITenancyRoleRepository, TenancyRoleRepository>();
 
-            builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
-            builder.Services.AddScoped<IUserRoleService, UserRoleService>();
+            builder.Services.AddScoped<IUserRolesRepository, UserRolesRepository>();
+            builder.Services.AddScoped<IUserRolesService, UserRolesService>();
 
             builder.Services.AddScoped<IUserRoleMappingRepository, UserRoleMappingRepository>();
-            builder.Services.AddScoped<IUserRoleMappingService, UserRoleMappingService>();
+            builder.Services.AddScoped<IUserRoleMappingService, UserRolesMappingService>();
 
             builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();

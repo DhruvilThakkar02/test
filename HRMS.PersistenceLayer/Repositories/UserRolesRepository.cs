@@ -8,18 +8,18 @@ using System.Data;
 
 namespace HRMS.PersistenceLayer.Repositories
 {
-    public class UserRoleRepository : IUserRoleRepository
+    public class UserRolesRepository : IUserRolesRepository
     {
         private readonly IDbConnection _dbConnection;
 
-        public UserRoleRepository(IDbConnection dbConnection)
+        public UserRolesRepository(IDbConnection dbConnection)
         {
             _dbConnection = dbConnection;
         }
 
         public async Task<IEnumerable<UserRoleReadResponseEntity>> GetUserRoles()
         {
-            var roles = await _dbConnection.QueryAsync<UserRoleReadResponseEntity>(UserRoleStoredProcedure.GetUserRoles, commandType: CommandType.StoredProcedure);
+            var roles = await _dbConnection.QueryAsync<UserRoleReadResponseEntity>(UserRolesStoredProcedure.GetUserRoles, commandType: CommandType.StoredProcedure);
             return roles;
         }
 
@@ -28,7 +28,7 @@ namespace HRMS.PersistenceLayer.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("@UserRoleId", roleId);
 
-            var roles = await _dbConnection.QueryFirstOrDefaultAsync<UserRoleReadResponseEntity>(UserRoleStoredProcedure.GetUserRoleById, parameters, commandType: CommandType.StoredProcedure);
+            var roles = await _dbConnection.QueryFirstOrDefaultAsync<UserRoleReadResponseEntity>(UserRolesStoredProcedure.GetUserRoleById, parameters, commandType: CommandType.StoredProcedure);
 
             return roles;
         }
