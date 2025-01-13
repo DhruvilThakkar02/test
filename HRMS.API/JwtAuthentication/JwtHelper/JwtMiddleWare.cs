@@ -12,6 +12,7 @@ using System.Text;
 
 namespace HRMS.Utility.JwtAuthentication.JwtHelper
 {
+
     public class JwtMiddleWare
     {
         private readonly RequestDelegate _next;
@@ -28,92 +29,215 @@ namespace HRMS.Utility.JwtAuthentication.JwtHelper
             var endpointFeature = context.Features.Get<IEndpointFeature>();
             var endpoint = endpointFeature?.Endpoint;
 
+            // Check if the endpoint allows anonymous access
             var allowAnonymous = endpoint?.Metadata?.GetMetadata<AllowAnonymousAttribute>() != null;
 
             if (allowAnonymous)
             {
                 await _next(context);
+                return;
             }
-            else if (!context.Request.Headers.TryGetValue("Authorization", out StringValues token) || string.IsNullOrEmpty(token))
+
+            // Check if Authorization header is present
+            if (!context.Request.Headers.TryGetValue("Authorization", out StringValues token) || string.IsNullOrEmpty(token))
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 await context.Response.WriteAsync("Unauthorized: Token is missing or empty");
+                return;
             }
-            else
-            {
-                try
-                {
-                    var splitToken = token.ToString().Split(" ");
-                    var extractedToken = splitToken[splitToken.Length - 1];
-                    var user = await AttachUserToContext(context, extractedToken, userService);
-                    if (user != null)
-                    {
-                        context.Items["UserReadResponseDto"] = user;
-                        context.Items["IsTokenValid"] = "True";
-                    }
-                    else
-                    {
-                        await HandleInvalidToken(context, "Invalid token or user not found");
-                        return;
-                    }
-                }
-                catch (SecurityTokenExpiredException)
-                {
-                    await HandleInvalidToken(context, "Token has expired");
-                    return;
-                }
-                catch (SecurityTokenException)
-                {
-                    await HandleInvalidToken(context, "Invalid token");
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    await HandleInvalidToken(context, $"Unauthorized: {ex.Message}");
-                    return;
-                }
 
-                await _next(context);
-            }
-        }
-
-        public async Task<UserReadResponseDto> AttachUserToContext(HttpContext context, string token, IUserService userService)
-        {
             try
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_jwtSecretKey.Secret);
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                var splitToken = token.ToString().Split(" ");
+                var extractedToken = splitToken[^1];
+                var user = await AttachUserToContext(context, extractedToken, userService);
+
+                if (user != null)
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
+                    context.Items["UserReadResponseDto"] = user;
+                    context.Items["IsTokenValid"] = true;
 
-                var jwtToken = (JwtSecurityToken)validatedToken;
+                    // Check if the endpoint requires a role (from the policy or authorization metadata)
+                    if (endpoint?.Metadata?.GetMetadata<AuthorizeAttribute>()?.Policy != null)
+                    {
+                        var requiredRole = endpoint.Metadata.GetMetadata<AuthorizeAttribute>().Policy;
 
-                var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "UserId").Value);
+                        var userRole = ((JwtSecurityToken)new JwtSecurityTokenHandler().ReadToken(extractedToken))
+                            .Claims.FirstOrDefault(x => x.Type == "UserRoleName")?.Value;
 
-                var user = await userService.GetUserById(userId);
-                return user;
+                        // Check if user role matches required role
+                        if (userRole != requiredRole)
+                        {
+                            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                            await context.Response.WriteAsync("Forbidden: You do not have sufficient roles.");
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    await context.Response.WriteAsync("Unauthorized: Invalid token or user not found");
+                    return;
+                }
+            }
+            catch (SecurityTokenExpiredException)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsync("Unauthorized: Token has expired");
+                return;
+            }
+            catch (SecurityTokenException)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsync("Unauthorized: Invalid token");
+                return;
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("An error occurred while validating the token.", ex);
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsync($"Unauthorized: {ex.Message}");
+                return;
             }
+
+            await _next(context);
         }
 
-        private static async Task HandleInvalidToken(HttpContext context, string errorMessage)
+        private async Task<UserReadResponseDto> AttachUserToContext(HttpContext context, string token, IUserService userService)
         {
-            context.Items["IsTokenValid"] = "False";
-            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            await context.Response.WriteAsync(errorMessage);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtSecretKey.Secret);
 
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            var jwtToken = (JwtSecurityToken)validatedToken;
+
+            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "UserId").Value);
+            var user = await userService.GetUserById(userId);
+            return user;
         }
     }
+
+    //public class JwtMiddleWare
+    //{
+
+    //    private readonly RequestDelegate _next;
+    //    private readonly JwtSecretKey _jwtSecretKey;
+
+    //    public JwtMiddleWare(RequestDelegate next, IOptions<JwtSecretKey> jwtSecretKey)
+    //    {
+    //        _next = next;
+    //        _jwtSecretKey = jwtSecretKey.Value;
+    //    }
+
+    //    public async Task Invoke(HttpContext context, IUserService userService)
+    //    {
+    //        var endpointFeature = context.Features.Get<IEndpointFeature>();
+    //        var endpoint = endpointFeature?.Endpoint;
+
+    //        var allowAnonymous = endpoint?.Metadata?.GetMetadata<AllowAnonymousAttribute>() != null;
+
+    //        if (allowAnonymous)
+    //        {
+    //            await _next(context);
+    //            return;
+    //        }
+
+    //        if (!context.Request.Headers.TryGetValue("Authorization", out StringValues token) || string.IsNullOrEmpty(token))
+    //        {
+    //            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+    //            await context.Response.WriteAsync("Unauthorized: Token is missing or empty");
+    //            return;
+    //        }
+
+    //        try
+    //        {
+    //            var splitToken = token.ToString().Split(" ");
+    //            var extractedToken = splitToken[^1];
+    //            var user = await AttachUserToContext(context, extractedToken, userService);
+
+    //            if (user != null)
+    //            {
+    //                context.Items["UserReadResponseDto"] = user;
+    //                context.Items["IsTokenValid"] = true;
+
+    //                // Check for roles if required (example: AdminOnly)
+    //                if (endpoint?.Metadata?.GetMetadata<AuthorizeAttribute>()?.Policy != null)
+    //                {
+    //                    var requiredRoles = endpoint.Metadata.GetMetadata<AuthorizeAttribute>().Policy.Split(',');
+
+    //                    var userRole = ((JwtSecurityToken)new JwtSecurityTokenHandler().ReadToken(extractedToken))
+    //                        .Claims.FirstOrDefault(x => x.Type == "UserRoleName")?.Value;
+
+    //                    if (!requiredRoles.Contains(userRole))
+    //                    {
+    //                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+    //                        await context.Response.WriteAsync("Forbidden: You do not have sufficient roles.");
+    //                        return;
+    //                    }
+    //                }
+    //            }
+    //            else
+    //            {
+    //                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+    //                await context.Response.WriteAsync("Unauthorized: Invalid token or user not found");
+    //                return;
+    //            }
+    //        }
+    //        catch (SecurityTokenExpiredException)
+    //        {
+    //            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+    //            await context.Response.WriteAsync("Unauthorized: Token has expired");
+    //            return;
+    //        }
+    //        catch (SecurityTokenException)
+    //        {
+    //            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+    //            await context.Response.WriteAsync("Unauthorized: Invalid token");
+    //            return;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+    //            await context.Response.WriteAsync($"Unauthorized: {ex.Message}");
+    //            return;
+    //        }
+
+    //        await _next(context);
+    //    }
+
+    //    private async Task<UserReadResponseDto> AttachUserToContext(HttpContext context, string token, IUserService userService)
+    //    {
+    //        var tokenHandler = new JwtSecurityTokenHandler();
+    //        var key = Encoding.ASCII.GetBytes(_jwtSecretKey.Secret);
+
+    //        tokenHandler.ValidateToken(token, new TokenValidationParameters
+    //        {
+    //            ValidateIssuerSigningKey = true,
+    //            IssuerSigningKey = new SymmetricSecurityKey(key),
+    //            ValidateIssuer = false,
+    //            ValidateAudience = false,
+    //            ValidateLifetime = true,
+    //            ClockSkew = TimeSpan.Zero
+    //        }, out SecurityToken validatedToken);
+
+    //        var jwtToken = (JwtSecurityToken)validatedToken;
+
+    //        var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "UserId").Value);
+    //        var user = await userService.GetUserById(userId);
+    //        return user;
+    //    }
+
+
+    //}
 
 
 }

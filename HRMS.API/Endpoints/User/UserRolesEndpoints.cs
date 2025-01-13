@@ -42,6 +42,7 @@ namespace HRMS.API.Endpoints.User
                 var errorResponse = ResponseHelper<List<UserReadResponseDto>>.Error("No User Roles Found");
                 return Results.NotFound(errorResponse.ToDictionary());
             }).WithTags("User Role")
+            .RequireAuthorization("User")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of User Roles", description: "This endpoint returns a List of User Roles. If no User Roles are found, a 404 status code is returned."
             ));
 
@@ -175,6 +176,7 @@ namespace HRMS.API.Endpoints.User
                     Log.CloseAndFlush();
                 }
             }).WithTags("User Role")
+            .AllowAnonymous()
             .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new User Role.", description: "This endpoint allows you to create a new User Role with the provided details."
             ));
 
