@@ -1,4 +1,4 @@
-CREATE PROCEDURE [dbo].[spUserRolesAdd]
+CREATE PROCEDURE [dbo].[spUserRoleAdd]
 @UserRoleId INT OUTPUT,
 @UserRoleName NVARCHAR(255) = NULL,
 @PermissionGroupId INT = NULL,

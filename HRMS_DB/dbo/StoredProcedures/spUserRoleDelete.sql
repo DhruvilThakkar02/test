@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE [dbo].[spUserRolesDelete]
+CREATE PROCEDURE [dbo].[spUserRoleDelete]
 @UserRoleId  INT = NULL
 AS
 BEGIN

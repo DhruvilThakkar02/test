@@ -1,4 +1,4 @@
-create proc [dbo].[spUserRolesGetAll]
+create proc [dbo].[spUserRoleGetAll]
 AS
 BEGIN 
 select * from [tblUserRoles]

@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE [dbo].[spUserRolesUpdate]
+CREATE PROCEDURE [dbo].[spUserRoleUpdate]
     @UserRoleId INT = NULL,
     @UserRoleName NVARCHAR(50) = NULL,
     @PermissionGroupId INT = NULL,

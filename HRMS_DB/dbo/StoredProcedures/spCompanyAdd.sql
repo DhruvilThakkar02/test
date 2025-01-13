@@ -24,7 +24,7 @@ BEGIN
         BEGIN TRANSACTION;
         IF @CreatedBy IS NULL
         BEGIN
-            RAISERROR ('CreatedBy cannot be NULL..', 16, 1);
+            RAISERROR ('CreatedBy cannot be NULL.', 16, 1);
             ROLLBACK TRANSACTION;
             RETURN;
         END;
