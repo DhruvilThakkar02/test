@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using HRMS.API.Endpoints.CompanyBranch;
 using HRMS.API.Endpoints.Tenant;
 using HRMS.API.Endpoints.User;
 using HRMS.API.Modules.User;
@@ -36,6 +37,15 @@ namespace HRMS.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddScoped<IOrganizationLogger, OrganinizationLogger>();
+            builder.Services.AddScoped<ICompanyLogger, CompanyLogger>();
+            builder.Services.AddScoped<ICompanyBranchLogger, CompanyBranchLogger>();
+            builder.Services.AddScoped<ITenancyRoleLogger, TenancyRoleLogger>();
+            builder.Services.AddScoped<ITenantRegistrationLogger, TenantRegistrationLogger>();
+            builder.Services.AddScoped<IUserLogger, UserLogger>();
+            builder.Services.AddScoped<IUserRoleLogger, UserRoleLogger>();
+            builder.Services.AddScoped<IUserRoleMappingLogger, UserRoleMappingLogger>();
+            builder.Services.AddScoped<ISubdomainLogger, SubdomainLogger>();
+            builder.Services.AddScoped<ITenantLogger, TenantLogger>();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
@@ -61,8 +71,11 @@ namespace HRMS.API
             builder.Services.AddScoped<ITenantRegistrationRepository, TenantRegistrationRepository>();
             builder.Services.AddScoped<ITenantRegistrationService, TenantRegistrationService>();
 
-            builder.Services.AddScoped<ICompanyRepository,CompanyRepository>();
-            builder.Services.AddScoped<ICompanyService,CompanyService>();
+            builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+            builder.Services.AddScoped<ICompanyService, CompanyService>();
+
+            builder.Services.AddScoped<ICompanyBranchRepository, CompanyBranchRepository>();
+            builder.Services.AddScoped<ICompanyBranchService, CompanyBranchService>();
 
             builder.Services.AddSingleton<IDbConnection>(_ => new SqlConnection(builder.Configuration.GetConnectionString("HRMS_DB")));
 
@@ -75,7 +88,8 @@ namespace HRMS.API
                                            typeof(SubdomainMappingProfile),
                                            typeof(OrganizationMappingProfile),
                                            typeof(CompanyMappingProfile),
-                                           typeof(TenantMappingProfile));
+                                           typeof(TenantMappingProfile),
+                                           typeof(CompanyMappingProfile));
 
             builder.Services.AddAuthorization();
             builder.Services.AddCors();
@@ -116,6 +130,7 @@ namespace HRMS.API
             app.MapTenantRegistrationEndpoints();
             app.MapUserRoleMappingEndpoints();
             app.MapCompanyEndpoints();
+            app.MapCompanyBranchEndpoints();
 
             app.Run();
         }
