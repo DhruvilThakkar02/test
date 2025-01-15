@@ -38,7 +38,7 @@ namespace HRMS.API.Endpoints.Address
                 if (alladdress != null && alladdress.Any())
                 {
                     var response = ResponseHelper<List<AddressReadResponseDto>>.Success("Address Retrieved Successfully", alladdress.ToList());
-                    logger.LogInformation("Successfully retrieved {Count} Organizations.", alladdress.Count);
+                    logger.LogInformation("Successfully retrieved {Count} Addresses.", alladdress.Count);
                     return Results.Ok(response.ToDictionary());
                 }
                 logger.LogWarning("No Addresses found.");
@@ -74,7 +74,7 @@ namespace HRMS.API.Endpoints.Address
                 {
                     var errorMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
                   
-                    logger.LogWarning("Validation failed for Address with Id {OrganizationId}: {Errors}", id, string.Join(", ", errorMessages));
+                    logger.LogWarning("Validation failed for Address with Id {AddressId}: {Errors}", id, string.Join(", ", errorMessages));
                     return Results.BadRequest(
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",

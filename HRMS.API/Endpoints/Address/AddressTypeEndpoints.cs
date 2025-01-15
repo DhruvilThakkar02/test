@@ -6,9 +6,12 @@ using HRMS.Dtos.Address.AddressType.AddressTypeResponseDtos;
 
 using HRMS.Utility.Helpers.Enums;
 using HRMS.Utility.Helpers.Handlers;
+using HRMS.Utility.Helpers.LogHelpers.Interface;
 using HRMS.Utility.Validators.Address.AddressType;
-using HRMS.Utility.Validators.User.User;
+
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Serilog;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace HRMS.API.Endpoints.Address
@@ -18,21 +21,29 @@ namespace HRMS.API.Endpoints.Address
         public static void MapAddressTypeEndpoints(this IEndpointRouteBuilder app)
         {
             /// <summary> 
-            /// Retrieves a List of Users. 
+            /// Retrieves a List of AddressTypes. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint returns a List of Users. If no Users are found, a 404 status code is returned. 
+            /// This endpoint returns a List of AddressTypes If no AddressTypes are found, a 404 status code is returned. 
             /// </remarks> 
-            /// <returns>A List of Users or a 404 status code if no Users are found.</returns>
-            app.MapGet("/addresstype/getall", async (IAddressTypeService service) =>
+            /// <returns>A List of AddressTypes or a 404 status code if no AddressTypes are found.</returns>
+            app.MapGet("/addresstype/getall", async (IAddressTypeService service, IAddressTypeLogger logger) =>
             {
+                var requestJson = JsonConvert.SerializeObject(new
+                {
+                    service
+                });
+              
+                logger.LogInformation("Received request: {RequestJson}", requestJson);
+
+                logger.LogInformation("Fetching all AddressTypes.");
                 var addresstypes = await service.GetAddressTypes();
                 if (addresstypes != null && addresstypes.Any())
                 {
                     var response = ResponseHelper<List<AddressTypeReadResponseDto>>.Success("AddressTypes Retrieved Successfully", addresstypes.ToList());
                     return Results.Ok(response.ToDictionary());
                 }
-
+                logger.LogWarning("No AddressTypes found.");
                 var errorResponse = ResponseHelper<List<AddressTypeReadResponseDto>>.Error("No AddressTypes Found");
                 return Results.NotFound(errorResponse.ToDictionary());
             }).WithTags("AddressType")
@@ -40,14 +51,21 @@ namespace HRMS.API.Endpoints.Address
             ));
 
             /// <summary> 
-            /// Retrieve User by Id. 
+            /// Retrieve AddressType by Id. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint return User by Id. If no User are found, a 404 status code is returned. 
+            /// This endpoint return AddressType by Id. If no AddressType are found, a 404 status code is returned. 
             /// </remarks> 
-            /// <returns>A User or a 404 status code if no User are found.</returns>
-            app.MapGet("/addresstype/{id}", async (IAddressTypeService service, int id) =>
+            /// <returns>A AddressType or a 404 status code if no AddressType are found.</returns>
+            app.MapGet("/addresstype/{id}", async (IAddressTypeService service, int id,IAddressTypeLogger logger) =>
             {
+                var requestJson = JsonConvert.SerializeObject(new
+                {
+                    id
+                });
+                logger.LogInformation("Received request: {RequestJson}", requestJson);
+
+                logger.LogInformation("Fetching Organization with Id {OrganizationId}.", id);
                 var validator = new AddressTypeReadRequestValidator();
                 var addresstypeRequestDto = new AddressTypeReadRequestDto { AddressTypeId = id };
 
@@ -55,6 +73,7 @@ namespace HRMS.API.Endpoints.Address
                 if (!validationResult.IsValid)
                 {
                     var errorMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                    logger.LogWarning("Validation failed for AddressType with Id {AddressTypeId}: {Errors}", id, string.Join(", ", errorMessages));
                     return Results.BadRequest(
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
@@ -75,16 +94,17 @@ namespace HRMS.API.Endpoints.Address
                             ).ToDictionary()
                         );
                     }
-
+                    logger.LogInformation("Successfully retrieved AddressType with Id {OrganizationId}.", id);
                     return Results.Ok(
                         ResponseHelper<AddressTypeReadResponseDto>.Success(
-                            message: "User Retrieved Successfully",
+                            message: "AddressType Retrieved Successfully",
                             data: addresstype
                         ).ToDictionary()
                     );
                 }
                 catch (Exception ex)
                 {
+                    logger.LogError(ex, "An unexpected error occurred while retrieving the AddressType with Id {AddressTypeId}.", id);
                     return Results.Json(
                         ResponseHelper<string>.Error(
                             message: "An Unexpected Error occurred.",
@@ -94,25 +114,34 @@ namespace HRMS.API.Endpoints.Address
                         ).ToDictionary()
                     );
                 }
+                finally
+                {
+                    Log.CloseAndFlush();
+                }
             }).WithTags("AddressType")
-           .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieve AddressType by Id", description: "This endpoint return AddressType by Id. If no User are found, a 404 status code is returned."
+           .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieve AddressType by Id", description: "This endpoint return AddressType by Id. If no AddressType are found, a 404 status code is returned."
            ));
 
             /// <summary> 
-            /// Creates a new User. 
+            /// Creates a new AddressType. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint allows you to create a new User with the provided details. 
+            /// This endpoint allows you to create a new AddressType with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/addresstype/create", async (AddressTypeCreateRequestDto dto, IAddressTypeService _addresstypeService) =>
+            app.MapPost("/addresstype/create", async (AddressTypeCreateRequestDto dto, IAddressTypeService _addresstypeService,IAddressTypeLogger logger) =>
             {
+                var requestJson = JsonConvert.SerializeObject(dto);
+                logger.LogInformation("Received request: {RequestJson}", requestJson);
+
+                logger.LogInformation("Creating new AddressType with data: {AddressTypeData}", dto);
                 var validator = new AddressTypeCreateRequestValidator();
                 var validationResult = validator.Validate(dto);
 
                 if (!validationResult.IsValid)
                 {
                     var errorMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                    logger.LogWarning("Validation failed for creating AddressType: {Errors}", string.Join(", ", errorMessages));
                     return Results.BadRequest(
                         ResponseHelper<List<string>>.Error(
                             message: "Validation Failed",
@@ -124,6 +153,7 @@ namespace HRMS.API.Endpoints.Address
                 try
                 {
                     var newAddresstype = await _addresstypeService.CreateAddressType(dto);
+                    logger.LogInformation("Successfully created AddressType with Id {AddressTypeId}.", newAddresstype.AddressTypeId);
                     return Results.Ok(
                         ResponseHelper<AddressTypeCreateResponseDto>.Success(
                             message: "AddressType Created Successfully",
@@ -133,6 +163,7 @@ namespace HRMS.API.Endpoints.Address
                 }
                 catch (Exception ex)
                 {
+                    logger.LogError(ex, "An unexpected error occurred while creating the AddressType.");
                     return Results.Json(
                         ResponseHelper<string>.Error(
                             message: "An Unexpected Error occurred while Creating the AddressType.",
@@ -142,26 +173,34 @@ namespace HRMS.API.Endpoints.Address
                         ).ToDictionary()
                     );
                 }
+                finally
+                {
+                    Log.CloseAndFlush();
+                }
             }).WithTags("AddressType")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new AddressType.", description: "This endpoint allows you to create a new AddressType with the provided details."
             ));
 
             /// <summary> 
-            /// Updates existing User details. 
+            /// Updates existing AddressType details. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint allows you to update User details with the provided Id. 
+            /// This endpoint allows you to update AddressType details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/addresstype/update", async (IAddressTypeService service, [FromBody] AddressTypeUpdateRequestDto dto) =>
+            app.MapPut("/addresstype/update", async (IAddressTypeService service, [FromBody] AddressTypeUpdateRequestDto dto,IAddressTypeLogger logger) =>
             {
+                var requestJson = JsonConvert.SerializeObject(dto);
+                logger.LogInformation("Received request: {RequestJson}", requestJson);
+
+                logger.LogInformation("Updating AddressType with ID {AddressTypeId}.", dto.AddressTypeId);
                 var validator = new AddressTypeUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);
 
                 if (!validationResult.IsValid)
                 {
                     var errorMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-
+                    logger.LogWarning("Validation failed for updating AddressType with Id {AddressTypeId}: {Errors}", dto.AddressTypeId, string.Join(", ", errorMessages));
                     return Results.BadRequest(
                        ResponseHelper<List<string>>.Error(
                            message: "Validation Failed",
@@ -175,6 +214,7 @@ namespace HRMS.API.Endpoints.Address
                     var updatedAddresstype = await service.UpdateAddressType(dto);
                     if (updatedAddresstype == null)
                     {
+                        logger.LogWarning("AddressType with Id {OrganizationId} not found for update.", dto.AddressTypeId);
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "AddressType Not Found",
@@ -182,7 +222,7 @@ namespace HRMS.API.Endpoints.Address
                            ).ToDictionary()
                        );
                     }
-
+                    logger.LogInformation("Successfully updated AddressType with Id {AddressTypeId}.", dto.AddressTypeId);
                     return Results.Ok(
                         ResponseHelper<AddressTypeUpdateResponseDto>.Success(
                             message: "AddressType Updated Successfully",
@@ -192,6 +232,7 @@ namespace HRMS.API.Endpoints.Address
                 }
                 catch (Exception ex)
                 {
+                    logger.LogError(ex, "An unexpected error occurred while updating the AddressType with Id {AddressTypeId}.", dto.AddressTypeId);
                     return Results.Json(
                         ResponseHelper<string>.Error(
                             message: "An Unexpected Error occurred while Updating the AddressType.",
@@ -201,24 +242,32 @@ namespace HRMS.API.Endpoints.Address
                         ).ToDictionary()
                     );
                 }
+                finally
+                {
+                    Log.CloseAndFlush();
+                }
             }).WithTags("AddressType")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Updates existing AddressType details", description: "This endpoint allows you to update AddressType details with the provided Id."
             ));
 
             /// <summary> 
-            /// Deletes a User. 
+            /// Deletes a AddressType. 
             /// </summary> 
             /// <remarks> 
-            /// This endpoint allows you to delete a User based on the provided User Id.</remarks>
-            app.MapDelete("/addresstype/delete", async (IAddressTypeService service, [FromBody] AddressTypeDeleteRequestDto dto) =>
+            /// This endpoint allows you to delete a AddressType based on the provided AddressType Id.</remarks>
+            app.MapDelete("/addresstype/delete", async (IAddressTypeService service, [FromBody] AddressTypeDeleteRequestDto dto,IAddressTypeLogger logger) =>
             {
+                var requestJson = JsonConvert.SerializeObject(dto);
+                logger.LogInformation("Received request: {RequestJson}", requestJson);
+
+                logger.LogInformation("Deleting AddressType with Id {AddressTypeId}.", dto.AddressTypeId);
                 var validator = new AddressTypeDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);
 
                 if (!validationResult.IsValid)
                 {
                     var errorMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-
+                    logger.LogWarning("Validation failed for deleting AddressType with Id {AddressTypeId}: {Errors}", dto.AddressTypeId, string.Join(", ", errorMessages));
                     return Results.BadRequest(
                       ResponseHelper<List<string>>.Error(
                           message: "Validation Failed",
@@ -232,6 +281,7 @@ namespace HRMS.API.Endpoints.Address
                     var result = await service.DeleteAddressType(dto);
                     if (result == null)
                     {
+                        logger.LogWarning("AddressType with ID {AddressTypeId} not found for deletion.", dto.AddressTypeId);
                         return Results.NotFound(
                            ResponseHelper<string>.Error(
                                message: "AddressType Not Found",
@@ -239,7 +289,7 @@ namespace HRMS.API.Endpoints.Address
                            ).ToDictionary()
                        );
                     }
-
+                    logger.LogInformation("Successfully deleted Organization with Id {AddressType}.", dto.AddressTypeId);
                     return Results.Ok(
                        ResponseHelper<AddressTypeDeleteResponseDto>.Success(
                            message: "AddressType Deleted Successfully"
@@ -248,6 +298,7 @@ namespace HRMS.API.Endpoints.Address
                 }
                 catch (Exception ex)
                 {
+                    logger.LogError(ex, "An unexpected error occurred while deleting the AddressType with Id {AddressTypeId}.", dto.AddressTypeId);
                     return Results.Json(
                         ResponseHelper<string>.Error(
                             message: "An Unexpected Error occurred while Deleting the AddressType.",
@@ -256,6 +307,10 @@ namespace HRMS.API.Endpoints.Address
                             statusCode: StatusCode.INTERNAL_SERVER_ERROR
                         ).ToDictionary()
                     );
+                }
+                finally
+                {
+                    Log.CloseAndFlush();
                 }
             }).WithTags("AddressType")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Deletes a AddressType. ", description: "This endpoint allows you to delete a AddressType based on the provided AddressType Id."
