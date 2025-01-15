@@ -3,7 +3,7 @@ using HRMS.Entities.User.UserRole.UserRoleResponseEntities;
 
 namespace HRMS.PersistenceLayer.Interfaces
 {
-    public interface IUserRolesRepository
+    public interface IUserRoleRepository
     {
         Task<IEnumerable<UserRoleReadResponseEntity>> GetUserRoles();
         Task<UserRoleReadResponseEntity?> GetUserRoleById(int? roleId);
