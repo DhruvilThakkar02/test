@@ -24,7 +24,7 @@ namespace HRMS.API.Endpoints.Address
             /// This endpoint returns a List of Users. If no Users are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A List of Users or a 404 status code if no Users are found.</returns>
-            app.MapGet("/GetAddressTypes", async (IAddressTypeService service) =>
+            app.MapGet("/addresstype/getall", async (IAddressTypeService service) =>
             {
                 var addresstypes = await service.GetAddressTypes();
                 if (addresstypes != null && addresstypes.Any())
@@ -46,7 +46,7 @@ namespace HRMS.API.Endpoints.Address
             /// This endpoint return User by Id. If no User are found, a 404 status code is returned. 
             /// </remarks> 
             /// <returns>A User or a 404 status code if no User are found.</returns>
-            app.MapGet("/GetAddressTypeById/{id}", async (IAddressTypeService service, int id) =>
+            app.MapGet("/addresstype/{id}", async (IAddressTypeService service, int id) =>
             {
                 var validator = new AddressTypeReadRequestValidator();
                 var addresstypeRequestDto = new AddressTypeReadRequestDto { AddressTypeId = id };
@@ -105,7 +105,7 @@ namespace HRMS.API.Endpoints.Address
             /// This endpoint allows you to create a new User with the provided details. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPost("/CreateAddressType", async (AddressTypeCreateRequestDto dto, IAddressTypeService _addresstypeService) =>
+            app.MapPost("/addresstype/create", async (AddressTypeCreateRequestDto dto, IAddressTypeService _addresstypeService) =>
             {
                 var validator = new AddressTypeCreateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -153,7 +153,7 @@ namespace HRMS.API.Endpoints.Address
             /// This endpoint allows you to update User details with the provided Id. 
             /// </remarks> 
             ///<returns> A success or error response based on the operation result.</returns >
-            app.MapPut("/UpdateAddressType", async (IAddressTypeService service, [FromBody] AddressTypeUpdateRequestDto dto) =>
+            app.MapPut("/addresstype/update", async (IAddressTypeService service, [FromBody] AddressTypeUpdateRequestDto dto) =>
             {
                 var validator = new AddressTypeUpdateRequestValidator();
                 var validationResult = validator.Validate(dto);
@@ -210,7 +210,7 @@ namespace HRMS.API.Endpoints.Address
             /// </summary> 
             /// <remarks> 
             /// This endpoint allows you to delete a User based on the provided User Id.</remarks>
-            app.MapDelete("/DeleteAddressType", async (IAddressTypeService service, [FromBody] AddressTypeDeleteRequestDto dto) =>
+            app.MapDelete("/addresstype/delete", async (IAddressTypeService service, [FromBody] AddressTypeDeleteRequestDto dto) =>
             {
                 var validator = new AddressTypeDeleteRequestValidator();
                 var validationResult = validator.Validate(dto);
