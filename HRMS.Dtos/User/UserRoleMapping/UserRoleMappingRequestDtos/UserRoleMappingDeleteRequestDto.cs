@@ -1,4 +1,4 @@
-﻿namespace HRMS.Dtos.User.UserRolesMapping.UserRolesMappingRequestDtos
+﻿namespace HRMS.Dtos.User.UserRoleMapping.UserRoleMappingRequestDtos
 {
     public class UserRoleMappingDeleteRequestDto
     {

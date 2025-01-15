@@ -314,7 +314,7 @@ namespace HRMS.API.Endpoints.CompanyBranch
                 {
                     Log.CloseAndFlush();
                 }
-            }).WithTags("Company  Branch")
+            }).WithTags("Company Branch")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Deletes a CompanyBranch.", description: "This endpoint allows you to delete a CompanyBranch based on the provided CompanyBranch Id."
             ));
         }

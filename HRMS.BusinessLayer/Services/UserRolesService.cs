@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using HRMS.BusinessLayer.Interfaces;
-using HRMS.Dtos.User.UserRoles.UserRolesRequestDtos;
-using HRMS.Dtos.User.UserRoles.UserRolesResponseDtos;
-using HRMS.Entities.User.UserRoles.UserRolesRequestEntities;
-using HRMS.Entities.User.UserRoles.UserRolesResponseEntities;
+using HRMS.Dtos.User.UserRole.UserRoleRequestDtos;
+using HRMS.Dtos.User.UserRole.UserRoleResponseDtos;
+using HRMS.Entities.User.UserRole.UserRoleRequestEntities;
+using HRMS.Entities.User.UserRole.UserRoleResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
 
 namespace HRMS.BusinessLayer.Services
@@ -48,8 +48,8 @@ namespace HRMS.BusinessLayer.Services
         public async Task<UserRoleUpdateResponseDto> UpdateUserRole(UserRoleUpdateRequestDto rolesDTo)
         {
             var rolesEntity = _mapper.Map<UserRoleUpdateRequestEntity>(rolesDTo);
-            var updatedUserRoles = await _rolesRepository.UpdateUserRole(rolesEntity);
-            var response = _mapper.Map<UserRoleUpdateResponseDto>(updatedUserRoles);
+            var updatedUserRole = await _rolesRepository.UpdateUserRole(rolesEntity);
+            var response = _mapper.Map<UserRoleUpdateResponseDto>(updatedUserRole);
             return response;
         }
 

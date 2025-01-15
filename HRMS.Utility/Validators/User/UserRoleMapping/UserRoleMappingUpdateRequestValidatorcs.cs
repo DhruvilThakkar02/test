@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingRequestDtos;
+using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingRequestDtos;
 using System.Data;
 
-namespace HRMS.Utility.Validators.User.UserRolesMapping
+namespace HRMS.Utility.Validators.User.UserRoleMapping
 {
     public class UserRoleMappingUpdateRequestValidatorcs : AbstractValidator<UserRoleMappingUpdateRequestDto>
     {

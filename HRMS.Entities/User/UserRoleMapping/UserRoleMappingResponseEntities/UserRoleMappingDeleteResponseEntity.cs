@@ -1,4 +1,4 @@
-﻿namespace HRMS.Entities.User.UserRolesMapping.UserRolesMappingResponseEntities
+﻿namespace HRMS.Entities.User.UserRoleMapping.UserRoleMappingResponseEntities
 {
     public class UserRoleMappingDeleteResponseEntity
     {
