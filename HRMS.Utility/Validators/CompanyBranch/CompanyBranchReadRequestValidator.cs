@@ -9,9 +9,6 @@ namespace HRMS.Utility.Validators.CompanyBranch
         {
             RuleFor(branch => branch.CompanyBranchId)
                 .GreaterThan(0).WithMessage("CompanyBranchIdMustBeAValidId.");
-
-            RuleFor(branch => branch.CompanyId)
-                .GreaterThan(0).WithMessage("CompanyIdMustBeAValidCompanyId.");
         }
     }
 }
