@@ -1,9 +1,9 @@
-﻿using HRMS.Entities.User.UserRoles.UserRolesRequestEntities;
-using HRMS.Entities.User.UserRoles.UserRolesResponseEntities;
+﻿using HRMS.Entities.User.UserRole.UserRoleRequestEntities;
+using HRMS.Entities.User.UserRole.UserRoleResponseEntities;
 
 namespace HRMS.PersistenceLayer.Interfaces
 {
-    public interface IUserRolesRepository
+    public interface IUserRoleRepository
     {
         Task<IEnumerable<UserRoleReadResponseEntity>> GetUserRoles();
         Task<UserRoleReadResponseEntity?> GetUserRoleById(int? roleId);

@@ -1,4 +1,4 @@
-﻿namespace HRMS.Dtos.User.UserRoles.UserRolesRequestDtos
+﻿namespace HRMS.Dtos.User.UserRole.UserRoleRequestDtos
 {
     public class UserRoleCreateRequestDto
     {

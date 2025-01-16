@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using HRMS.Entities.User.User.UserResponseEntities;
-using HRMS.Entities.User.UserRolesMapping.UserRolesMappingRequestEntities;
-using HRMS.Entities.User.UserRolesMapping.UserRolesMappingResponseEntities;
+using HRMS.Entities.User.UserRoleMapping.UserRoleMappingRequestEntities;
+using HRMS.Entities.User.UserRoleMapping.UserRoleMappingResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.Utility.Helpers.SqlHelpers.User;
 using System.Data;
@@ -18,7 +18,7 @@ namespace HRMS.PersistenceLayer.Repositories
 
         public async Task<IEnumerable<UserRoleMappingReadResponseEntity>> GetUserRolesMapping()
         {
-            var allrolesmapping = await _dbConnection.QueryAsync<UserRoleMappingReadResponseEntity>(UserRolesMappingStoredProcedure.GetUserRolesMapping, commandType: CommandType.StoredProcedure);
+            var allrolesmapping = await _dbConnection.QueryAsync<UserRoleMappingReadResponseEntity>(UserRoleMappingStoredProcedure.GetUserRolesMapping, commandType: CommandType.StoredProcedure);
             return allrolesmapping;
         }
 
@@ -27,7 +27,7 @@ namespace HRMS.PersistenceLayer.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("@UserRoleMappingId", id);
 
-            var roles = await _dbConnection.QueryFirstOrDefaultAsync<UserRoleMappingReadResponseEntity>(UserRolesMappingStoredProcedure.GetUserRoleMappingById, parameters, commandType: CommandType.StoredProcedure);
+            var roles = await _dbConnection.QueryFirstOrDefaultAsync<UserRoleMappingReadResponseEntity>(UserRoleMappingStoredProcedure.GetUserRoleMappingById, parameters, commandType: CommandType.StoredProcedure);
             return roles;
         }
 
@@ -39,7 +39,7 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@UserRoleId", rolesMapping.UserRoleId);
             parameters.Add("@CreatedBy", rolesMapping.CreatedBy);
 
-            var result = await _dbConnection.QuerySingleOrDefaultAsync<UserRoleMappingUpdateResponseEntity>(UserRolesMappingStoredProcedure.CreateUserRoleMapping, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<UserRoleMappingUpdateResponseEntity>(UserRoleMappingStoredProcedure.CreateUserRoleMapping, parameters, commandType: CommandType.StoredProcedure);
 
             var rolemappingId = parameters.Get<int>("@UserRoleMappingId");
 
@@ -67,7 +67,7 @@ namespace HRMS.PersistenceLayer.Repositories
             paramters.Add("@UpdatedBy",roleMapping.UpdatedBy );
 
 
-            var result = await _dbConnection.QuerySingleOrDefaultAsync<UserRoleMappingUpdateResponseEntity>(UserRolesMappingStoredProcedure.UpdateUserRoleMapping, paramters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<UserRoleMappingUpdateResponseEntity>(UserRoleMappingStoredProcedure.UpdateUserRoleMapping, paramters, commandType: CommandType.StoredProcedure);
 
             if (result == null || result.UserRoleMappingId == -1)
             {
@@ -96,7 +96,7 @@ namespace HRMS.PersistenceLayer.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("@UserRoleMappingId",rolesMapping.UserRoleMappingId);
 
-            var result = await _dbConnection.ExecuteScalarAsync<int>(UserRolesMappingStoredProcedure.DeleteUserRoleMapping, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.ExecuteScalarAsync<int>(UserRoleMappingStoredProcedure.DeleteUserRoleMapping, parameters, commandType: CommandType.StoredProcedure);
 
             return result;
 

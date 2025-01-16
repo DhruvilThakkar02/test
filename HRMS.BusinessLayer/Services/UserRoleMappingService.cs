@@ -1,36 +1,36 @@
 ﻿using AutoMapper;
 using HRMS.BusinessLayer.Interfaces;
-using HRMS.Dtos.User.UserRoles.UserRolesResponseDtos;
-using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingRequestDtos;
-using HRMS.Dtos.User.UserRolesMapping.UserRolesMappingResponseDtos;
-using HRMS.Entities.User.UserRolesMapping.UserRolesMappingRequestEntities;
-using HRMS.Entities.User.UserRolesMapping.UserRolesMappingResponseEntities;
+using HRMS.Dtos.User.UserRole.UserRoleResponseDtos;
+using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingRequestDtos;
+using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingResponseDtos;
+using HRMS.Entities.User.UserRoleMapping.UserRoleMappingRequestEntities;
+using HRMS.Entities.User.UserRoleMapping.UserRoleMappingResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
 
 namespace HRMS.BusinessLayer.Services
 {
-    public class UserRolesMappingService : IUserRoleMappingService
+    public class UserRoleMappingService : IUserRoleMappingService
     {
         private readonly IMapper _mapper;
-        private readonly IUserRoleMappingRepository _userRolesMappingRepository;
+        private readonly IUserRoleMappingRepository _userRoleMappingRepository;
 
-        public UserRolesMappingService(IMapper mapper, IUserRoleMappingRepository userRolesMappingRepository)
+        public UserRoleMappingService(IMapper mapper, IUserRoleMappingRepository userRoleMappingRepository)
         {
 
             _mapper = mapper;
-            _userRolesMappingRepository = userRolesMappingRepository;
+            _userRoleMappingRepository = userRoleMappingRepository;
         }
 
         public async Task<IEnumerable<UserRoleMappingReadResponseDto>> GetUserRolesMapping()
         {
-            var mappingroles = await _userRolesMappingRepository.GetUserRolesMapping();
+            var mappingroles = await _userRoleMappingRepository.GetUserRolesMapping();
             var response = _mapper.Map<IEnumerable<UserRoleMappingReadResponseDto>>(mappingroles);
             return response;
         }
 
         public async Task<UserRoleMappingReadResponseDto?> GetUserRoleMappingById(int? roleid)
         {
-            var role = await _userRolesMappingRepository.GetUserRoleMappingById(roleid);
+            var role = await _userRoleMappingRepository.GetUserRoleMappingById(roleid);
             if (role == null || role.UserRoleMappingId == -1)
             {
                 return null;
@@ -42,14 +42,14 @@ namespace HRMS.BusinessLayer.Services
         public async Task<UserRoleMappingCreateResponseDto> CreateUserRoleMapping(UserRoleMappingCreateRequestDto rolesMappingDto)
         {
             var rolesMappingEntity = _mapper.Map<UserRoleMappingCreateRequestEntity>(rolesMappingDto);
-            var addedUserMappingRole = await _userRolesMappingRepository.CreateUserRoleMapping(rolesMappingEntity);
+            var addedUserMappingRole = await _userRoleMappingRepository.CreateUserRoleMapping(rolesMappingEntity);
             var response = _mapper.Map<UserRoleMappingCreateResponseDto>(addedUserMappingRole);
             return response;
         }
-        public async Task<UserRoleMappingUpdateResponseDto?> UpdateUserRolesMapping(UserRoleMappingUpdateRequestDto rolesMappingDto)
+        public async Task<UserRoleMappingUpdateResponseDto?> UpdateUserRoleMapping(UserRoleMappingUpdateRequestDto rolesMappingDto)
         {
             var rolesMappingEntity = _mapper.Map<UserRoleMappingUpdateRequestEntity>(rolesMappingDto);
-            var UpdatedMappingRole = await _userRolesMappingRepository.UpdateUserRoleMapping(rolesMappingEntity);
+            var UpdatedMappingRole = await _userRoleMappingRepository.UpdateUserRoleMapping(rolesMappingEntity);
             var response = _mapper.Map<UserRoleMappingUpdateResponseDto>(UpdatedMappingRole);
             return response;
         }
@@ -57,7 +57,7 @@ namespace HRMS.BusinessLayer.Services
         public async Task<UserRoleMappingDeleteResponseDto?> DeleteUserRoleMapping(UserRoleMappingDeleteRequestDto rolesMappingDto)
         {
             var rolesEntity = _mapper.Map<UserRoleMappingDeleteRequestEntity>(rolesMappingDto);
-            var result = await _userRolesMappingRepository.DeleteUserRoleMapping(rolesEntity);
+            var result = await _userRoleMappingRepository.DeleteUserRoleMapping(rolesEntity);
 
             if (result == -1)
             {

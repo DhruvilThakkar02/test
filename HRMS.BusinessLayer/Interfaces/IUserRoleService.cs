@@ -1,10 +1,10 @@
-﻿using HRMS.Dtos.User.UserRoles.UserRolesRequestDtos;
-using HRMS.Dtos.User.UserRoles.UserRolesResponseDtos;
+﻿using HRMS.Dtos.User.UserRole.UserRoleRequestDtos;
+using HRMS.Dtos.User.UserRole.UserRoleResponseDtos;
 
 
 namespace HRMS.BusinessLayer.Interfaces
 {
-    public interface IUserRolesService
+    public interface IUserRoleService
     {
         Task<IEnumerable<UserRoleReadResponseDto>> GetUserRoles();
         Task<UserRoleReadResponseDto?> GetUserRoleById(int? rolesId);

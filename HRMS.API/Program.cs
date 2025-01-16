@@ -19,7 +19,7 @@ using HRMS.Utility.AutoMapperProfiles.Tenant.TenancyRoleMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenantMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenantRegistrationMapping;
 using HRMS.Utility.AutoMapperProfiles.User.UserMapping;
-using HRMS.Utility.AutoMapperProfiles.User.UserRolesMapping;
+using HRMS.Utility.AutoMapperProfiles.User.UserRoleMapping;
 using HRMS.Utility.Helpers.LogHelpers.Interface;
 using HRMS.Utility.Helpers.LogHelpers.Services;
 using Microsoft.Data.SqlClient;
@@ -46,8 +46,10 @@ namespace HRMS.API
             builder.Services.AddScoped<IAddressTypeLogger, AddressTypeLogger>();
             builder.Services.AddScoped<IAddressLogger, AddressLogger>();
             builder.Services.AddScoped<IOrganizationLogger, OrganinizationLogger>();
+            builder.Services.AddScoped<ICompanyLogger, CompanyLogger>();
             builder.Services.AddScoped<ICompanyBranchLogger, CompanyBranchLogger>();
             builder.Services.AddScoped<ITenancyRoleLogger, TenancyRoleLogger>();
+
             builder.Services.AddScoped<ICityLogger, CityLogger>();
             builder.Services.AddScoped<ICountryLogger, CountryLogger>();
             builder.Services.AddScoped<IStateLogger, StateLogger>();
@@ -60,6 +62,14 @@ namespace HRMS.API
 
             builder.Services.AddScoped<IStateRepository, StateRepository>();
             builder.Services.AddScoped<IStateService, StateService>();
+
+            builder.Services.AddScoped<ITenantRegistrationLogger, TenantRegistrationLogger>();
+            builder.Services.AddScoped<IUserLogger, UserLogger>();
+            builder.Services.AddScoped<IUserRoleLogger, UserRoleLogger>();
+            builder.Services.AddScoped<IUserRoleMappingLogger, UserRoleMappingLogger>();
+            builder.Services.AddScoped<ISubdomainLogger, SubdomainLogger>();
+            builder.Services.AddScoped<ITenantLogger, TenantLogger>();
+
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
@@ -76,11 +86,11 @@ namespace HRMS.API
             builder.Services.AddScoped<ITenancyRoleService, TenancyRoleService>();
             builder.Services.AddScoped<ITenancyRoleRepository, TenancyRoleRepository>();
 
-            builder.Services.AddScoped<IUserRolesRepository, UserRolesRepository>();
-            builder.Services.AddScoped<IUserRolesService, UserRolesService>();
+            builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 
             builder.Services.AddScoped<IUserRoleMappingRepository, UserRoleMappingRepository>();
-            builder.Services.AddScoped<IUserRoleMappingService, UserRolesMappingService>();
+            builder.Services.AddScoped<IUserRoleMappingService, UserRoleMappingService>();
 
             builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
             builder.Services.AddScoped<IOrganizationService, OrganizationService>();
@@ -151,11 +161,11 @@ namespace HRMS.API
             app.MapUserEndpoints();
             app.MapOrganizationEndpoints();
             app.MapTenancyRoleEndpoints();
-            app.MapUserRolesEndpoints();
+            app.MapUserRoleEndpoints();
             app.MapSubdomainEndpoints();
             app.MapTenantEndpoints();
             app.MapTenantRegistrationEndpoints();
-            app.MapUserRolesMappingEndpoints();
+            app.MapUserRoleMappingEndpoints();
             app.MapCompanyEndpoints();
             app.MapCompanyBranchEndpoints();
             app.MapAddressEndpoints();
