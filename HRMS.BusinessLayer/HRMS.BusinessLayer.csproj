@@ -27,6 +27,7 @@
 		<ProjectReference Include="..\HRMS.Dtos\HRMS.Dtos.csproj" />
 		<ProjectReference Include="..\HRMS.Entities\HRMS.Entities.csproj" />
 		<ProjectReference Include="..\HRMS.PersistenceLayer\HRMS.PersistenceLayer.csproj" />
+		<ProjectReference Include="..\HRMS.Utility\HRMS.Utility.csproj" />
 	</ItemGroup>
 
 </Project>

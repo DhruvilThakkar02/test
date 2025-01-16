@@ -4,7 +4,7 @@ CREATE TABLE [dbo].[tblUser] (
     [LastName]      NVARCHAR (50)  NOT NULL,
     [UserName]      NVARCHAR (50)  NOT NULL,
     [Email]         NVARCHAR (50)  NOT NULL,
-    [Password]      NVARCHAR (50)  NOT NULL,
+    [Password]      NVARCHAR (500) NULL,
     [Gender]        NVARCHAR (50)  NULL,
     [DateOfBirth]   DATE           NULL,
     [CreatedAt]     DATETIME2 (3)  CONSTRAINT [DF__tblUser__Created__37A5467C] DEFAULT (sysdatetime()) NOT NULL,

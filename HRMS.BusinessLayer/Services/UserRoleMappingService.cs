@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using HRMS.BusinessLayer.Interfaces;
-using HRMS.Dtos.User.UserRole.UserRoleResponseDtos;
 using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingRequestDtos;
 using HRMS.Dtos.User.UserRoleMapping.UserRoleMappingResponseDtos;
 using HRMS.Entities.User.UserRoleMapping.UserRoleMappingRequestEntities;

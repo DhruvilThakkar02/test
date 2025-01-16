@@ -1,7 +1,5 @@
 ﻿using HRMS.Dtos.User.UserRole.UserRoleRequestDtos;
 using HRMS.Dtos.User.UserRole.UserRoleResponseDtos;
-
-
 namespace HRMS.BusinessLayer.Interfaces
 {
     public interface IUserRoleService

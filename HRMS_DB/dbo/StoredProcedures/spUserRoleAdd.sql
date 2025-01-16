@@ -1,4 +1,4 @@
-CREATE PROCEDURE [dbo].[spUserRolesAdd]
+CREATE PROCEDURE [dbo].[spUserRoleAdd]
 @UserRoleId INT OUTPUT,
 @UserRoleName NVARCHAR(255) = NULL,
 @PermissionGroupId INT = NULL,
@@ -27,7 +27,7 @@ SET NOCOUNT ON;
  SET @UpdatedBy = ISNULL(@UpdatedBy, @CreatedBy);
 
  -- Insert the new role into the table
- INSERT INTO [dbo].[tblUserRoles] 
+ INSERT INTO [dbo].[tblUserRole] 
  ([UserRoleName], [PermissionGroupId], [CreatedBy], [UpdatedBy], [CreatedAt], [UpdatedAt], [IsActive])
  VALUES 
  (@UserRoleName, @PermissionGroupId, @CreatedBy, @UpdatedBy, SYSDATETIME(), SYSDATETIME(), @IsActive);
@@ -35,7 +35,7 @@ SET NOCOUNT ON;
  -- Retrieve the newly inserted UserRoleId
  SET @UserRoleId = SCOPE_IDENTITY();
 
- SELECT * FROM [dbo].[tblUserRoles] WHERE UserRoleId = @UserRoleId;
+ SELECT * FROM [dbo].[tblUserRole] WHERE UserRoleId = @UserRoleId;
 
  -- Commit the transaction
  COMMIT TRANSACTION;

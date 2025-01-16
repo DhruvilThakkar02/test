@@ -1,4 +1,4 @@
-CREATE PROCEDURE [dbo].[spUserRolesMappingGetAll]
+CREATE PROCEDURE [dbo].[spUserRoleMappingGetAll]
 AS
 BEGIN
     
