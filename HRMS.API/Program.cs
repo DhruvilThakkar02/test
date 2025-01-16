@@ -151,23 +151,24 @@ namespace HRMS.API
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
                 
-            }); 
-
-
-
-            
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Admin", policy =>
-                    policy.RequireAssertion(context =>
-                        context.User.HasClaim(c => c.Type == "UserRoleName" && c.Value == "Admin")));
-                options.AddPolicy("User", policy =>
-                    policy.RequireAssertion(context =>
-                        context.User.HasClaim(c => c.Type == "UserRoleName" && c.Value == "User")));
-                options.AddPolicy("Manager", policy =>
-                    policy.RequireAssertion(context =>
-                        context.User.HasClaim(c => c.Type == "UserRoleName" && c.Value == "Manager")));
             });
+
+
+            builder.Services.AddAuthorization(async options =>
+            {
+                var rolesService = builder.Services.BuildServiceProvider().GetRequiredService<IUserRoleService>();
+                var roles = await rolesService.GetUserRoles(); // Fetch roles asynchronously
+
+                // Add policies dynamically for each role
+                foreach (var role in roles.Select(r => r.UserRoleName))
+                {
+                    options.AddPolicy(role , policy => policy.RequireAssertion(context=>context.User.HasClaim(c=>c.Type=="UserRoleName" && c.Value==role)));
+
+                   
+                }
+            });
+
+
 
 
             builder.Services.AddSwaggerGen(swagger =>

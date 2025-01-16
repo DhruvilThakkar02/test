@@ -11,7 +11,7 @@ BEGIN
     END
 
     -- Delete the role with the specified RoleId
-    DELETE FROM [dbo].[tblUserRoles] WHERE UserRoleId  = @UserRoleId ;
+    DELETE FROM [dbo].[tblUserRole] WHERE UserRoleId  = @UserRoleId ;
 
     -- Return the deleted RoleId as confirmation
     SELECT @UserRoleId  AS UserRoleId ;

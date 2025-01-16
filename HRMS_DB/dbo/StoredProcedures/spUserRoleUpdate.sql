@@ -10,14 +10,14 @@ CREATE PROCEDURE [dbo].[spUserRoleUpdate]
 AS
 BEGIN
     -- Validate that the RoleId exists
-    IF NOT EXISTS (SELECT 1 FROM [dbo].[tblUserRoles] WHERE UserRoleId  = @UserRoleId )
+    IF NOT EXISTS (SELECT 1 FROM [dbo].[tblUserRole] WHERE UserRoleId  = @UserRoleId )
     BEGIN
         SELECT -1 AS RoleId; -- Indicate that the RoleId does not exist
         RETURN;
     END;
 
     -- Update the role information
-    UPDATE [dbo].[tblUserRoles]
+    UPDATE [dbo].[tblUserRole]
     SET UserRoleName = ISNULL(@UserRoleName, UserRoleName),
         PermissionGroupId = ISNULL(@PermissionGroupId, PermissionGroupId),
 		 UpdatedBy = @UpdatedBy,
@@ -28,7 +28,7 @@ BEGIN
     WHERE UserRoleId  = @UserRoleId ;
 
     -- Return the updated role information
-    SELECT * FROM [dbo].[tblUserRoles] WHERE UserRoleId  = @UserRoleId ;
+    SELECT * FROM [dbo].[tblUserRole] WHERE UserRoleId  = @UserRoleId ;
 END;
 GO
 

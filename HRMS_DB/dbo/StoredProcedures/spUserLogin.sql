@@ -26,7 +26,7 @@ BEGIN
             @UserRoleName = ur.UserRoleName
         FROM tblUser u
         INNER JOIN tblSubdomains s ON u.TenantId = s.SubdomainId
-        LEFT JOIN tblUserRoles ur ON u.UserRoleId = ur.UserRoleId
+        LEFT JOIN tblUserRole ur ON u.UserRoleId = ur.UserRoleId
         WHERE (u.UserName = @UserNameOrEmail OR u.Email = @UserNameOrEmail)
           AND s.SubdomainName = @SubdomainName
           AND s.IsActive = 1;
