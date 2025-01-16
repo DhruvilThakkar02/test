@@ -47,7 +47,7 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@CreatedBy", address.CreatedBy);
 
 
-            var result = await _dbConnection.QuerySingleOrDefaultAsync<AddressCreateResponseEntity>(AddressStoredProcedures.CreateAddress, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<dynamic>(AddressStoredProcedures.CreateAddress, parameters, commandType: CommandType.StoredProcedure);
 
             var addressId = parameters.Get<int>("@AddressId");
 
@@ -64,8 +64,6 @@ namespace HRMS.PersistenceLayer.Repositories
                 AddressTypeId = address.AddressTypeId,
                 CreatedBy = address.CreatedBy,
                 CreatedAt = DateTime.Now,
-                UpdatedBy = result?.UpdatedBy,
-                UpdatedAt = DateTime.Now,
                 IsActive = address.IsActive,
                 IsDelete = result?.IsDelete
             };
