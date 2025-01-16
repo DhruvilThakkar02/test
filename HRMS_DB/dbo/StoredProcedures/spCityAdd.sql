@@ -6,15 +6,15 @@ CREATE PROCEDURE [dbo].[spCityAdd]
 AS
 BEGIN
     -- Insert a new city into the tblCity table
-    INSERT INTO tblCity (CityName, IsActive, IsDelete, CreatedBy, CreatedAt, UpdatedAt)
+    INSERT INTO tblCity (CityName, IsActive, IsDelete, CreatedBy, CreatedAt)
     VALUES 
     (
         @CityName, -- The city name
         @IsActive, -- Active status
         0, -- IsDelete set to 0 for not deleted
         @CreatedBy, -- The user who is creating the city
-        SYSDATETIME(), -- CreatedAt set to current timestamp
-        SYSDATETIME() -- UpdatedAt set to current timestamp
+        SYSDATETIME() -- CreatedAt set to current timestamp
+       
     );
 
     -- Return the CityID of the newly created city

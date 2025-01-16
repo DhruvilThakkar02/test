@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE [dbo].[spCompanyDelete]
+Create PROCEDURE [dbo].[spCompanyDelete]
 @CompanyId INT = NULL
 AS
 BEGIN
