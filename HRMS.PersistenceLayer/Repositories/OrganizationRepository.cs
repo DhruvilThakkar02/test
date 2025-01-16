@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using HRMS.Entities.Tenant.Organization.OrganizationRequestEntities;
 using HRMS.Entities.Tenant.Organization.OrganizationResponseEntities;
-using HRMS.Entities.User.User.UserResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.Utility.Helpers.SqlHelpers.Tenant;
 using System.Data;
@@ -57,8 +56,6 @@ namespace HRMS.PersistenceLayer.Repositories
                 OrganizationName = organization.OrganizationName,
                 CreatedBy = organization.CreatedBy,
                 CreatedAt = DateTime.Now,
-                UpdatedBy = result?.UpdatedBy,
-                UpdatedAt = DateTime.Now,
                 IsActive = organization.IsActive,
                 IsDelete = result?.IsDelete
             };

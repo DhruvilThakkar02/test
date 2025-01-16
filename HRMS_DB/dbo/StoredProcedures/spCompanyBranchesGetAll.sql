@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE [dbo].[spCompanyBranchesGetAll]
+CREATE PROCEDURE spCompanyBranchesGetAll
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -22,7 +22,7 @@ BEGIN
             UpdatedAt
         FROM tblCompanyBranch
         WHERE IsDelete = 0 -- Exclude soft-deleted records
-        
+        ORDER BY CompanyBranchName ASC; -- Sort alphabetically by branch name
     END TRY
     BEGIN CATCH
         -- Handle errors
