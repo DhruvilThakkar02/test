@@ -1,6 +1,6 @@
 using FluentValidation.AspNetCore;
-using HRMS.API.Endpoints.CompanyBranch;
 using HRMS.API.Endpoints.Address;
+using HRMS.API.Endpoints.CompanyBranch;
 using HRMS.API.Endpoints.Tenant;
 using HRMS.API.Endpoints.User;
 using HRMS.API.Modules.User;
@@ -9,10 +9,6 @@ using HRMS.BusinessLayer.Services;
 using HRMS.PersistenceLayer.Interfaces;
 using HRMS.PersistenceLayer.Repositories;
 using HRMS.Utility.AutoMapperProfiles.Tenant.CompanyMapping;
-using HRMS.Utility.AutoMapperProfiles.Address.AddressMapping;
-using HRMS.Utility.AutoMapperProfiles.Address.City;
-using HRMS.Utility.AutoMapperProfiles.Address.Country;
-using HRMS.Utility.AutoMapperProfiles.Address.State;
 using HRMS.Utility.AutoMapperProfiles.Tenant.OrganizationMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.SubdomainMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenancyRoleMapping;
@@ -20,8 +16,7 @@ using HRMS.Utility.AutoMapperProfiles.Tenant.TenantMapping;
 using HRMS.Utility.AutoMapperProfiles.Tenant.TenantRegistrationMapping;
 using HRMS.Utility.AutoMapperProfiles.User.Login;
 using HRMS.Utility.AutoMapperProfiles.User.UserMapping;
-using HRMS.Utility.AutoMapperProfiles.User.UserRoleMapping;
-
+using HRMS.Utility.AutoMapperProfiles.User.UserRoleMappingProfile;
 using HRMS.Utility.Helpers;
 using HRMS.Utility.Helpers.LogHelpers.Interface;
 using HRMS.Utility.Helpers.LogHelpers.Services;
@@ -33,8 +28,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Data;
-using System.Diagnostics.Metrics;
-using HRMS.Utility.AutoMapperProfiles.Address.AddressTypeMapping;
 using System.Text;
 
 namespace HRMS.API
@@ -82,7 +75,7 @@ namespace HRMS.API
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
-         
+
             builder.Services.AddScoped<IAddressRepository, AddressRepository>();
             builder.Services.AddScoped<IAddressService, AddressService>();
 

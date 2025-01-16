@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using HRMS.Entities.User.User.UserResponseEntities;
 using HRMS.Entities.User.UserRoleMapping.UserRoleMappingRequestEntities;
 using HRMS.Entities.User.UserRoleMapping.UserRoleMappingResponseEntities;
 using HRMS.PersistenceLayer.Interfaces;
@@ -61,10 +60,10 @@ namespace HRMS.PersistenceLayer.Repositories
         public async Task<UserRoleMappingUpdateResponseEntity?> UpdateUserRoleMapping(UserRoleMappingUpdateRequestEntity roleMapping)
         {
             var paramters = new DynamicParameters();
-            paramters.Add("@UserRoleMappingId",roleMapping.UserRoleMappingId );
-            paramters.Add("@UserId",roleMapping.UserId );
-            paramters.Add("@UserRoleId",roleMapping.UserRoleId);
-            paramters.Add("@UpdatedBy",roleMapping.UpdatedBy );
+            paramters.Add("@UserRoleMappingId", roleMapping.UserRoleMappingId);
+            paramters.Add("@UserId", roleMapping.UserId);
+            paramters.Add("@UserRoleId", roleMapping.UserRoleId);
+            paramters.Add("@UpdatedBy", roleMapping.UpdatedBy);
 
 
             var result = await _dbConnection.QuerySingleOrDefaultAsync<UserRoleMappingUpdateResponseEntity>(UserRoleMappingStoredProcedure.UpdateUserRoleMapping, paramters, commandType: CommandType.StoredProcedure);
@@ -75,7 +74,7 @@ namespace HRMS.PersistenceLayer.Repositories
             }
             var updateUsermappingRoles = new UserRoleMappingUpdateResponseEntity
             {
-               UserRoleMappingId = roleMapping.UserRoleMappingId,
+                UserRoleMappingId = roleMapping.UserRoleMappingId,
                 UserId = roleMapping.UserId,
                 UserRoleId = roleMapping.UserRoleId,
                 CreatedBy = result.CreatedBy,
@@ -84,7 +83,7 @@ namespace HRMS.PersistenceLayer.Repositories
                 UpdatedAt = DateTime.Now,
                 IsActive = roleMapping.IsActive,
                 IsDelete = roleMapping.IsDelete
-              
+
 
             };
             return updateUsermappingRoles;
@@ -94,7 +93,7 @@ namespace HRMS.PersistenceLayer.Repositories
         public async Task<int> DeleteUserRoleMapping(UserRoleMappingDeleteRequestEntity rolesMapping)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("@UserRoleMappingId",rolesMapping.UserRoleMappingId);
+            parameters.Add("@UserRoleMappingId", rolesMapping.UserRoleMappingId);
 
             var result = await _dbConnection.ExecuteScalarAsync<int>(UserRoleMappingStoredProcedure.DeleteUserRoleMapping, parameters, commandType: CommandType.StoredProcedure);
 

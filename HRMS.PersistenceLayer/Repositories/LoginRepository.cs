@@ -19,7 +19,6 @@ namespace HRMS.PersistenceLayer.Repositories
         private readonly IDbConnection _dbConnection;
         private readonly JwtSecretKey _jwtSecretKey;
 
-
         public LoginRepository(IDbConnection dbConnection, IOptions<JwtSecretKey> jwtsecretkey)
         {
             _dbConnection = dbConnection;
@@ -39,10 +38,6 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@ErrorMessage", dbType: DbType.String, size: 255, direction: ParameterDirection.Output);
             parameters.Add("@UserRoleId", dbType: DbType.Int32,size:255, direction: ParameterDirection.Output);
             parameters.Add("@UserRoleName", dbType: DbType.String, size: 255, direction: ParameterDirection.Output);
-
-
-
-
 
             await _dbConnection.ExecuteAsync(
                 LoginStoreProcedure.Userlogin,
@@ -76,8 +71,6 @@ namespace HRMS.PersistenceLayer.Repositories
             var userName = parameters.Get<string>("@UserName");
             var tenantId = parameters.Get<int>("@TenantId");
             var tokenExpiryTime = DateTime.UtcNow.AddHours(1);
-
-
 
             var token = await GenerateJwtToken(new LoginResponseEntity
             {
@@ -130,7 +123,5 @@ namespace HRMS.PersistenceLayer.Repositories
             });
             return tokenHandler.WriteToken(token);
         }
-
-
     }
 }
