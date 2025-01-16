@@ -6,7 +6,7 @@ CREATE PROCEDURE [dbo].[spUserAdd]
 @LastName NVARCHAR(50) = NULL,
 @UserName NVARCHAR(50) = NULL,
 @Email NVARCHAR(50) = NULL,
-@Password NVARCHAR(50) = NULL,
+@Password NVARCHAR(500) = NULL,
 @Gender NVARCHAR(50) = NULL,
 @DateOfBirth DATE = NULL,
 @IsActive BIT = NULL,

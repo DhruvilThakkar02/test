@@ -1,8 +1,7 @@
 ﻿namespace HRMS.Entities.Tenant.Company.CompanyRequestEntities
 {
     public class CompanyCreateRequestEntity
-    {
-        
+    {     
         public string CompanyName { get; set; } = string.Empty;
         public string Industry { get; set; } = string.Empty;
         public string CompanyType { get; set; } = string.Empty;
