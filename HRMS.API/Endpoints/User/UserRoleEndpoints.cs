@@ -4,12 +4,12 @@ using HRMS.Dtos.User.UserRole.UserRoleRequestDtos;
 using HRMS.Dtos.User.UserRole.UserRoleResponseDtos;
 using HRMS.Utility.Helpers.Enums;
 using HRMS.Utility.Helpers.Handlers;
+using HRMS.Utility.Helpers.LogHelpers.Interface;
 using HRMS.Utility.Validators.User.UserRole;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 using Newtonsoft.Json;
-using HRMS.Utility.Helpers.LogHelpers.Interface;
 using Serilog;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace HRMS.API.Endpoints.User
 {

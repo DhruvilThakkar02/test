@@ -10,6 +10,6 @@ namespace HRMS.PersistenceLayer.Interfaces
         Task<UserRoleMappingCreateResponseEntity> CreateUserRoleMapping(UserRoleMappingCreateRequestEntity rolesMapping);
         Task<UserRoleMappingUpdateResponseEntity?> UpdateUserRoleMapping(UserRoleMappingUpdateRequestEntity roleMapping);
 
-        Task<int>DeleteUserRoleMapping(UserRoleMappingDeleteRequestEntity rolesMapping);
+        Task<int> DeleteUserRoleMapping(UserRoleMappingDeleteRequestEntity rolesMapping);
     }
 }
