@@ -3,8 +3,8 @@ CREATE PROCEDURE [dbo].[spAddressTypeAdd]
     @AddressTypeId INT OUTPUT,
     @AddressTypeName NVARCHAR(100) = NULL,
     @IsActive BIT = NULL,
-    @CreatedBy INT = NULL,
-    @UpdatedBy INT = NULL
+    @CreatedBy INT = NULL
+   
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -28,9 +28,9 @@ BEGIN
             
             IsActive,
             CreatedBy,
-			UpdatedBy,
-            CreatedAt,
-            UpdatedAt
+			
+            CreatedAt
+           
           
         )
         VALUES (
@@ -39,9 +39,9 @@ BEGIN
            
             @IsActive, 
             @CreatedBy,
-			@UpdatedBy,
-            SYSDATETIME(),
-			SYSDATETIME()
+			
+            SYSDATETIME()
+			
         );
 
         -- Retrieve the new AddressId

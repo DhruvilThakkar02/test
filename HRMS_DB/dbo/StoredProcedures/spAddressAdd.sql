@@ -38,9 +38,9 @@ BEGIN
 			AddressTypeId,
             IsActive,
             CreatedBy,
-			UpdatedBy,
-            CreatedAt,
-            UpdatedAt
+			
+            CreatedAt
+           
           
         )
         VALUES (
@@ -53,9 +53,9 @@ BEGIN
 			@AddressTypeId,
             @IsActive, 
             @CreatedBy,
-			@UpdatedBy,
-            SYSDATETIME(),
-			SYSDATETIME()
+			
+            SYSDATETIME()
+			
         );
 
         -- Retrieve the new AddressId

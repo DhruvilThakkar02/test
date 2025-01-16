@@ -3,10 +3,10 @@ CREATE PROCEDURE [dbo].[spOrganizationAdd]
 @OrganizationID INT OUTPUT,
 @OrganizationName NVARCHAR(100) = NULL,
 @CreatedBy INT = NULL,
-
+@UpdatedBy INT = NULL,
 @IsActive BIT = NULL,
-@CreatedAt DATETIME = NULL
-
+@CreatedAt DATETIME = NULL,
+@UpdatedAt DATETIME = NULL
 AS
 BEGIN
     BEGIN TRY
@@ -20,10 +20,12 @@ BEGIN
             RETURN;
         END;
 
+        -- Set UpdatedBy to CreatedBy if not provided
+	    SET @UpdatedBy = ISNULL(@UpdatedBy, @CreatedBy);
 
         -- Insert a new organization record
-        INSERT INTO tblOrganization (OrganizationName, CreatedBy,  CreatedAt,  IsActive, IsDelete)
-        VALUES (@OrganizationName, @CreatedBy, SYSDATETIME(),  1, 0);
+        INSERT INTO tblOrganization (OrganizationName, CreatedBy, UpdatedBy, CreatedAt, UpdatedAt, IsActive, IsDelete)
+        VALUES (@OrganizationName, @CreatedBy, @UpdatedBy, GETDATE(), GETDATE(), 1, 0);
 
         -- Capture the OrganizationID of the inserted record
         SET @OrganizationID = SCOPE_IDENTITY();
