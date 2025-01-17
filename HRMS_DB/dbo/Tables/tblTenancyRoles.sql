@@ -12,27 +12,3 @@ CREATE TABLE [dbo].[tblTenancyRoles] (
 GO
 
 
-ALTER TABLE [dbo].[tblTenancyRoles]
-    ADD CONSTRAINT [DF__tmp_ms_xx__Creat__7073AF84] DEFAULT (getdate()) FOR [CreatedAt];
-GO
-
-
-ALTER TABLE [dbo].[tblTenancyRoles]
-    ADD CONSTRAINT [DF__tmp_ms_xx__IsAct__725BF7F6] DEFAULT ((0)) FOR [IsActive];
-GO
-
-
-ALTER TABLE [dbo].[tblTenancyRoles]
-    ADD CONSTRAINT [DF__tmp_ms_xx__IsDel__73501C2F] DEFAULT ((0)) FOR [IsDelete];
-GO
-
-
-ALTER TABLE [dbo].[tblTenancyRoles]
-    ADD CONSTRAINT [DF__tmp_ms_xx__Updat__7167D3BD] DEFAULT (getdate()) FOR [UpdatedAt];
-GO
-
-
-ALTER TABLE [dbo].[tblTenancyRoles]
-    ADD CONSTRAINT [PK__tmp_ms_x__643C727AC0B1D538] PRIMARY KEY CLUSTERED ([TenancyRoleId] ASC);
-GO
-
