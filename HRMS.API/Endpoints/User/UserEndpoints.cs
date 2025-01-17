@@ -44,7 +44,7 @@ namespace HRMS.API.Modules.User
                 return Results.NotFound(errorResponse.ToDictionary());
             })
             .WithTags("User")
-            .RequireAuthorization("Admin")
+            .AllowAnonymous()
             .WithMetadata(new SwaggerOperationAttribute(summary: "Retrieves a List of Users", description: "This endpoint returns a List of Users. If no Users are found, a 404 status code is returned."
             ));
 
@@ -179,7 +179,7 @@ namespace HRMS.API.Modules.User
                     Log.CloseAndFlush();
                 }
             }).WithTags("User")
-            .AllowAnonymous()
+            .RequireAuthorization("Admin")
             .WithMetadata(new SwaggerOperationAttribute(summary: "Creates a new User.", description: "This endpoint allows you to create a new User with the provided details."
             ));
 

@@ -49,8 +49,7 @@ namespace HRMS.PersistenceLayer.Repositories
                 UserId = rolesMapping.UserId,
                 CreatedBy = rolesMapping.CreatedBy,
                 UpdatedBy = result?.UpdatedBy,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
+                CreatedAt = DateTime.Now
             };
 
             return createdRoleMapping;

@@ -4,7 +4,6 @@
     @UserId INT,
     @UserRoleId INT,
     @CreatedBy INT,
-    @UpdatedBy INT = NULL,
     @IsActive BIT = 1,
     @IsDelete BIT = 0 
 AS
@@ -18,27 +17,22 @@ BEGIN
         RETURN;
     END;
 
-    -- Set default value for UpdatedBy if NULL
-    SET @UpdatedBy = ISNULL(@UpdatedBy, @CreatedBy);
+   
 
     -- Insert the record
     INSERT INTO [dbo].[tblUserRoleMapping] (
         UserId, 
         UserRoleId, 
         CreatedBy, 
-        UpdatedBy, 
         CreatedAt, 
-        UpdatedAt, 
         IsActive, 
         IsDelete
     )
     VALUES (
         @UserId, 
         @UserRoleId, 
-        @CreatedBy, 
-        @UpdatedBy, 
-        SYSDATETIME(), 
-        SYSDATETIME(), 
+        @CreatedBy,  
+        SYSDATETIME(),  
         @IsActive, 
         @IsDelete
     );

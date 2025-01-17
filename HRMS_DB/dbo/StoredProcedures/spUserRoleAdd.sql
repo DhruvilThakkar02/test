@@ -3,7 +3,6 @@ CREATE PROCEDURE [dbo].[spUserRoleAdd]
 @UserRoleName NVARCHAR(255) = NULL,
 @PermissionGroupId INT = NULL,
 @CreatedBy INT = NULL,
-@UpdatedBy INT = NULL,
 @IsActive BIT = NULL
 
 AS
@@ -23,14 +22,13 @@ SET NOCOUNT ON;
  RETURN;
  END;
  
- -- Set UpdatedBy to CreatedBy if not provided
- SET @UpdatedBy = ISNULL(@UpdatedBy, @CreatedBy);
+ 
 
  -- Insert the new role into the table
  INSERT INTO [dbo].[tblUserRole] 
- ([UserRoleName], [PermissionGroupId], [CreatedBy], [UpdatedBy], [CreatedAt], [UpdatedAt], [IsActive])
+ ([UserRoleName], [PermissionGroupId], [CreatedBy], [CreatedAt],  [IsActive])
  VALUES 
- (@UserRoleName, @PermissionGroupId, @CreatedBy, @UpdatedBy, SYSDATETIME(), SYSDATETIME(), @IsActive);
+ (@UserRoleName, @PermissionGroupId, @CreatedBy,  SYSDATETIME(),  @IsActive);
 
  -- Retrieve the newly inserted UserRoleId
  SET @UserRoleId = SCOPE_IDENTITY();
