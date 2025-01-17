@@ -18,6 +18,9 @@
         public int? AddressId { get; set; }
         public int TenantId { get; set; }
         public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
     }
 }

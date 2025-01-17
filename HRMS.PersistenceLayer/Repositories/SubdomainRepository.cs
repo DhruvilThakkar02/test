@@ -50,8 +50,6 @@ namespace HRMS.PersistenceLayer.Repositories
                 SubdomainName = subdomain.SubdomainName,
                 CreatedBy = subdomain.CreatedBy,
                 CreatedAt = DateTime.Now,
-                UpdatedBy = result?.UpdatedBy,
-                UpdatedAt = DateTime.Now,
                 IsActive = subdomain.IsActive,
                 IsDelete = result?.IsDelete
             };

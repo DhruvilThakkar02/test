@@ -3,7 +3,7 @@ CREATE TABLE [dbo].[tblSubdomains] (
     [SubdomainName] NVARCHAR (100) NULL,
     [CreatedBy]     INT            NOT NULL,
     [UpdatedBy]     INT            NULL,
-    [CreatedAt]     DATETIME       NULL,
+    [CreatedAt]     DATETIME       NOT NULL,
     [UpdatedAt]     DATETIME       NULL,
     [IsActive]      BIT            CONSTRAINT [DF_Subdomains_IsActive] DEFAULT ((0)) NULL,
     [IsDelete]      BIT            CONSTRAINT [DF_Subdomains_IsDelete] DEFAULT ((0)) NULL,

@@ -32,12 +32,10 @@ SET NOCOUNT ON;
  RETURN;
  END;
  
- -- Set UpdatedBy to CreatedBy if not provided
- SET @UpdatedBy = ISNULL(@UpdatedBy, @CreatedBy);
 
  -- Insert the user record into tblUser
- INSERT INTO [dbo].[tblUser] (FirstName, MiddleName, LastName, UserName, Email, Password, Gender, DateOfBirth, CreatedBy, UpdatedBy, IsActive, CreatedAt, UpdatedAt, TenantId, UserRoleId, TenancyRoleId)
- VALUES (@FirstName, @MiddleName, @LastName, @UserName, @Email, @Password, @Gender, @DateOfBirth, @CreatedBy, @UpdatedBy, @IsActive, SYSDATETIME(), SYSDATETIME(), @TenantId, @UserRoleId, @TenancyRoleId);
+ INSERT INTO [dbo].[tblUser] (FirstName, MiddleName, LastName, UserName, Email, Password, Gender, DateOfBirth, CreatedBy, IsActive, CreatedAt, UpdatedAt, TenantId, UserRoleId, TenancyRoleId)
+ VALUES (@FirstName, @MiddleName, @LastName, @UserName, @Email, @Password, @Gender, @DateOfBirth, @CreatedBy, @IsActive, SYSDATETIME(), null, @TenantId, @UserRoleId, @TenancyRoleId);
 
  -- Capture the UserId of the inserted record
  SET @UserId = SCOPE_IDENTITY();
