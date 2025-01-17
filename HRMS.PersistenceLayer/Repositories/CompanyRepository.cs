@@ -49,7 +49,7 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@CreatedBy", company.CreatedBy);
             parameters.Add("@IsActive", company.IsActive);
 
-            var result = await _dbConnection.QuerySingleOrDefaultAsync<CompanyCreateResponseEntity>(CompanyStoreProcedures.CreateCompany, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<dynamic>(CompanyStoreProcedures.CreateCompany, parameters, commandType: CommandType.StoredProcedure);
 
             var companyId = parameters.Get<int>("@CompanyId");
 
@@ -71,9 +71,7 @@ namespace HRMS.PersistenceLayer.Repositories
                 AddressId = company.AddressId,
                 TenantId = company.TenantId,
                 CreatedBy = company.CreatedBy,
-                UpdatedBy = result?.UpdatedBy,
                 CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
                 IsActive = company.IsActive,
                 IsDelete = result?.IsDelete
             };

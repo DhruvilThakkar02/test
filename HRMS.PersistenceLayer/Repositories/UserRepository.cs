@@ -79,8 +79,6 @@ namespace HRMS.PersistenceLayer.Repositories
                 TenancyRoleId = user.TenancyRoleId,
                 CreatedBy = user.CreatedBy,
                 CreatedAt = DateTime.Now,
-                UpdatedBy = result?.UpdatedBy,
-                UpdatedAt = DateTime.Now,
                 IsActive = user.IsActive,
                 IsDelete = result?.IsDelete
             };

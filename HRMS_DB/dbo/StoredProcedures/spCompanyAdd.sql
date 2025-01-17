@@ -38,7 +38,7 @@ BEGIN
             @CompanyName, @Industry, @CompanyType, @FoundedDate, @NumberOfEmployees, 
             @WebsiteUrl, @TaxNumber, @GstNumber, @PfNumber, @PhoneNumber, 
             @Logo, @Email, @AddressId, @TenantId, @CreatedBy, @IsActive, 
-            SYSDATETIME(), SYSDATETIME()
+            SYSDATETIME(), null
         );
 
         SET @CompanyId = SCOPE_IDENTITY();

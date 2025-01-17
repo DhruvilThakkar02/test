@@ -58,8 +58,6 @@ namespace HRMS.PersistenceLayer.Repositories
                 SubdomainId = tenant.SubdomainId,
                 CreatedBy = tenant.CreatedBy,
                 CreatedAt = DateTime.Now,
-                UpdatedBy = result?.UpdatedBy,
-                UpdatedAt = DateTime.Now,
                 IsActive = tenant.IsActive,
                 IsDelete = result?.IsDelete
             };

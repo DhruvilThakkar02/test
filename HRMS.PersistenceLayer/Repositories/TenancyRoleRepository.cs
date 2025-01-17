@@ -49,10 +49,7 @@ namespace HRMS.PersistenceLayer.Repositories
                 TenancyRoleName = tenancyrole.TenancyRoleName,
                 CreatedBy = tenancyrole.CreatedBy,
                 CreatedAt = DateTime.Now,
-                UpdatedBy = result?.UpdatedBy,
-                UpdatedAt = DateTime.Now,
-                IsActive = tenancyrole.IsActive,
-                IsDelete = result?.IsDelete
+                IsActive = tenancyrole.IsActive
             };
 
             return createdTenancyRole;
@@ -67,7 +64,7 @@ namespace HRMS.PersistenceLayer.Repositories
             parameters.Add("@IsActive", tenancyrole.IsActive);
             parameters.Add("@IsDelete", tenancyrole.IsDelete);
 
-            var result = await _dbConnection.QuerySingleOrDefaultAsync<TenancyRoleUpdateResponseEntity>(TenancyRoleStoredProcedure.UpdateTenancyRole, parameters, commandType: CommandType.StoredProcedure);
+            var result = await _dbConnection.QuerySingleOrDefaultAsync<dynamic>(TenancyRoleStoredProcedure.UpdateTenancyRole, parameters, commandType: CommandType.StoredProcedure);
 
             if (result == null || result.TenancyRoleId == -1)
             {
