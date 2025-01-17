@@ -5,6 +5,7 @@ using HRMS.Dtos.Tenant.Subdomain.SubdomainResponseDto;
 using HRMS.Entities.Tenant.Subdomain.SubdomainRequestEntites;
 using HRMS.Entities.Tenant.Subdomain.SubdomainResponseEntites;
 using HRMS.PersistenceLayer.Interfaces;
+using System.Threading.Tasks;
 
 namespace HRMS.BusinessLayer.Services
 {
@@ -44,7 +45,6 @@ namespace HRMS.BusinessLayer.Services
             var response = _mapper.Map<SubdomainCreateResponseDto>(addedSubdomain);
             return response;
         }
-
         public async Task<SubdomainUpdateResponseDto> UpdateSubdomain(SubdomainUpdateRequestDto subdomainDto)
         {
             var sundomainEntity = _mapper.Map<SubdomainUpdateRequestEntity>(subdomainDto);
