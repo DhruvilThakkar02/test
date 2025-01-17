@@ -33,7 +33,7 @@ namespace HRMS.PersistenceLayer.Repositories
             return roles;
         }
 
-        public async Task<UserRoleCreateResponseEntity> CreateUserRole(UserRoleCreateRequestEntity roles)
+        public async Task<UserRoleCreateResponseEntity> CreateUserRole(UserRoleCreateRequestEntity  roles)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@UserRoleId", dbType: DbType.Int32, direction: ParameterDirection.Output);
@@ -53,8 +53,6 @@ namespace HRMS.PersistenceLayer.Repositories
                 PermissionGroupId = roles.PermissionGroupId,
                 CreatedBy = roles.CreatedBy,
                 CreatedAt = DateTime.Now,
-                UpdatedBy = result?.UpdatedBy,
-                UpdatedAt = DateTime.Now,
                 IsActive = roles.IsActive,
                 IsDelete = result?.IsDelete
             };
