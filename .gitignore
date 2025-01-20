@@ -30,7 +30,6 @@ ehthumbs.db
 
 # Ignore Visual Studio files
 .vs/
-
 # Ignore appsettings.json
 HRMS.API/appsettings.json
 *.json
