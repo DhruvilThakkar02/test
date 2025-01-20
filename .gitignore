@@ -33,4 +33,4 @@ ehthumbs.db
 
 # Ignore appsettings.json
 HRMS.API/appsettings.json
-appsettings.json
+*.json
